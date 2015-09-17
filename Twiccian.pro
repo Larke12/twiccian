@@ -1,15 +1,17 @@
-TEMPLATE = app
-
 QT += qml quick
-CONFIG += c++11
 
+HEADERS += main.h
 SOURCES += main.cpp
+
+QT_CONFIG -= no-pkg-config
+CONFIG += link_pkgconfig debug
+PKGCONFIG += mpv
 
 RESOURCES += qml.qrc
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+OTHER_FILES += main.qml
 
-# Default rules for deployment.
-include(deployment.pri)
+qml.path = $${OUT_PWD}/
+qml.files = *.qml
 
+INSTALLS += qml

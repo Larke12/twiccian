@@ -1,6 +1,6 @@
 # Twiccian
 
-This is the branch for our readiness demo.
+This is the master branch.
 
 Created using Qt Builder.
 
