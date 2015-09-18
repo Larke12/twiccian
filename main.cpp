@@ -128,11 +128,6 @@ int main(int argc, char **argv)
 
     qmlRegisterType<MpvObject>("twiccian", 1, 0, "MpvObject");
 
-    //QQuickView view;
-    //view.setResizeMode(QQuickView::SizeRootObjectToView);
-    //view.setSource(QUrl("qrc:///twiccian/main.qml"));
-    //view.show();
-
     QQmlApplicationEngine engine("main.qml");
 
     return app.exec();
