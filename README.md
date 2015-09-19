@@ -2,7 +2,7 @@
 
 ## Project Description
 Twiccian is, or will be, a native app written for Linux to allow the user
-to watch [Twitch.tv](https://twitch.tv) streams without the use of Flash.
+to watch [Twitch.tv](http://twitch.tv) streams without the use of Flash.
 Twitch.tv is a very common platform for streaming games and speedruns, but
 suffers from the fact that the web player and chat are built on Flash,
 seriously impacting the battery life and system usage of many computers.
