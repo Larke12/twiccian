@@ -7,6 +7,7 @@
 #include <mpv/opengl_cb.h>
 #include <mpv/qthelper.hpp>
 
+// Wraps the opengl-cb mpv instance in a C++ option
 class MpvRenderer;
 
 class MpvObject : public QQuickFramebufferObject

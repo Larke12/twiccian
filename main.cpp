@@ -28,14 +28,16 @@ class MpvRenderer : public QQuickFramebufferObject::Renderer
     QQuickWindow *window;
     mpv_opengl_cb_context *mpv_gl;
 public:
+    // Create mpv opengl-cb instance
     MpvRenderer(const MpvObject *obj)
         : mpv(obj->mpv), window(obj->window()), mpv_gl(obj->mpv_gl)
     {
         int r = mpv_opengl_cb_init_gl(mpv_gl, NULL, get_proc_address, NULL);
         if (r < 0)
-            throw std::runtime_error("could not initialize OpenGL");
+            throw std::runtime_error("Could not initialize mpv video renderer");
     }
 
+    // Destroys the mpv renderer
     virtual ~MpvRenderer()
     {
         // Until this call is done, we need to make sure the player remains
@@ -126,8 +128,10 @@ int main(int argc, char **argv)
     // requires the LC_NUMERIC category to be set to "C", so change it back.
     std::setlocale(LC_NUMERIC, "C");
 
+    // Register the custom type MpvObject to use in our qml
     qmlRegisterType<MpvObject>("twiccian", 1, 0, "MpvObject");
 
+    // Render the qml using a QQmlApplicationEngine
     QQmlApplicationEngine engine("main.qml");
 
     return app.exec();

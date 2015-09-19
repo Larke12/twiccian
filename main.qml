@@ -9,13 +9,16 @@ ApplicationWindow {
     width: 800
     height: 600
     visible: true
+    // TODO: Dynamically change the title
     title: "Mega Man Battle Network 3 Blue PB - Twiccian"
 
+    // Default view which contains the mpv window and chat
     SplitView {
         id: splitview
         anchors.fill: parent
         orientation: Qt.Horizontal
 
+        // Use default Item container for the MpvObject
         Item {
             id: mpv
             Layout.maximumHeight: window.height
@@ -34,6 +37,7 @@ ApplicationWindow {
             }
         }
 
+        // TODO: replace test text box with actual chat view
         TextField {
             id: chat
             placeholderText: "Chris: This is soooocool\nRyan: Best senior design project ever!\nDan: lol yeah it is"
@@ -41,6 +45,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+                // Change chat position layout and resize mpv to an acceptible size
                 onClicked: if (mouse.button & Qt.LeftButton) {
                                if (splitview.orientation == Qt.Vertical) {
                                    splitview.orientation = Qt.Horizontal
