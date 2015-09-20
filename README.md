@@ -21,7 +21,7 @@ concurrency and networking simple.
 
 We plan to make use of Twitch chat's [IRC
 bridge](http://help.twitch.tv/customer/portal/articles/1302780-twitch-irc),
-as well as Twitch's [REST API](https://github.com/justintv/twitch-api) to recreate the chat in a native fashion.
+as well as Twitch's [REST API](https://github.com/justintv/twitch-api) and Twitch's [TMI](https://tmi.twitch.tv/group/user/usernamehere/chatters) to recreate the chat in a native fashion.
 
 
 ## Dependencies
