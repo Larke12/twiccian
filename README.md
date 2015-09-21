@@ -13,7 +13,7 @@ Twiccian is built using Qt as the library/framework. The user-facing side
 of it will be written in a combination of C++ and QML, Qt's markup
 language used to facilitate easy creation of application interfaces.
 
-Twiccian will also have a background daemon, written in Go, to allow for
+Twiccian will also have a [background daemon](https://github.com/octotep/twicciand), written in Go, to allow for
 a quick background interface with Twitch, which should enable us to
 provide features like notifications, as well as to act as an intermediary
 between Twitch chat and the front-end of the application, since Go makes
@@ -32,6 +32,10 @@ It can be installed from pacman:
 ``` 
 pacman -S mpv
 ```
+for apt-get:
+```
+sudo apt-get install mpv
+```
 
 At the moment, Twiccian currently does not fetch stream urls itself, so it
 only plays the one it was compiled with. In order to generate a compatible
@@ -41,6 +45,10 @@ into [youtube-dl](https://rg3.github.io/youtube-dl/).
 It can be installed from pacman:
 ```
 pacman -S youtube-dl
+```
+or apt-get:
+```
+sudo apt-get install youtube-dl
 ```
 
 And the stream url can be generated like so:
