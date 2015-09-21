@@ -19,6 +19,7 @@ ApplicationWindow {
         orientation: Qt.Horizontal
 
         // Use default Item container for the MpvObject
+        // TODO: Ask for user input on a stream they would like to watch.
         Item {
             id: mpv
             Layout.maximumHeight: window.height
@@ -32,7 +33,7 @@ ApplicationWindow {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: renderer.command(["loadfile", "http://vod.edgecast.hls.twitch.tv/v1/AUTH_system/vods_2826/nmarkro_15601296912_281029264/chunked/highlight-9467635-muted-AGRAEYOW2Q.m3u8"])
+                    onClicked: renderer.command(["loadfile", "http://video6.iad02.hls.ttvnw.net/hls139/brotatoe_16534765808_311261504/chunked/py-index-live.m3u8?token=id=5865055331274984883,bid=16534765808,exp=1442932461,node=video6-1.iad02.hls.justin.tv,nname=video6.iad02,fmt=chunked&sig=aba2221c448832ee49c8155ae9c2e4b93b491a74"])
                 }
             }
         }
@@ -59,5 +60,3 @@ ApplicationWindow {
         }
     }
 }
-
-
