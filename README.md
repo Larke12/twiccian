@@ -46,7 +46,7 @@ It can be installed from pacman:
 ```
 pacman -S youtube-dl
 ```
-or apt-get:
+for apt-get:
 ```
 sudo apt-get install youtube-dl
 ```
