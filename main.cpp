@@ -8,6 +8,10 @@
 #include <QOpenGLContext>
 #include <QGuiApplication>
 
+#include <QWidget>
+#include <QDialog>
+#include <QInputDialog>
+
 #include <QtGui/QOpenGLFramebufferObject>
 
 #include <QtQuick/QQuickWindow>
