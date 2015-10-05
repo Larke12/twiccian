@@ -26,7 +26,7 @@ public:
 	virtual Renderer *createRenderer() const;
 public slots:
 	void command(const QVariant& params);
-	void setProperty(const QString& name, const QVariant& value);
+    void setProperty(const QString& name, const QVariant& value);
 signals:
 	void onUpdate();
 private slots:
@@ -40,9 +40,9 @@ class SocketWriter
 public:
     SocketWriter();
     virtual ~SocketWriter();
-    write();
-    connect();
-    close();
+    static void write();
+    static void connect();
+    static void close();
 };
 
 class SocketReader
@@ -50,54 +50,55 @@ class SocketReader
 public:
     SocketReader();
     virtual ~SocketReader();
-    read();
-    connect();
-    close();
+    static void read();
+    static void connect();
+    static void close();
 };
 
 class ChatMessage
 {
-    string userName;
-    string message;
+    std::string userName;
+    std::string message;
 
 public:
     ChatMessage();
     virtual ~ChatMessage();
 private:
-    static string getUserName();
-    static void setUserName(string argv);
-    static string getMessage();
-    static void setMessage(string argv);
+    static std::string getUserName();
+    static void setUserName(std::string argv);
+    static std::string getMessage();
+    static void setMessage(std::string argv);
+};
+
+
+class Account
+{
+    std::string name;
+    std::string profileUrl;
+    std::string avatarUrl;
+    int follows;
+public:
+    Account();
+    virtual ~Account();
+    static std::string getName();
+    static void setName(std::string argv);
+    // TODO: Add more methods
 };
 
 class Result
 {
-    string title;
+    std::string title;
     int viewerCount;
     timer_t startTime;
-    string thumbnailUrl;
-    string game;
+    std::string thumbnailUrl;
+    std::string game;
     Account streamer;
     bool isLive;
 public:
     Result();
     virtual ~Result();
-    static string getTitle();
-    static void setTitle(string argv);
-    // TODO: Add more methods
-};
-
-class Account
-{
-    string name;
-    string profileUrl;
-    string avatarUrl;
-    int follows;
-public:
-    Account();
-    virtual ~Account();
-    static string getName();
-    static void setName(string argv);
+    static std::string getTitle();
+    static void setTitle(std::string argv);
     // TODO: Add more methods
 };
 
