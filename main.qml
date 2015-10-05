@@ -14,7 +14,7 @@ ApplicationWindow {
     // Keep for Now Playing, or change with the view?
     title: "Mega Man Battle Network 3 Blue PB - Twiccian"
 
-    // A Qt view split into tabs, tabs update and play even when not in view
+    // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
         id: frame
         anchors.fill: parent
@@ -31,28 +31,6 @@ ApplicationWindow {
             // Login View will be moved from a tab view to a button at some point
 
             // Ask for user input on a stream they would like to watch.
-
-            Label {
-                x: 304
-                y: 101
-                text: qsTr("Please enter a live Twitch page:")
-            }
-
-            Button {
-                id: button1
-                x: 358
-                y: 177
-                text: qsTr("Ok")
-            }
-
-            TextField {
-                id: textField1
-                x: 343
-                y: 120
-                width: 80
-                height: 6
-                placeholderText: qsTr("http://www.twitch.tv/zackcat")
-            }
         }
 
         Tab {
@@ -146,6 +124,7 @@ ApplicationWindow {
             // Close the stream and jump to Following View
             //close();
         }
+        
         Tab {
             id: profile
             title: "Profile"
@@ -159,8 +138,8 @@ ApplicationWindow {
             frameOverlap: 1
             tabsAlignment: Qt.AlignHCenter
             tab: Rectangle {
-                color: styleData.selected ? "steelblue" :"lightsteelblue"
-                border.color:  "steelblue"
+                color: styleData.selected ? "#6441A5" :"#B9A3E3"
+                border.color:  "#262626"
                 implicitWidth: Math.max(text.width + 4, 80)
                 implicitHeight: 20
                 radius: 2
@@ -171,7 +150,9 @@ ApplicationWindow {
                     color: styleData.selected ? "white" : "black"
                 }
             }
-            frame: Rectangle { color: "steelblue" }
+            
+            frame: Rectangle { color: "#6441A5" }
+            
         }
     }
 }
