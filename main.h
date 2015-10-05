@@ -82,7 +82,12 @@ public:
     virtual ~Account();
     static std::string getName();
     static void setName(std::string argv);
-    // TODO: Add more methods
+    static std::string getProfileUrl();
+    static void setProfileUrl(std::string argv);
+    static std::string getAvatarUrl();
+    static void setAvatarUrl(std::string argv);
+    static int getFollows();
+    static void setFollows(int follows);
 };
 
 class Result
@@ -99,7 +104,18 @@ public:
     virtual ~Result();
     static std::string getTitle();
     static void setTitle(std::string argv);
-    // TODO: Add more methods
+    static int getViewerCount();
+    static void setViewerCount(int views);
+    static time_t getStartTime();
+    static void setStarttime(time_t start);
+    static std::string getThumbnailUrl();
+    static void setThumbnailUrl(std::string argv);
+    static std::string getGame();
+    static void setGame(std::string argv);
+    static Account getStreamer();
+    static void setStreamer(Account acct);
+    static bool getIsLive();
+    static void setIsLive(bool live);
 };
 
 
