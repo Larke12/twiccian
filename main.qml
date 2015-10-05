@@ -11,6 +11,7 @@ ApplicationWindow {
     height: 600
     visible: true
     // TODO: Dynamically change the title from API calls
+    // Keep for Now Playing, or change with the view?
     title: "Mega Man Battle Network 3 Blue PB - Twiccian"
 
     // A Qt view split into tabs, tabs update and play even when not in view
@@ -20,6 +21,7 @@ ApplicationWindow {
         anchors.margins: 4
 
         Tab {
+            id: login
             title: "Login"
 
             //login();
@@ -29,16 +31,6 @@ ApplicationWindow {
             // Login View will be moved from a tab view to a button at some point
 
             // Ask for user input on a stream they would like to watch.
-            TextField {
-                id: textField1
-                x: 304
-                y: 121
-                width: 192
-                height: 24
-                placeholderText: qsTr("http://www.twitch.tv/zackcat")
-                // Send to daemon
-                // Open Stream View, play stream
-            }
 
             Label {
                 x: 304
@@ -48,13 +40,23 @@ ApplicationWindow {
 
             Button {
                 id: button1
-                x: 354
-                y: 132
+                x: 358
+                y: 177
                 text: qsTr("Ok")
+            }
+
+            TextField {
+                id: textField1
+                x: 343
+                y: 120
+                width: 80
+                height: 6
+                placeholderText: qsTr("http://www.twitch.tv/zackcat")
             }
         }
 
         Tab {
+            id: follow
             title: "Following"
 
             //results:Result[]
@@ -63,6 +65,7 @@ ApplicationWindow {
         }
 
         Tab {
+            id: search
             title: "Search"
 
             //results:Result[]
@@ -70,6 +73,7 @@ ApplicationWindow {
         }
 
         Tab {
+            id: stream
             title: "Stream"
             // A Qt view which contains the mpv window and chat
             SplitView {
@@ -143,6 +147,7 @@ ApplicationWindow {
             //close();
         }
         Tab {
+            id: profile
             title: "Profile"
 
             // Inital status shows a web view, to switch to a local view later
