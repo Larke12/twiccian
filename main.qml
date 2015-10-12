@@ -38,7 +38,39 @@ ApplicationWindow {
         Tab {
             id: login
             title: "Login"
-
+            
+            Text {
+                id: tmp
+                text: "HELLO"
+            }
+            
+            Button {
+                id: submission
+                anchors.bottom: parent.horizontalCenter
+                x: 0
+                y: 0
+                width: 25
+                height: 25
+                scale: 0.2
+                text: qsTr("Submit")
+                z: 1
+            }
+            
+            Image {
+                id: logo
+                //anchors.top: parent.top
+                x: 0
+                y: -200
+                width: 200
+                height: 66
+                fillMode: Image.PreserveAspectFit
+                scale: 0.25
+                sourceSize.width: 792
+                sourceSize.height: 262
+                smooth: true
+                source: "assets/twitch_logo_white.png"
+            }
+            
             //login();
             //logOut();
 
@@ -143,15 +175,6 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Profile"
-            
-            Image {
-                id: image1
-                x: 346
-                y: 49
-                width: 100
-                height: 100
-                source: "qrc:/qtquickplugin/images/template_image.png"
-            }
 
             // Inital status shows a web view, to switch to a local view later
             //account:Account

@@ -14,4 +14,7 @@ OTHER_FILES += main.qml
 qml.path = $${OUT_PWD}/
 qml.files = *.qml
 
-INSTALLS += qml
+assets.path = $${OUT_PWD}/assets
+assets.files = $${PWD}/assets/*
+
+INSTALLS += qml assets
