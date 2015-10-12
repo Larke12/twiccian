@@ -143,6 +143,15 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Profile"
+            
+            Image {
+                id: image1
+                x: 346
+                y: 49
+                width: 100
+                height: 100
+                source: "qrc:/qtquickplugin/images/template_image.png"
+            }
 
             // Inital status shows a web view, to switch to a local view later
             //account:Account
