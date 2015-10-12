@@ -1,7 +1,7 @@
 QT += qml quick
 
-HEADERS += main.h
-SOURCES += main.cpp
+HEADERS += main.h socketreader.h socketwriter.h account.h chatmessage.h result.h
+SOURCES += main.cpp socketreader.cpp socketwriter.cpp account.cpp chatmessage.cpp result.cpp
 
 QT_CONFIG -= no-pkg-config
 CONFIG += link_pkgconfig debug
