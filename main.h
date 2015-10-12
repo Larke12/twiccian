@@ -22,7 +22,6 @@
 #include <mpv/opengl_cb.h>
 #include <mpv/qthelper.hpp>
 #include <string.h>
-#include <account.h>
 
 // Wraps the opengl-cb mpv instance in a C++ option
 class MpvRenderer;
@@ -49,34 +48,6 @@ private slots:
 	void doUpdate();
 private:
 	static void on_update(void *ctx);
-};
-
-class Result
-{
-    std::string title;
-    int viewerCount;
-    timer_t startTime;
-    std::string thumbnailUrl;
-    std::string game;
-    Account streamer;
-    bool isLive;
-public:
-    Result();
-    virtual ~Result();
-    static std::string getTitle();
-    static void setTitle(std::string argv);
-    static int getViewerCount();
-    static void setViewerCount(int views);
-    static time_t getStartTime();
-    static void setStarttime(time_t start);
-    static std::string getThumbnailUrl();
-    static void setThumbnailUrl(std::string argv);
-    static std::string getGame();
-    static void setGame(std::string argv);
-    static Account getStreamer();
-    static void setStreamer(Account acct);
-    static bool getIsLive();
-    static void setIsLive(bool live);
 };
 
 
