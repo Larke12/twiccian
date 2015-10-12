@@ -22,6 +22,7 @@
 #include <mpv/opengl_cb.h>
 #include <mpv/qthelper.hpp>
 #include <string.h>
+#include <account.h>
 
 // Wraps the opengl-cb mpv instance in a C++ option
 class MpvRenderer;
