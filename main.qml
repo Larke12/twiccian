@@ -27,7 +27,7 @@ ApplicationWindow {
     visible: true
     // TODO: Dynamically change the title from API calls
     // Keep for Now Playing, or change with the view?
-    title: "Mega Man Battle Network 3 Blue PB - Twiccian"
+    title: "Twiccian | Minimal System"
 
     // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
@@ -39,45 +39,65 @@ ApplicationWindow {
             id: login
             title: "Login"
             
-            Text {
-                id: tmp
-                text: "HELLO"
+            Item {
+                // Minimal: Ask for user input on a stream they would like to watch.
+                
+                Rectangle {
+                    id: logo_rect
+                    width: 0
+                    height: 0
+                    x: (window.width / 2) - ((792 * 0.25) / 2)
+                    y: (window.height / 2)  - ((262 * 0.25) / 2) - 200
+                    scale: 0.25
+                    color: "#6441A5"
+                    Image {
+                        id: logo
+                        fillMode: Image.PreserveAspectFit
+                        sourceSize.width: 792
+                        sourceSize.height: 262
+                        smooth: true
+                        source: "assets/twitch_logo_white.png"
+                    }
+                }
+                
+                Rectangle {
+                    id: url_sub_rect
+                    x: (window.width / 2) - 120
+                    y: (window.height / 2) - 120
+                    TextField {
+                        id: url_sub
+                        width: 250
+                        placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
+                    }
+                }
+                
+                Rectangle {
+                    id: button_rect
+                    width: 25
+                    height: 25
+                    x: (window.width / 2)  - 50
+                    y: (window.height / 2) - 50
+                    scale: 1.0
+                    color: "#6441A5"
+                    Button {
+                        id: submission
+                        text: qsTr("Submit")
+                        // TODO: Send URL to daemon
+                    }
+                }
             }
             
-            Button {
-                id: submission
-                anchors.bottom: parent.horizontalCenter
-                x: 0
-                y: 0
-                width: 25
-                height: 25
-                scale: 0.2
-                text: qsTr("Submit")
-                z: 1
-            }
+            // Have youtube-dl convert the URL to a streamable link
             
-            Image {
-                id: logo
-                //anchors.top: parent.top
-                x: 0
-                y: -200
-                width: 200
-                height: 66
-                fillMode: Image.PreserveAspectFit
-                scale: 0.25
-                sourceSize.width: 792
-                sourceSize.height: 262
-                smooth: true
-                source: "assets/twitch_logo_white.png"
-            }
+            // TODO: Have mpv play new streamable link (returned from daemon)
             
+            
+            // 50% requires login to work
             //login();
             //logOut();
 
             // Login page will also accept URL's until the other views are acceptable
             // Login View will be moved from a tab view to a button at some point
-
-            // Ask for user input on a stream they would like to watch.
         }
 
         Tab {
@@ -175,7 +195,7 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Profile"
-
+            
             // Inital status shows a web view, to switch to a local view later
             //account:Account
             //openWebView(Account);
