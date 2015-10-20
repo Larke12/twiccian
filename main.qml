@@ -62,12 +62,15 @@ ApplicationWindow {
                 
                 Rectangle {
                     id: url_sub_rect
-                    x: (window.width / 2) - 120
+                    x: (window.width / 2) - 200
                     y: (window.height / 2) - 120
                     TextField {
                         id: url_sub
-                        width: 250
+                        width: 400
+                        horizontalAlignment: TextInput.AlignHCenter
+                        inputMask: qsTr("")
                         placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
+                        // TODO: Obtain URL
                     }
                 }
                 
@@ -146,6 +149,7 @@ ApplicationWindow {
 
                         MouseArea {
                             anchors.fill: parent
+                            // Accept returned stream URL
                             onClicked: renderer.command(["loadfile", "http://vod.ak.hls.ttvnw.net/v1/AUTH_system/vods_2826/nmarkro_15601296912_281029264/chunked/highlight-9467635-muted-AGRAEYOW2Q.m3u8"])
                         }
                     }

@@ -69,6 +69,18 @@ public:
         mpv_opengl_cb_draw(mpv_gl, fbo->handle(), fbo->width(), fbo->height());
         window->resetOpenGLState();
     }
+    
+    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
+    static void sendUrl(std::string submittedUrl)
+    {
+        // Pass string to daemon
+    }
+    
+    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
+    static std::string recvUrl(std::string submittedUrl)
+    {
+        // Return string to MPV Render
+    }
 };
 
 MpvObject::MpvObject(QQuickItem * parent)
