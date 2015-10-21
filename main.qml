@@ -41,6 +41,7 @@ ApplicationWindow {
             
             Item {
                 // Minimal: Ask for user input on a stream they would like to watch.
+                // 50%: Login to view Following
                 
                 Rectangle {
                     id: logo_rect
@@ -65,12 +66,11 @@ ApplicationWindow {
                     x: (window.width / 2) - 200
                     y: (window.height / 2) - 120
                     TextField {
-                        id: url_sub
+                        id: submitUrl
                         width: 400
                         horizontalAlignment: TextInput.AlignHCenter
                         inputMask: qsTr("")
                         placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
-                        // TODO: Obtain URL
                     }
                 }
                 
@@ -85,7 +85,9 @@ ApplicationWindow {
                     Button {
                         id: submission
                         text: qsTr("Submit")
-                        // TODO: Send URL to daemon
+                        // TODO: Send URL to daemon: submitUrl.text
+                        //onClicked: 
+                        
                     }
                 }
             }

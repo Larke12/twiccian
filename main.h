@@ -34,18 +34,11 @@ class MpvObject : public QQuickFramebufferObject
 	mpv_opengl_cb_context *mpv_gl;
 
 	friend class MpvRenderer;
-    
-    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
-    std::string submittedUrl;
 
 public:
 	MpvObject(QQuickItem * parent = 0);
 	virtual ~MpvObject();
 	virtual Renderer *createRenderer() const;
-    
-    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
-    static void sendUrl(std::string submittedUrl);
-    static std::string recvUrl(std::string submittedUrl);
 public slots:
 	void command(const QVariant& params);
     void setProperty(const QString& name, const QVariant& value);
@@ -55,6 +48,18 @@ private slots:
 	void doUpdate();
 private:
 	static void on_update(void *ctx);
+};
+
+// REMOVE THIS CLASS FOR THE 50% WORKING SYSTEM
+class SubmitUrl : public QObject
+{
+    Q_OBJECT
+    //Q_PROPERTY(QString Url READ Url WRITE setUrl NOTIFY UrlChanged)
+    
+    QString submittedUrl;
+public:
+    Q_INVOKABLE static void sendUrl(QString submittedUrl);
+    Q_INVOKABLE static std::string recvUrl(std::string updatedUrl);
 };
 
 

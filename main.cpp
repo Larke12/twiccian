@@ -69,18 +69,6 @@ public:
         mpv_opengl_cb_draw(mpv_gl, fbo->handle(), fbo->width(), fbo->height());
         window->resetOpenGLState();
     }
-    
-    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
-    static void sendUrl(std::string submittedUrl)
-    {
-        // Pass string to daemon
-    }
-    
-    // REMOVE THE FOLLOWING FOR 50% WORKING SYSTEM
-    static std::string recvUrl(std::string submittedUrl)
-    {
-        // Return string to MPV Render
-    }
 };
 
 MpvObject::MpvObject(QQuickItem * parent)
@@ -146,6 +134,18 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
     window()->setPersistentOpenGLContext(true);
     window()->setPersistentSceneGraph(true);
     return new MpvRenderer(this);
+}
+
+// REMOVE THESE METHODS FOR 50% WORKING SYSTEM
+void SubmitUrl::sendUrl(QString submittedUrl)
+{
+    // Pass string to daemon
+}
+
+std::string SubmitUrl::recvUrl(std::string updatedUrl)
+{
+    // Return string to MPV Render
+    return NULL;
 }
 
 int main(int argc, char **argv)
