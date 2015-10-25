@@ -170,9 +170,10 @@ ApplicationWindow {
                 //openChat();
                 TextField {
                     id: chat
-                    placeholderText: "Chris: This is soooocool\nRyan: Best senior design project ever!\nDan: lol yeah it is"
+                    placeholderText: "Chat View coming to \nan app near you!"
+                    // TODO: Get Read-Only Chat
 
-                    // TODO: add interaction with chat view
+                    // TODO: Add interaction with chat view
                     //sendChatMessage();
 
                     MouseArea {
@@ -188,7 +189,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           //mpv.width = window.width - 220
+                                           mpv.width = window.width - 220
                                        } else {
                                            splitview.orientation = Qt.Vertical
 
@@ -197,7 +198,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           //mpv.height = window.height - 120
+                                           mpv.height = window.height - 120
                                        }
                                    }
                     }
