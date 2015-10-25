@@ -59,7 +59,7 @@ class SubmitUrlObj : public QObject
     QString submittedUrl;
 public:
     Q_INVOKABLE static void sendUrl(QString submittedUrl);
-    Q_INVOKABLE static std::string recvUrl(std::string updatedUrl);
+    Q_INVOKABLE static QString recvUrl();
 };
 
 

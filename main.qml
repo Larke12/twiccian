@@ -91,7 +91,11 @@ ApplicationWindow {
                         id: submission
                         text: qsTr("Submit")
                         // TODO: Send URL to daemon: submitUrl.text
-                        onClicked: apiobj.sendUrl(submitUrl.text);
+                        onClicked: {
+                            apiobj.sendUrl(submitUrl.text);
+                            // Switch to stream tab
+                            frame.currentIndex = 3;
+                        }
                         
                     }
                 }
@@ -157,7 +161,7 @@ ApplicationWindow {
                         MouseArea {
                             anchors.fill: parent
                             // Accept returned stream URL
-                            onClicked: renderer.command(["loadfile", "http://vod.ak.hls.ttvnw.net/v1/AUTH_system/vods_2826/nmarkro_15601296912_281029264/chunked/highlight-9467635-muted-AGRAEYOW2Q.m3u8"])
+                            onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                     }
                 }

@@ -144,10 +144,10 @@ void SubmitUrlObj::sendUrl(QString submittedUrl)
     fflush(stdout);
 }
 
-std::string SubmitUrlObj::recvUrl(std::string updatedUrl)
+QString SubmitUrlObj::recvUrl()
 {
     // Return string to MPV Render
-    return NULL;
+    return "http://vod.ak.hls.ttvnw.net/v1/AUTH_system/vods_2826/nmarkro_15601296912_281029264/chunked/highlight-9467635-muted-AGRAEYOW2Q.m3u8";
 }
 
 int main(int argc, char **argv)
