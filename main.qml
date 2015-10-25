@@ -29,6 +29,11 @@ ApplicationWindow {
     // Keep for Now Playing, or change with the view?
     title: "Twiccian | Minimal System"
 
+
+    Api {
+        id: apiobj
+    }
+
     // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
         id: frame
@@ -86,7 +91,7 @@ ApplicationWindow {
                         id: submission
                         text: qsTr("Submit")
                         // TODO: Send URL to daemon: submitUrl.text
-                        //onClicked: 
+                        onClicked: apiobj.sendUrl(submitUrl.text);
                         
                     }
                 }

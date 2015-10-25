@@ -51,7 +51,7 @@ private:
 };
 
 // REMOVE THIS CLASS FOR THE 50% WORKING SYSTEM
-class SubmitUrl : public QObject
+class SubmitUrlObj : public QObject
 {
     Q_OBJECT
     //Q_PROPERTY(QString Url READ Url WRITE setUrl NOTIFY UrlChanged)

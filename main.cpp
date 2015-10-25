@@ -137,12 +137,14 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
 }
 
 // REMOVE THESE METHODS FOR 50% WORKING SYSTEM
-void SubmitUrl::sendUrl(QString submittedUrl)
+void SubmitUrlObj::sendUrl(QString submittedUrl)
 {
     // Pass string to daemon
+    printf("%s\n", submittedUrl.toStdString().c_str());
+    fflush(stdout);
 }
 
-std::string SubmitUrl::recvUrl(std::string updatedUrl)
+std::string SubmitUrlObj::recvUrl(std::string updatedUrl)
 {
     // Return string to MPV Render
     return NULL;
@@ -160,6 +162,7 @@ int main(int argc, char **argv)
 
     // Register the custom type MpvObject to use in our qml
     qmlRegisterType<MpvObject>("twiccian", 1, 0, "MpvObject");
+    qmlRegisterType<SubmitUrlObj>("twiccian", 1, 0, "Api");
 
     // Render the qml using a QQmlApplicationEngine
     QQmlApplicationEngine engine("main.qml");
