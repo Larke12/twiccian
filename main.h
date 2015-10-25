@@ -58,8 +58,8 @@ class SubmitUrlObj : public QObject
     
     QString submittedUrl;
 public:
-    Q_INVOKABLE static void sendUrl(QString submittedUrl);
-    Q_INVOKABLE static QString recvUrl();
+    Q_INVOKABLE void sendUrl(QString submittedUrl);
+    Q_INVOKABLE QString recvUrl();
 };
 
 

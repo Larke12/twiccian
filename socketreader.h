@@ -13,12 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
-class SocketReader
+#include <QTcpSocket>
+#include <QNetworkSession>
+
+class SocketReader : public QObject
 {
+    Q_OBJECT
+
 public:
     SocketReader();
-    virtual ~SocketReader();
-    static void write();
-    static void connect();
-    static void close();
+    ~SocketReader();
+    QByteArray *sendYtDlUrl(QString cmd);
+
+private:
+    QTcpSocket *sock;
+    QString lastResponse;
+    QNetworkSession *networkSession;
+
+    quint16 blocksize;
+
 };

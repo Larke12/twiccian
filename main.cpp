@@ -14,6 +14,7 @@
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "main.h"
+#include "socketreader.h"
 
 #include <stdexcept>
 #include <clocale>
@@ -140,14 +141,23 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
 void SubmitUrlObj::sendUrl(QString submittedUrl)
 {
     // Pass string to daemon
-    printf("%s\n", submittedUrl.toStdString().c_str());
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->sendYtDlUrl(submittedUrl);
+
+    QString test = "";
+    test.append(result->constData());
+
+    this->submittedUrl = test;
+
+    printf("TEST: %s", test.toStdString().c_str());
     fflush(stdout);
 }
 
 QString SubmitUrlObj::recvUrl()
 {
     // Return string to MPV Render
-    return "http://vod.ak.hls.ttvnw.net/v1/AUTH_system/vods_2826/nmarkro_15601296912_281029264/chunked/highlight-9467635-muted-AGRAEYOW2Q.m3u8";
+    submittedUrl.chop(1);
+    return submittedUrl;
 }
 
 int main(int argc, char **argv)

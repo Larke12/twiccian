@@ -14,23 +14,51 @@
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "socketreader.h"
+#include <QDataStream>
+#include <iostream>
 
 SocketReader::SocketReader() {
-	// Do stuff
+    networkSession = 0;
+    // Initialize tcpSocket
+    sock = new QTcpSocket(this);
+    sock->connectToHost("localhost", 1921);
+    sock->waitForConnected();
 }
 
 SocketReader::~SocketReader() {
-	// Do stuff
+   sock->abort();
 }
 
-void SocketReader::write() {
-	// Do stuff
-}
+QByteArray *SocketReader::sendYtDlUrl(QString url) {
+    printf("LOLLOLOLOLOLOLOLOLOLOLOLOLOLOLOOLOLOLOLO\n");
+    fflush(stdout);
+    blocksize = 0;
 
-void SocketReader::connect() {
-	// Do stuff
-}
+    QByteArray *buffer = new QByteArray();
 
-void SocketReader::close() {
-	// Do stuff
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        std::string charurl = url.toStdString();
+        std::string json = " { \"api\":\"local\",\"name\":\"getStreamUrl\",\"params\":{\"url\":\"" + charurl + "\"}}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        printf("%s", json.c_str());
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
+        qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
+
+        printf("\nThe RESULT IS: %s\n", buffer->constData());
+        fflush(stdout);
+    }
+
+    return buffer;
 }
