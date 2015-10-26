@@ -93,6 +93,7 @@ ApplicationWindow {
                         activeFocusOnPress: true
                         isDefault: true
                         // Send URL to daemon: submitUrl.text
+                        // TODO: Allow enter key to submit
                         onClicked: {
                             apiobj.sendUrl(submitUrl.text);
                             // Switch to stream tab
@@ -113,6 +114,13 @@ ApplicationWindow {
         Tab {
             id: follow
             title: "Following"
+            
+            Text {
+                id: follow_temp
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                text: qsTr("This view will list all of the streams you follow that are live")
+            }
 
             //results:Result[]
             //queryLive();
@@ -122,6 +130,13 @@ ApplicationWindow {
         Tab {
             id: search
             title: "Search"
+            
+            Text {
+                id: search_temp
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                text: qsTr("This view will let you search, to the same extent as the website (API pending)")
+            }
 
             //results:Result[]
             //query();
@@ -187,7 +202,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           //mpv.width = window.width - 220
+                                           mpv.width = window.width - 220
                                        } else {
                                            splitview.orientation = Qt.Vertical
 
@@ -196,7 +211,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           //mpv.height = window.height - 120
+                                           mpv.height = window.height - 120
                                        }
                                    }
                     }
@@ -209,6 +224,13 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Profile"
+            
+            Text {
+                id: follow_temp
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                text: qsTr("This view will first show a web view, with the possibilty of having a local view in stretch goals")
+            }
             
             // Inital status shows a web view, to switch to a local view later
             //account:Account
