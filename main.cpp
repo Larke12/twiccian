@@ -156,8 +156,7 @@ void SubmitUrlObj::sendUrl(QString submittedUrl)
 QString SubmitUrlObj::recvUrl()
 {
     // Return string to MPV Render
-    submittedUrl.chop(1);
-    return submittedUrl;
+    return submittedUrl.trimmed();
 }
 
 int main(int argc, char **argv)

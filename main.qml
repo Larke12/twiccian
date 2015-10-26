@@ -162,6 +162,7 @@ ApplicationWindow {
                             anchors.fill: parent
                             // Accept returned stream URL
                             onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
+                            onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                     }
                 }
