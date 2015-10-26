@@ -90,21 +90,17 @@ ApplicationWindow {
                     Button {
                         id: submission
                         text: qsTr("Submit")
-                        // TODO: Send URL to daemon: submitUrl.text
+                        activeFocusOnPress: true
+                        isDefault: true
+                        // Send URL to daemon: submitUrl.text
                         onClicked: {
                             apiobj.sendUrl(submitUrl.text);
                             // Switch to stream tab
                             frame.currentIndex = 3;
                         }
-                        
                     }
                 }
             }
-            
-            // Have youtube-dl convert the URL to a streamable link
-            
-            // TODO: Have mpv play new streamable link (returned from daemon)
-            
             
             // 50% requires login to work
             //login();
@@ -161,7 +157,7 @@ ApplicationWindow {
                         MouseArea {
                             anchors.fill: parent
                             // Accept returned stream URL
-                            onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
+                            //onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
                             onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                     }
@@ -171,6 +167,7 @@ ApplicationWindow {
                 //openChat();
                 TextField {
                     id: chat
+                    horizontalAlignment: TextInput.AlignHCenter
                     placeholderText: "Chat View coming to \nan app near you!"
                     // TODO: Get Read-Only Chat
 
@@ -190,7 +187,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.width = window.width - 220
+                                           //mpv.width = window.width - 220
                                        } else {
                                            splitview.orientation = Qt.Vertical
 
@@ -199,7 +196,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.height = window.height - 120
+                                           //mpv.height = window.height - 120
                                        }
                                    }
                     }
