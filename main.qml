@@ -17,6 +17,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
+import QtWebKit 3.0
 
 import twiccian 1.0
 
@@ -76,6 +77,7 @@ ApplicationWindow {
                         horizontalAlignment: TextInput.AlignHCenter
                         inputMask: qsTr("")
                         placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
+                        text: qsTr("http://www.twitch.tv/bobross")
                     }
                 }
                 
@@ -95,9 +97,9 @@ ApplicationWindow {
                         // Send URL to daemon: submitUrl.text
                         // TODO: Allow enter key to submit
                         onClicked: {
-                            apiobj.sendUrl(submitUrl.text);
+                            apiobj.sendUrl(submitUrl.text)
                             // Switch to stream tab
-                            frame.currentIndex = 3;
+                            frame.currentIndex = 3
                         }
                     }
                 }
@@ -115,11 +117,41 @@ ApplicationWindow {
             id: follow
             title: "Following"
             
-            Text {
-                id: follow_temp
-                horizontalAlignment: TextInput.AlignHCenter
-                verticalAlignment: TextInput.AlignVCenter
-                text: qsTr("This view will list all of the streams you follow that are live")
+            Item {
+                Column {
+                    // Avoid overlapping
+                    id: cols
+                    spacing: 5
+                    x: (window.width / 4)
+                    y: cols.spacing
+                    
+                    Repeater {
+                        // Define number of results
+                        model: 10
+                        
+                        delegate: Rectangle {
+                            width: (window.width) / 2
+                            height: 80
+                            color: "white";
+                            border { 
+                                width: 1 
+                                color: "black" }
+                            radius: 3
+            
+                            TextInput {
+                                anchors.fill: parent
+                            }
+                        }
+                    }
+                }
+                
+                Text {
+                    id: follow_temp
+                    anchors.fill: parent
+                    horizontalAlignment: TextInput.AlignHCenter
+                    verticalAlignment: TextInput.AlignVCenter
+                    text: qsTr("This view will list all of the streams\nyou follow that are live")
+                }
             }
 
             //results:Result[]
@@ -172,11 +204,11 @@ ApplicationWindow {
                         MouseArea {
                             anchors.fill: parent
                             // Accept returned stream URL
-                            //onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
-                            onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
+                            //onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                         
                         Row {
+                            // TODO: Use anchors
                             height: 25
                             width: 25
                             x: 200
@@ -195,6 +227,7 @@ ApplicationWindow {
                                     }
                                 }
                             }
+                            
                             Button {
                                 id: makelive
                                 text: qsTr("Live")
@@ -256,18 +289,33 @@ ApplicationWindow {
             id: profile
             title: "Profile"
             
-            Text {
-                id: profile_temp
-                horizontalAlignment: TextInput.AlignHCenter
-                verticalAlignment: TextInput.AlignVCenter
-                text: qsTr("This view will first show a web view, with the possibilty of having a local view in stretch goals")
+            // Inital status shows a web view, to switch to a local view later
+            ScrollView {
+                width: 1280
+                height: 720
+                WebView {
+                    id: webview
+                    // TODO: Obtain URL from daemon
+                    url: "http://www.twitch.tv/bobross/profile"
+                    anchors.fill: parent
+                    onNavigationRequested: {
+                        // detect URL scheme prefix, most likely an external link
+                        var schemaRE = /^\w+:/;
+                        if (schemaRE.test(request.url)) {
+                            request.action = WebView.AcceptRequest;
+                        } else {
+                            request.action = WebView.IgnoreRequest;
+                            // delegate request.url here
+                        }
+                    }
+                }
             }
             
-            // Inital status shows a web view, to switch to a local view later
             //account:Account
             //openWebView(Account);
         }
 
+        // Twitch Branded Design
         style: TabViewStyle {
             frameOverlap: 1
             tabsAlignment: Qt.AlignHCenter
