@@ -28,7 +28,7 @@ ApplicationWindow {
     visible: true
     // TODO: Dynamically change the title from API calls
     // Keep for Now Playing, or change with the view?
-    title: "Twiccian | Minimal System"
+    title: "Twiccian | On the road to Viridian City!"
 
 
     Api {
@@ -213,6 +213,8 @@ ApplicationWindow {
                             width: 25
                             x: 200
                             y: 510
+                            spacing: 15
+                            
                             Button {
                                 id: playpause
                                 text: qsTr("Pause")
@@ -237,6 +239,30 @@ ApplicationWindow {
                                     renderer.command(["loadfile", apiobj.recvUrl()])
                                     playpause.text = qsTr("Pause")
                                 }
+                            }
+                            
+                            CheckBox {
+                                id: mute
+                                //text: qsTr("Mute")
+                                checked: false
+                                onClicked: { 
+                                    if (!checked) {
+                                        renderer.command(["set", "mute", "no"])
+                                    } else {
+                                        renderer.command(["set", "mute", "yes"])
+                                    }
+                                }
+                            }
+                            
+                            Slider {
+                                id: volumeslider
+                                tickmarksEnabled: false
+                                value: 50
+                                minimumValue: 0
+                                maximumValue: 100
+                                stepSize: 5
+                                updateValueWhileDragging: true
+                                onValueChanged: renderer.command(["set", "volume", value.toString()])
                             }
                         }
                     }
