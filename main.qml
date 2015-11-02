@@ -29,8 +29,42 @@ ApplicationWindow {
     // TODO: Dynamically change the title from API calls
     // Keep for Now Playing, or change with the view?
     title: "Twiccian | On the road to Viridian City!"
+    
+    // Login/Logout button
+    Item {
+        id: logger
+        Button {
+            id: logbtn
+            text: qsTr("Login")
+            anchors.right: parent.right
+            anchors.rightMargin: window.width * -1
+            onClicked: {
+                if (logbtn.text == "Login") {
+                    //logbtn.state = ""
+                    // TODO: Call daemon
+                    logbtn.text = qsTr("Logout")
+                } else {
+                    // TODO: Call daemon
+                    logbtn.text = qsTr("Login")
+                }
+            }
+        }
+        
+        states: [
+            State {
+                name: "test"
+                PropertyChanges {
+                    target: follow
+                    state: "focused"
+                }
+            }
 
+        ]
+    }
 
+    /*
+      This section is for API calls between QML and C++
+      */
     Api {
         id: apiobj
     }
