@@ -30,8 +30,6 @@ SocketReader::~SocketReader() {
 }
 
 QByteArray *SocketReader::sendYtDlUrl(QString url) {
-    printf("LOLLOLOLOLOLOLOLOLOLOLOLOLOLOLOOLOLOLOLO\n");
-    fflush(stdout);
     blocksize = 0;
 
     QByteArray *buffer = new QByteArray();

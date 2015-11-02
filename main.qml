@@ -176,14 +176,15 @@ ApplicationWindow {
                             onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                         
-                        Rectangle {
+                        Row {
                             height: 25
                             width: 25
-                            x: 19
+                            x: 200
                             y: 510
                             Button {
                                 id: playpause
                                 text: qsTr("Pause")
+                                opacity: 0.75
                                 onClicked: {
                                     if (playpause.text == "Pause") {
                                         renderer.command(["set", "pause", "yes"])
@@ -194,16 +195,10 @@ ApplicationWindow {
                                     }
                                 }
                             }
-                        }
-
-                        Rectangle {
-                            height: 25
-                            width: 25
-                            x: 129
-                            y: 510
                             Button {
                                 id: makelive
                                 text: qsTr("Live")
+                                opacity: 0.75
                                 onClicked: {
                                     renderer.command(["set", "pause", "no"])
                                     renderer.command(["loadfile", apiobj.recvUrl()])
@@ -238,7 +233,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.width = window.width - 220
+                                           //mpv.width = window.width - 220
                                        } else {
                                            splitview.orientation = Qt.Vertical
 
@@ -247,7 +242,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.height = window.height - 120
+                                           //mpv.height = window.height - 120
                                        }
                                    }
                     }
