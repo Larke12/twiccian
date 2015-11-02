@@ -37,6 +37,10 @@ ApplicationWindow {
     // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
         id: frame
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 8
+        anchors.topMargin: 8
         anchors.fill: parent
         anchors.margins: 4
 
@@ -76,6 +80,7 @@ ApplicationWindow {
                         horizontalAlignment: TextInput.AlignHCenter
                         inputMask: qsTr("")
                         placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
+                        text: qsTr("http://www.twitch.tv/bobross")
                     }
                 }
                 
@@ -135,6 +140,7 @@ ApplicationWindow {
                 id: search_temp
                 horizontalAlignment: TextInput.AlignHCenter
                 verticalAlignment: TextInput.AlignVCenter
+                color: "#FFFFFF"
                 text: qsTr("This view will let you search, to the same extent as the website (API pending)")
             }
 
@@ -175,6 +181,42 @@ ApplicationWindow {
                             //onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
                             onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
+
+                        Rectangle {
+                            height: 25
+                            width: 25
+                            x: 19
+                            y: 510
+                            Button {
+                                id: playpause
+                                text: qsTr("Pause")
+                                onClicked: {
+                                    if (playpause.text == "Pause") {
+                                        renderer.command(["set", "pause", "yes"])
+                                        playpause.text = qsTr("Play")
+                                    } else {
+                                        renderer.command(["set", "pause", "no"])
+                                        playpause.text = qsTr("Pause")
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            height: 25
+                            width: 25
+                            x: 129
+                            y: 510
+                            Button {
+                                id: makelive
+                                text: qsTr("Live")
+                                onClicked: {
+                                    renderer.command(["set", "pause", "no"])
+                                    renderer.command(["loadfile", apiobj.recvUrl()])
+                                    playpause.text = qsTr("Pause")
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -202,7 +244,7 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.width = window.width - 220
+                                           //mpv.width = window.width - 220
                                        } else {
                                            splitview.orientation = Qt.Vertical
 
@@ -211,12 +253,13 @@ ApplicationWindow {
                                             **** Uncomment for debug/test runs                 ****
                                            */
 
-                                           mpv.height = window.height - 120
+                                           //mpv.height = window.height - 120
                                        }
                                    }
                     }
                 }
             }
+
             // Close the stream and jump to Following View
             //close();
         }
@@ -226,9 +269,10 @@ ApplicationWindow {
             title: "Profile"
             
             Text {
-                id: follow_temp
+                id: profile_temp
                 horizontalAlignment: TextInput.AlignHCenter
                 verticalAlignment: TextInput.AlignVCenter
+                color: "#FFFFFF"
                 text: qsTr("This view will first show a web view, with the possibilty of having a local view in stretch goals")
             }
             
