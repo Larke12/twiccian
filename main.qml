@@ -76,6 +76,7 @@ ApplicationWindow {
                         horizontalAlignment: TextInput.AlignHCenter
                         inputMask: qsTr("")
                         placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
+                        text: qsTr("http://www.twitch.tv/bobross")
                     }
                 }
                 
