@@ -118,6 +118,7 @@ ApplicationWindow {
             title: "Following"
             
             Item {
+                // TODO: Or dow we want a grid view? http://doc.qt.io/qt-4.8/qml-gridview.html
                 Column {
                     // Avoid overlapping
                     id: cols
@@ -208,11 +209,10 @@ ApplicationWindow {
                         }
                         
                         Row {
-                            // TODO: Use anchors
-                            height: 25
-                            width: 25
-                            x: 200
-                            y: 510
+                            // Anchor controls to bottom center of player
+                            anchors.centerIn: parent
+                            anchors.verticalCenterOffset: (parent.height / 2) - (window.width / 15)
+                            
                             spacing: 15
                             
                             Button {
@@ -243,7 +243,12 @@ ApplicationWindow {
                             
                             CheckBox {
                                 id: mute
-                                //text: qsTr("Mute")
+                                style: CheckBoxStyle {
+                                            label: Text {
+                                                color: "#FFFFFF"
+                                                text: "Mute"
+                                            }
+                                }
                                 checked: false
                                 onClicked: { 
                                     if (!checked) {
