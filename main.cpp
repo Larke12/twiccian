@@ -16,6 +16,12 @@
 #include "main.h"
 #include "socketreader.h"
 
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <fcntl.h>
+
 #include <stdexcept>
 #include <clocale>
 #include <string>
@@ -161,6 +167,73 @@ QString SubmitUrlObj::recvUrl()
 
 int main(int argc, char **argv)
 {
+    bool daemon_running = false;
+
+    // Store the current working directory for the qt application
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+
+    // Check if the daemon is running or not
+    chdir("/proc");
+    DIR* procdir = opendir("/proc");
+    struct dirent *dent;
+
+    // Loop through all the directories in /proc
+    while (dent = readdir(procdir)) {
+        // if the directory is a proccess id, search it
+        int pid = strtol(dent->d_name, NULL, 10);
+        if (pid != 0) {
+            // Enter the directory and read the cmdline entry
+            chdir(dent->d_name);
+            char cmdline[1024];
+            int fd = open ("cmdline", O_RDONLY);
+            int len = read(fd, cmdline, (sizeof cmdline)-1);
+            cmdline[len] = '\0';
+            close(fd);
+
+            // If the command is twicciand, we found our match; break out
+            if (strncmp(cmdline, "twicciand", 9) == 0) {
+                daemon_running = true;
+                printf("Daemon is already running!\n");
+                break;
+            }
+            chdir("/proc");
+        }
+    }
+    closedir(procdir);
+
+    // Run the daemon if necessary
+    if (!daemon_running) {
+        // First, fork the daemon
+        pid_t pid = fork();
+
+        // Check for forking error
+        if (pid < 0) {
+            perror("Could not create new process to run the daemon");
+            exit(-1);
+        } else if (pid == 0) {
+            // Unset the umask
+            umask(0);
+
+            // Create a new process group for the child
+            pid_t sid = setsid();
+
+            if (sid < 0) {
+                perror("Couldn't create new process group for the daemon");
+                exit(-1);
+            } else {
+                int ret = execlp("twicciand", "twicciand", NULL);
+                if (ret < 0) {
+                    perror("Couldn't run daemon");
+                    exit(-1);
+                }
+            }
+        }
+    }
+
+    // Return to the qt application's working directory
+    chdir(cwd);
+
     QGuiApplication app(argc, argv);
     // TODO: Add user input for stream URL
     // Convert url using youtube-dl and send to main.qml
