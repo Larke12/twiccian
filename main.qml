@@ -96,9 +96,9 @@ ApplicationWindow {
                         // Send URL to daemon: submitUrl.text
                         // TODO: Allow enter key to submit
                         onClicked: {
-                            apiobj.sendUrl(submitUrl.text);
+                            apiobj.sendUrl(submitUrl.text)
                             // Switch to stream tab
-                            frame.currentIndex = 3;
+                            frame.currentIndex = 3
                         }
                     }
                 }
@@ -173,11 +173,11 @@ ApplicationWindow {
                         MouseArea {
                             anchors.fill: parent
                             // Accept returned stream URL
-                            //onClicked: renderer.command(["loadfile", apiobj.recvUrl()])
-                            onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
+                            //onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
                         }
                         
                         Row {
+                            // TODO: Use anchors
                             height: 25
                             width: 25
                             x: 200
@@ -196,6 +196,7 @@ ApplicationWindow {
                                     }
                                 }
                             }
+                            
                             Button {
                                 id: makelive
                                 text: qsTr("Live")
