@@ -288,11 +288,6 @@ ApplicationWindow {
                 implicitHeight: 25
                 radius: 1
                 
-                gradient: Gradient {
-                    GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
-                    GradientStop { position: 1 ; color: control.pressed ? "#B9A3E3" : "#6441A5" }
-                }
-                
                 Text {
                     id: text
                     anchors.centerIn: parent
@@ -386,7 +381,7 @@ ApplicationWindow {
                         
                         gradient: Gradient {
                             GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
-                            GradientStop { position: 1 ; color: control.pressed ? "#B9A3E3" : "#6441A5" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
                         }
                     }
             }
