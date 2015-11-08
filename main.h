@@ -50,17 +50,6 @@ private:
 	static void on_update(void *ctx);
 };
 
-// REMOVE THIS CLASS FOR THE 50% WORKING SYSTEM
-class SubmitUrlObj : public QObject
-{
-    Q_OBJECT
-    //Q_PROPERTY(QString Url READ Url WRITE setUrl NOTIFY UrlChanged)
-    
-    QString submittedUrl;
-public:
-    Q_INVOKABLE void sendUrl(QString submittedUrl);
-    Q_INVOKABLE QString recvUrl();
-};
 
 
 #endif

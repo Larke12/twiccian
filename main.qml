@@ -131,7 +131,7 @@ ApplicationWindow {
                         // Send URL to daemon: submitUrl.text
                         // TODO: Allow enter key to submit
                         onClicked: {
-                            apiobj.sendUrl(submitUrl.text)
+                            apiobj.requestUrl(submitUrl.text)
                             // Switch to stream tab
                             frame.currentIndex = 3
                         }
@@ -270,7 +270,7 @@ ApplicationWindow {
                                 opacity: 0.75
                                 onClicked: {
                                     renderer.command(["set", "pause", "no"])
-                                    renderer.command(["loadfile", apiobj.recvUrl()])
+                                    renderer.command(["loadfile", apiobj.getUrl()])
                                     playpause.text = qsTr("Pause")
                                 }
                             }

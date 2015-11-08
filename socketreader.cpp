@@ -14,8 +14,13 @@
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "socketreader.h"
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 #include <QDataStream>
 #include <iostream>
+
+using namespace rapidjson;
 
 SocketReader::SocketReader() {
     networkSession = 0;
@@ -60,3 +65,35 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
 
     return buffer;
 }
+
+// REMOVE THESE METHODS FOR 50% WORKING SYSTEM
+void SubmitUrlObj::requestUrl(QString submittedUrl)
+{
+    // Pass string to daemon
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->sendYtDlUrl(submittedUrl);
+
+    QString urlJson = "";
+    urlJson.append(result->constData());
+    printf("Supposed result: %s\n", urlJson.toStdString().c_str());
+    fflush(stdout);
+
+    Document json;
+    json.Parse(urlJson.toStdString().c_str());
+    Value& res = json["result"];
+    printf("%s\n", res.GetString());
+    fflush(stdout);
+
+    QString url(res.GetString());
+    this->submittedUrl = url;
+
+    printf("TEST: %s", url.toStdString().c_str());
+    fflush(stdout);
+}
+
+QString SubmitUrlObj::getUrl()
+{
+    // Return string to MPV Render
+    return submittedUrl.trimmed();
+}
+

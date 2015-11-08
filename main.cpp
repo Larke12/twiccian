@@ -37,6 +37,7 @@
 #include <QtQuick/QQuickView>
 #include <QQmlApplicationEngine>
 
+
 class MpvRenderer : public QQuickFramebufferObject::Renderer
 {
     static void *get_proc_address(void *ctx, const char *name) {
@@ -143,30 +144,9 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
     return new MpvRenderer(this);
 }
 
-// REMOVE THESE METHODS FOR 50% WORKING SYSTEM
-void SubmitUrlObj::sendUrl(QString submittedUrl)
-{
-    // Pass string to daemon
-    SocketReader *reader = new SocketReader();
-    QByteArray *result = reader->sendYtDlUrl(submittedUrl);
-
-    QString test = "";
-    test.append(result->constData());
-
-    this->submittedUrl = test;
-
-    printf("TEST: %s", test.toStdString().c_str());
-    fflush(stdout);
-}
-
-QString SubmitUrlObj::recvUrl()
-{
-    // Return string to MPV Render
-    return submittedUrl.trimmed();
-}
 
 int main(int argc, char **argv)
-{
+{    
     bool daemon_running = false;
 
     // Store the current working directory for the qt application
@@ -179,7 +159,7 @@ int main(int argc, char **argv)
     struct dirent *dent;
 
     // Loop through all the directories in /proc
-    while (dent = readdir(procdir)) {
+    while ((dent = readdir(procdir))) {
         // if the directory is a proccess id, search it
         int pid = strtol(dent->d_name, NULL, 10);
         if (pid != 0) {

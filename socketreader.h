@@ -29,7 +29,21 @@ private:
     QTcpSocket *sock;
     QString lastResponse;
     QNetworkSession *networkSession;
+    QString lastUrl;
+    QString lastDesc;
 
     quint16 blocksize;
 
+};
+
+// REMOVE THIS CLASS FOR THE 50% WORKING SYSTEM
+class SubmitUrlObj : public QObject
+{
+    Q_OBJECT
+    //Q_PROPERTY(QString Url READ Url WRITE setUrl NOTIFY UrlChanged)
+
+    QString submittedUrl;
+public:
+    Q_INVOKABLE void requestUrl(QString submittedUrl);
+    Q_INVOKABLE QString getUrl();
 };
