@@ -67,4 +67,5 @@ Thumbs.db
 *.dll
 *.exe
 
-
+# Qt Creator Profiles
+*.pro*
