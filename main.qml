@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
 import QtWebKit 3.0
 
 import twiccian 1.0
@@ -28,39 +29,7 @@ ApplicationWindow {
     visible: true
     // TODO: Dynamically change the title from API calls
     // Keep for Now Playing, or change with the view?
-    title: "Twiccian | On the road to Viridian City!"
-    
-    // Login/Logout button
-    Item {
-        id: logger
-        Button {
-            id: logbtn
-            text: qsTr("Login")
-            anchors.right: parent.right
-            anchors.rightMargin: window.width * -1
-            onClicked: {
-                if (logbtn.text == "Login") {
-                    //logbtn.state = ""
-                    // TODO: Call daemon
-                    logbtn.text = qsTr("Logout")
-                } else {
-                    // TODO: Call daemon
-                    logbtn.text = qsTr("Login")
-                }
-            }
-        }
-        
-        states: [
-            State {
-                name: "test"
-                PropertyChanges {
-                    target: follow
-                    state: "focused"
-                }
-            }
-
-        ]
-    }
+    title: "Twiccian | On the road to Viridian City!" // result.getTitle();
 
     /*
       This section is for API calls between QML and C++
@@ -74,10 +43,12 @@ ApplicationWindow {
         id: frame
         anchors.fill: parent
         anchors.margins: 4
+        tabsVisible: false
 
         Tab {
             id: login
             title: "Login"
+            
             
             Item {
                 // Minimal: Ask for user input on a stream they would like to watch.
@@ -277,6 +248,7 @@ ApplicationWindow {
                             
                             CheckBox {
                                 id: mute
+                                opacity: 0.75
                                 style: CheckBoxStyle {
                                             label: Text {
                                                 color: "#FFFFFF"
@@ -301,6 +273,7 @@ ApplicationWindow {
                                 maximumValue: 100
                                 stepSize: 5
                                 updateValueWhileDragging: true
+                                opacity: 0.75
                                 onValueChanged: renderer.command(["set", "volume", value.toString()])
                             }
                         }
@@ -401,5 +374,53 @@ ApplicationWindow {
             frame: Rectangle { color: "#6441A5" }
             
         }
+    }
+    
+    // Login/Logout button
+    Item {
+        id: logger
+        
+        /*ComboBox {
+            width: 200
+            model: [ "Select...", "Stream 1", "Stream 2" ]
+        }*/
+
+        Button {
+            id: logbtn
+            text: qsTr("Login")
+            anchors.right: parent.right
+            anchors.rightMargin: window.width * -1
+            onClicked: {
+                if (logbtn.text == "Login") {
+                    // TODO: Call daemon
+                    //signal.state = "LOGIN"
+                    frame.tabsVisible = true
+                    logbtn.text = qsTr("Logout")
+                } else {
+                    // TODO: Call daemon
+                    frame.currentIndex = 0
+                    frame.tabsVisible = 0
+                    logbtn.text = qsTr("Login")
+                }
+            }
+        }
+        
+        states: [
+            State {
+                name: "LOGIN"
+                PropertyChanges {
+                    target: signal
+                    state: "focused"
+                }
+            }, 
+            State {
+                name: "LOGOUT"
+                PropertyChanges {
+                    target: signal
+                    state: "focused"
+                }
+            }
+
+        ]
     }
 }
