@@ -215,8 +215,6 @@ int main(int argc, char **argv)
     chdir(cwd);
 
     QGuiApplication app(argc, argv);
-    // TODO: Add user input for stream URL
-    // Convert url using youtube-dl and send to main.qml
 
     // Qt sets the locale in the QGuiApplication constructor, but libmpv
     // requires the LC_NUMERIC category to be set to "C", so change it back.

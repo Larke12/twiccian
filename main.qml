@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
 import QtWebKit 3.0
 
 import twiccian 1.0
@@ -28,39 +29,7 @@ ApplicationWindow {
     visible: true
     // TODO: Dynamically change the title from API calls
     // Keep for Now Playing, or change with the view?
-    title: "Twiccian | On the road to Viridian City!"
-    
-    // Login/Logout button
-    Item {
-        id: logger
-        Button {
-            id: logbtn
-            text: qsTr("Login")
-            anchors.right: parent.right
-            anchors.rightMargin: window.width * -1
-            onClicked: {
-                if (logbtn.text == "Login") {
-                    //logbtn.state = ""
-                    // TODO: Call daemon
-                    logbtn.text = qsTr("Logout")
-                } else {
-                    // TODO: Call daemon
-                    logbtn.text = qsTr("Login")
-                }
-            }
-        }
-        
-        states: [
-            State {
-                name: "test"
-                PropertyChanges {
-                    target: follow
-                    state: "focused"
-                }
-            }
-
-        ]
-    }
+    title: "Twiccian | On the road to Viridian City!" // result.getTitle();
 
     /*
       This section is for API calls between QML and C++
@@ -74,78 +43,8 @@ ApplicationWindow {
         id: frame
         anchors.fill: parent
         anchors.margins: 4
-
-        Tab {
-            id: login
-            title: "Login"
-            
-            Item {
-                // Minimal: Ask for user input on a stream they would like to watch.
-                // 50%: Login to view Following
-                
-                Rectangle {
-                    id: logo_rect
-                    width: 0
-                    height: 0
-                    x: (window.width / 2) - ((792 * 0.25) / 2)
-                    y: (window.height / 2)  - ((262 * 0.25) / 2) - 200
-                    scale: 0.25
-                    color: "#6441A5"
-                    Image {
-                        id: logo
-                        fillMode: Image.PreserveAspectFit
-                        sourceSize.width: 792
-                        sourceSize.height: 262
-                        smooth: true
-                        source: "assets/twitch_logo_white.png"
-                    }
-                }
-                
-                Rectangle {
-                    id: url_sub_rect
-                    x: (window.width / 2) - 200
-                    y: (window.height / 2) - 120
-                    TextField {
-                        id: submitUrl
-                        width: 400
-                        horizontalAlignment: TextInput.AlignHCenter
-                        inputMask: qsTr("")
-                        placeholderText: qsTr("Ex: http://www.twitch.tv/zackcat")
-                        text: qsTr("http://www.twitch.tv/bobross")
-                    }
-                }
-                
-                Rectangle {
-                    id: button_rect
-                    width: 25
-                    height: 25
-                    x: (window.width / 2)  - 50
-                    y: (window.height / 2) - 50
-                    scale: 1.0
-                    color: "#6441A5"
-                    Button {
-                        id: submission
-                        text: qsTr("Submit")
-                        activeFocusOnPress: true
-                        isDefault: true
-                        // Send URL to daemon: submitUrl.text
-                        // TODO: Allow enter key to submit
-                        onClicked: {
-                            apiobj.requestUrl(submitUrl.text)
-                            // Switch to stream tab
-                            frame.currentIndex = 3
-                        }
-                    }
-                }
-            }
-            
-            // 50% requires login to work
-            //login();
-            //logOut();
-
-            // Login page will also accept URL's until the other views are acceptable
-            // Login View will be moved from a tab view to a button at some point
-        }
+        visible: false
+        tabsVisible: false
 
         Tab {
             id: follow
@@ -212,6 +111,7 @@ ApplicationWindow {
         Tab {
             id: stream
             title: "Stream"
+            
             // A Qt view which contains the mpv window and chat
             SplitView {
                 id: splitview
@@ -235,13 +135,8 @@ ApplicationWindow {
                         //StreamView();
                         //~StreamView();
                         //unwrapUrl(String);
-
-                        MouseArea {
-                            anchors.fill: parent
-                            // Accept returned stream URL
-                            //onVisibleChanged: renderer.command(["loadfile", apiobj.recvUrl()])
-                        }
                         
+                        // Player controls
                         Row {
                             // Anchor controls to bottom center of player
                             anchors.centerIn: parent
@@ -270,13 +165,14 @@ ApplicationWindow {
                                 opacity: 0.75
                                 onClicked: {
                                     renderer.command(["set", "pause", "no"])
-                                    renderer.command(["loadfile", apiobj.getUrl()])
+                                    renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                     playpause.text = qsTr("Pause")
                                 }
                             }
                             
                             CheckBox {
                                 id: mute
+                                opacity: 0.75
                                 style: CheckBoxStyle {
                                             label: Text {
                                                 color: "#FFFFFF"
@@ -301,6 +197,7 @@ ApplicationWindow {
                                 maximumValue: 100
                                 stepSize: 5
                                 updateValueWhileDragging: true
+                                opacity: 0.75
                                 onValueChanged: renderer.command(["set", "volume", value.toString()])
                             }
                         }
@@ -313,7 +210,7 @@ ApplicationWindow {
                     id: chat
                     horizontalAlignment: TextInput.AlignHCenter
                     placeholderText: "Chat View coming to \nan app near you!"
-                    // TODO: Get Read-Only Chat
+                    // TODO: Get Read-Only Chat for 50%
 
                     // TODO: Add interaction with chat view
                     //sendChatMessage();
@@ -345,8 +242,8 @@ ApplicationWindow {
                                    }
                     }
                 }
+                //closeChat();
             }
-            // Close the stream and jump to Following View
             //close();
         }
         
@@ -354,12 +251,15 @@ ApplicationWindow {
             id: profile
             title: "Profile"
             
-            // Inital status shows a web view, to switch to a local view later
+            // Stretch Goal: Utilize our own view
             ScrollView {
                 width: 1280
                 height: 720
                 WebView {
                     id: webview
+                    //account:Account
+                    //openWebView(Account);
+                    
                     // TODO: Obtain URL from daemon
                     url: "http://www.twitch.tv/bobross/profile"
                     anchors.fill: parent
@@ -375,9 +275,6 @@ ApplicationWindow {
                     }
                 }
             }
-            
-            //account:Account
-            //openWebView(Account);
         }
 
         // Twitch Branded Design
@@ -388,8 +285,14 @@ ApplicationWindow {
                 color: styleData.selected ? "#6441A5" :"#B9A3E3"
                 border.color:  "#262626"
                 implicitWidth: Math.max(text.width + 4, 80)
-                implicitHeight: 20
-                radius: 2
+                implicitHeight: 25
+                radius: 1
+                
+                gradient: Gradient {
+                    GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                    GradientStop { position: 1 ; color: control.pressed ? "#B9A3E3" : "#6441A5" }
+                }
+                
                 Text {
                     id: text
                     anchors.centerIn: parent
@@ -400,6 +303,124 @@ ApplicationWindow {
             
             frame: Rectangle { color: "#6441A5" }
             
+        }
+    }
+    
+    // Initial Login View
+    Rectangle {
+        id: login
+        color: "#6441A5"
+        border.color: "#262626"
+        border.width: 5
+        width: window.width
+        height: window.height
+        visible: true
+        
+        Item {
+            id: login_item
+            
+            Rectangle {
+                id: logo_rect
+                width: 0
+                height: 0
+                x: (window.width / 2) - ((792 * 0.25) / 2)
+                y: (window.height / 2)  - ((262 * 0.25) / 2) - 200
+                scale: 0.25
+                color: "#6441A5"
+                Image {
+                    id: logo
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize.width: 792
+                    sourceSize.height: 262
+                    smooth: true
+                    source: "assets/twitch_logo_white.png"
+                }
+            }
+            
+            Rectangle {
+                id: user_rect
+                x: (window.width / 2) - 200
+                y: (window.height / 2) - 140
+                TextField {
+                    id: username //submitUrl
+                    width: 400
+                    horizontalAlignment: TextInput.AlignHCenter
+                    inputMask: qsTr("")
+                    placeholderText: qsTr("username")
+                }
+            }
+            
+            Rectangle {
+                id: pass_rect
+                x: (window.width / 2) - 200
+                y: (window.height / 2) - 100
+                TextField {
+                    id: password
+                    width: 400
+                    horizontalAlignment: TextInput.AlignHCenter
+                    inputMask: qsTr("")
+                    placeholderText: qsTr("password")
+                }
+            }
+        }
+    }
+    
+    // Login/Logout button, TOP LAYER
+    Item {
+        id: logger
+
+        Button {
+            id: logbtn
+            x: (window.width / 2)  - 50
+            y: (window.height / 2) - 50
+            scale: 1.0
+            text: qsTr("Login")
+            
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 80
+                        //implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#000000"
+                        radius: 1
+                        
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#B9A3E3" : "#6441A5" }
+                        }
+                    }
+            }
+            
+            onClicked: {
+                /*
+                 **** Qt Creator bug, flags an error in Design View ****
+                 **** Comment for Design                            ****
+                */
+                if (logbtn.text == "Login") {
+                    // TODO: Call web view
+                    //login();
+                    logbtn.x = 0
+                    logbtn.y = 0
+                    logbtn.anchors.right = parent.right
+                    logbtn.anchors.rightMargin = (window.width) * -1
+                    login.visible = false
+                    frame.visible = true
+                    frame.tabsVisible = true
+                    logbtn.text = qsTr("Logout")
+                } else {
+                    // TODO: End session
+                    //logOut();
+                    logbtn.anchors.right = undefined
+                    logbtn.anchors.rightMargin = undefined
+                    logbtn.x = (window.width / 2)  - 50
+                    logbtn.y = (window.height / 2) - 50
+                    login.visible = true
+                    frame.currentIndex = 0
+                    frame.visible = false
+                    frame.tabsVisible = false
+                    logbtn.text = qsTr("Login")
+                }
+            }
         }
     }
 }
