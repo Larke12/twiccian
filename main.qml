@@ -19,6 +19,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
 import QtWebKit 3.0
+import QtWebEngine 1.1
 
 import twiccian 1.0
 
@@ -206,11 +207,12 @@ ApplicationWindow {
 
                 // TODO: replace test text box with actual chat view
                 //openChat();
-                TextField {
+                WebEngineView {
                     id: chat
-                    horizontalAlignment: TextInput.AlignHCenter
-                    placeholderText: "Chat View coming to \nan app near you!"
+                    //horizontalAlignment: TextInput.AlignHCenter
+                    //placeholderText: "Chat View coming to \nan app near you!"
                     // TODO: Get Read-Only Chat for 50%
+                    url: "assets/sock.html"
 
                     // TODO: Add interaction with chat view
                     //sendChatMessage();
@@ -402,6 +404,7 @@ ApplicationWindow {
                     frame.visible = true
                     frame.tabsVisible = true
                     logbtn.text = qsTr("Logout")
+                    apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
                 } else {
                     // TODO: End session
                     //logOut();

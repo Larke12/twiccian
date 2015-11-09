@@ -1,4 +1,4 @@
-QT += qml quick
+QT += qml quick webenginewidgets
 
 HEADERS += main.h socketreader.h account.h chatmessage.h result.h
 SOURCES += main.cpp socketreader.cpp account.cpp chatmessage.cpp result.cpp
