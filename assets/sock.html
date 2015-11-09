@@ -1,0 +1,17 @@
+<html>
+<body>
+
+<script>
+	var exampleSocket = new WebSocket("ws://localhost:1922/ws");
+
+	exampleSocket.onmessage = function (event) {
+		document.write(event.data);
+		document.write("<br>");
+		window.scrollTo(0,document.body.scrollHeight);
+	}
+</script>
+
+<h1>test</h1>
+
+</body>
+</html>
