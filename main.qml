@@ -30,7 +30,7 @@ ApplicationWindow {
 	visible: true
 	// TODO: Dynamically change the title from API calls
 	// Keep for Now Playing, or change with the view?
-	title: "Twiccian | On the road to Viridian City!" // result.getTitle();
+	title: "Twiccian | Row row, fight the powa!" // result.getTitle();
 
 	/*
 	  This section is for API calls between QML and C++
@@ -321,6 +321,27 @@ ApplicationWindow {
 			
 		}
 	}
+    
+    // Login WebView
+    WebView {
+        id: logwebview
+        visible: false
+        
+        // TODO: Login and return to frame
+        //url: "https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login"
+        anchors.fill: parent
+        onNavigationRequested: {
+            // detect URL scheme prefix, most likely an external link
+            var schemaRE = /^\w+:/;
+            if (schemaRE.test(request.url)) {
+                request.action = WebView.AcceptRequest;
+            } else {
+                request.action = WebView.IgnoreRequest;
+                // delegate request.url here
+            }
+        }
+    }
+    
 	
 	// Initial Login View
 	Rectangle {
@@ -334,6 +355,7 @@ ApplicationWindow {
 		
 		Item {
 			id: login_item
+            visible: true
 			
 			Rectangle {
 				id: logo_rect
@@ -353,50 +375,70 @@ ApplicationWindow {
 					source: "assets/twitch_logo_white.png"
 				}
 			}
-			
-			Row {
-                anchors.fill: window
-                anchors.centerIn: window
-                anchors.verticalCenterOffset: (window.height / 2) - (window.width / 15)
-				
-				spacing: 15
-				
-				// Login
-				Button {
-					id: logbtn
-                    //x: (window.width / 2)
-                    //y: (window.height / 2)
-					scale: 1.0
-					text: qsTr("Login")
-					
-					style: ButtonStyle {
-							background: Rectangle {
-								implicitWidth: 80
-								//implicitHeight: 25
-								border.width: control.activeFocus ? 2 : 1
-								border.color: "#000000"
-								radius: 1
-								
-								gradient: Gradient {
-									GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
-									GradientStop { position: 1 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
-								}
-							}
-					}
-					
-					onClicked: {
-						apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
-						login.visible = false;
-						frame.visible = true;
-						frame.tabsVisible = true;
-						}
-				}
-				
-				// Browse
-				/*Button {
-					
-				}*/
-			}
 		}
+        
+        Row {
+            anchors.centerIn: parent
+            
+            spacing: 15
+            
+            // Login
+            Button {
+                id: logbtn
+                scale: 1.0
+                text: qsTr("Login")
+                
+                style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 80
+                            //implicitHeight: 25
+                            border.width: control.activeFocus ? 2 : 1
+                            border.color: "#000000"
+                            radius: 1
+                            
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                            }
+                        }
+                }
+                
+                onClicked: {
+                    login.visible = false;
+                    logwebview.visible = true
+                }
+                
+            }
+            
+            // Browse
+            Button {
+                id: browsebtn
+                scale: 1.0
+                text: qsTr("Browse")
+                
+                style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 80
+                            //implicitHeight: 25
+                            border.width: control.activeFocus ? 2 : 1
+                            border.color: "#000000"
+                            radius: 1
+                            
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#6441A5" : "#B9A3E3" }
+                            }
+                        }
+                }
+                
+                onClicked: {
+                    apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
+                    login.visible = false;
+                    frame.visible = true;
+                    frame.tabsVisible = true;
+                    }
+            }
+        }
+        
 	}
 }
