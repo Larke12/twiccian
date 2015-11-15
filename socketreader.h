@@ -24,6 +24,7 @@ public:
     SocketReader();
     ~SocketReader();
     QByteArray *sendYtDlUrl(QString cmd);
+    QByteArray *getAuthState();
 
 private:
     QTcpSocket *sock;
@@ -46,4 +47,5 @@ class SubmitUrlObj : public QObject
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
     Q_INVOKABLE QString getUrl();
+    Q_INVOKABLE bool isAuthenticated();
 };

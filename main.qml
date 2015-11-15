@@ -165,6 +165,7 @@ ApplicationWindow {
                                 text: qsTr("Live")
                                 opacity: 0.75
                                 onClicked: {
+                                    apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
                                     renderer.command(["set", "pause", "no"])
                                     renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                     playpause.text = qsTr("Pause")
@@ -332,6 +333,13 @@ ApplicationWindow {
 		width: window.width
 		height: window.height
 		visible: true
+        Component.onCompleted: {
+            if (apiobj.isAuthenticated() === true) {
+                login.visible = false
+                frame.visible = true
+                frame.tabsVisible = true
+            }
+        }
 		
 		Item {
 			id: login_item
