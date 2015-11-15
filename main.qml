@@ -124,9 +124,9 @@ ApplicationWindow {
 				Item {
 					id: mpv
 					Layout.maximumHeight: window.height
-					Layout.maximumWidth: window.width
-					width: 580
 					height: 400
+                    Layout.maximumWidth: window.width * 0.8
+                    Layout.minimumWidth: window.width * 0.75
 
 					MpvObject {
 						id: renderer
@@ -235,33 +235,6 @@ ApplicationWindow {
 
 					// TODO: Add interaction with chat view
 					//sendChatMessage();
-
-					MouseArea {
-						anchors.fill: parent
-						acceptedButtons: Qt.LeftButton | Qt.RightButton
-						// Change chat position layout and resize mpv to an acceptible size (when uncommented)
-						onClicked: if (mouse.button & Qt.LeftButton) {
-									   if (splitview.orientation == Qt.Vertical) {
-										   splitview.orientation = Qt.Horizontal
-
-										   /*
-											**** Qt Creator bug, flags an error in Design View ****
-											**** Uncomment for debug/test runs                 ****
-										   */
-
-										   //mpv.width = window.width - 220
-									   } else {
-										   splitview.orientation = Qt.Vertical
-
-										   /*
-											**** Qt Creator bug, flags an error in Design View ****
-											**** Uncomment for debug/test runs                 ****
-										   */
-
-										   //mpv.height = window.height - 120
-									   }
-								   }
-					}
 				}
 				//closeChat();
 			}
