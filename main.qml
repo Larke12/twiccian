@@ -165,7 +165,7 @@ ApplicationWindow {
                                 text: qsTr("Live")
                                 opacity: 0.75
                                 onClicked: {
-                                    apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
+                                    apiobj.requestUrl("http://www.twitch.tv/bobross")
                                     renderer.command(["set", "pause", "no"])
                                     renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                     playpause.text = qsTr("Pause")
