@@ -213,7 +213,7 @@ ApplicationWindow {
                     //horizontalAlignment: TextInput.AlignHCenter
                     //placeholderText: "Chat View coming to \nan app near you!"
                     // TODO: Get Read-Only Chat for 50%
-                    url: "assets/sock.html"
+                    url: "assets/chatframe.html"
 
                     // TODO: Add interaction with chat view
                     //sendChatMessage();
