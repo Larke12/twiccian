@@ -28,8 +28,6 @@ ApplicationWindow {
 	width: 800
 	height: 600
 	visible: true
-	// TODO: Dynamically change the title from API calls
-	// Keep for Now Playing, or change with the view?
 	title: "Twiccian | Row row, fight the powa!" // result.getTitle();
 
     /*
@@ -52,7 +50,6 @@ ApplicationWindow {
             title: "Following"
             
             Item {
-                // TODO: Or dow we want a grid view? http://doc.qt.io/qt-4.8/qml-gridview.html
                 Column {
                     // Avoid overlapping
                     id: cols
@@ -120,7 +117,6 @@ ApplicationWindow {
                 orientation: Qt.Horizontal
 
 				// Use default Item container for the MpvObject
-				// TODO: Query API for live channels, remove user input dialog.
 				Item {
 					id: mpv
 					Layout.maximumHeight: window.height
@@ -131,11 +127,6 @@ ApplicationWindow {
                     MpvObject {
                         id: renderer
                         anchors.fill: parent
-
-                        // Obtain stream from the daemon
-                        //StreamView();
-                        //~StreamView();
-                        //unwrapUrl(String);
                         
                         // Player controls
                         Row {
@@ -206,44 +197,12 @@ ApplicationWindow {
                     }
                 }
 
-                // TODO: replace test text box with actual chat view
-                //openChat();
                 WebEngineView {
                     id: chat
-                    //horizontalAlignment: TextInput.AlignHCenter
-                    //placeholderText: "Chat View coming to \nan app near you!"
-                    // TODO: Get Read-Only Chat for 50%
                     url: "assets/chatframe.html"
 
                     // TODO: Add interaction with chat view
                     //sendChatMessage();
-
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.LeftButton | Qt.RightButton
-                        // Change chat position layout and resize mpv to an acceptible size (when uncommented)
-                        onClicked: if (mouse.button & Qt.LeftButton) {
-                                       if (splitview.orientation == Qt.Vertical) {
-                                           splitview.orientation = Qt.Horizontal
-
-                                           /*
-                                            **** Qt Creator bug, flags an error in Design View ****
-                                            **** Uncomment for debug/test runs                 ****
-                                           */
-
-                                           mpv.width = window.width - 220
-                                       } else {
-                                           splitview.orientation = Qt.Vertical
-
-                                           /*
-                                            **** Qt Creator bug, flags an error in Design View ****
-                                            **** Uncomment for debug/test runs                 ****
-                                           */
-
-                                           mpv.height = window.height - 120
-                                       }
-                                   }
-                    }
                 }
                 //closeChat();
             }
@@ -252,7 +211,7 @@ ApplicationWindow {
         
         Tab {
             id: profile
-            title: "Profile"
+            title: "Settings"
             
             // Stretch Goal: Utilize our own view
             ScrollView {
@@ -263,7 +222,6 @@ ApplicationWindow {
                     //account:Account
                     //openWebView(Account);
                     
-                    // TODO: Obtain URL from daemon
                     url: "http://www.twitch.tv/bobross/profile"
                     anchors.fill: parent
                     onNavigationRequested: {
@@ -284,7 +242,8 @@ ApplicationWindow {
 		style: TabViewStyle {
 			frameOverlap: 1
 			tabsAlignment: Qt.AlignHCenter
-			tab: Rectangle {
+			
+            tab: Rectangle {
 				color: styleData.selected ? "#6441A5" :"#B9A3E3"
 				border.color:  "#262626"
 				implicitWidth: Math.max(text.width + 4, 80)
@@ -325,7 +284,6 @@ ApplicationWindow {
         WebView {
             id: logwebview
 
-            // TODO: Login and return to frame
             url: "https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login"
             anchors.fill: parent
             onNavigationRequested: {
