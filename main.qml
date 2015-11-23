@@ -97,7 +97,7 @@ ApplicationWindow {
             
             Text {
                 id: search_temp
-                horizontalAlignment: TextInput.AlignHCenter
+                horizontalAlignment: TextInput.AlignHCenter 
                 verticalAlignment: TextInput.AlignVCenter
                 text: qsTr("This view will let you search, to the same extent as the website (API pending)")
             }
@@ -123,6 +123,7 @@ ApplicationWindow {
 					height: 400
                     Layout.maximumWidth: window.width * 0.8
                     Layout.minimumWidth: window.width * 0.75
+                    
 
                     MpvObject {
                         id: renderer
@@ -130,11 +131,13 @@ ApplicationWindow {
                         
                         // Player controls
                         Row {
+                            id: vcontrols
                             // Anchor controls to bottom center of player
                             anchors.centerIn: parent
                             anchors.verticalCenterOffset: (parent.height / 2) - (window.width / 15)
+                            opacity: 0.0
                             
-                            spacing: 15
+                            spacing: 15 
                             
                             Button {
                                 id: playpause
@@ -193,6 +196,17 @@ ApplicationWindow {
                                 opacity: 0.75
                                 onValueChanged: renderer.command(["set", "volume", value.toString()])
                             }
+                        }
+                    }
+                    
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: {
+                            vcontrols.opacity = 0.75
+                        }
+                        onExited: {
+                            vcontrols.opacity = 0.0
                         }
                     }
                 }
