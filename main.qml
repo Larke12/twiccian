@@ -18,6 +18,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
+//import QtGraphicalEffects 1.0
 import QtWebKit 3.0
 import QtWebEngine 1.1
 
@@ -28,7 +29,7 @@ ApplicationWindow {
 	width: 800
 	height: 600
 	visible: true
-	title: "Twiccian | Row row, fight the powa!" // result.getTitle();
+	title: "Twiccian | result.getTitle()" // result.getTitle();
 
     /*
       This section is for API calls between QML and C++
@@ -120,7 +121,8 @@ ApplicationWindow {
 				Item {
 					id: mpv
 					Layout.maximumHeight: window.height
-					height: 400
+					height: window.height
+                    //width: window.width * 0.8
                     Layout.maximumWidth: window.width * 0.8
                     Layout.minimumWidth: window.width * 0.75
                     
@@ -138,12 +140,17 @@ ApplicationWindow {
                             id: renderer
                             anchors.fill: parent
                             
+                            
+                            //LinearGradient
+                            
                             // Player controls
                             Row {
                                 id: vcontrols
                                 // Anchor controls to bottom center of player
-                                anchors.centerIn: parent
-                                anchors.verticalCenterOffset: (parent.height / 2) - (window.width / 15)
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: vcontrols.height
+                                anchors.left: parent.left
+                                anchors.leftMargin: (parent.width / 2) - (vcontrols.width / 2)
                                 opacity: 0.0
                                 
                                 spacing: 15 
@@ -152,6 +159,7 @@ ApplicationWindow {
                                     id: playpause
                                     text: qsTr("Pause")
                                     opacity: 1.0
+                                    
                                     onClicked: {
                                         if (playpause.text == "Pause") {
                                             renderer.command(["set", "pause", "yes"])
@@ -167,6 +175,7 @@ ApplicationWindow {
                                     id: makelive
                                     text: qsTr("Live")
                                     opacity: 1.0
+                                    
                                     onClicked: {
                                         apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
                                         renderer.command(["set", "pause", "no"])
@@ -176,15 +185,44 @@ ApplicationWindow {
                                 }
                                 
                                 CheckBox {
+                                    id: fscreen
+                                    opacity: 1.0
+                                    
+                                    style: CheckBoxStyle {
+                                                label: Text {
+                                                    color: "#FFFFFF"
+                                                    text: "Fullscreen"
+                                                }
+                                    }
+                                    
+                                    checked: false
+                                    
+                                    onClicked: {
+                                        if (checked) {
+                                            window.showFullScreen()
+                                            splitview.orientation = Qt.Vertical
+                                            renderer.height = window.height
+                                            renderer.width = window.width
+                                        } else {
+                                            window.showNormal()
+                                            splitview.orientation = Qt.Horizontal
+                                        }
+                                    }
+                                }
+                                
+                                CheckBox {
                                     id: mute
                                     opacity: 1.0
+                                    
                                     style: CheckBoxStyle {
                                                 label: Text {
                                                     color: "#FFFFFF"
                                                     text: "Mute"
                                                 }
                                     }
+                                    
                                     checked: false
+                                    
                                     onClicked: { 
                                         if (!checked) {
                                             renderer.command(["set", "mute", "no"])
@@ -212,6 +250,10 @@ ApplicationWindow {
 
                 WebEngineView {
                     id: chat
+                    //Layout.maximumHeight: window.height
+                    //Layout.maximumWidth: window.width * 0.2
+                    //Layout.minimumWidth: window.width * 0.25
+                    
                     url: "assets/sock.html"
                 }
                 //closeChat();
