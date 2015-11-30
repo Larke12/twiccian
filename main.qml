@@ -133,79 +133,78 @@ ApplicationWindow {
                         onExited: {
                             vcontrols.opacity = 0.0
                         }
-                    }
-                    
-
-                    MpvObject {
-                        id: renderer
-                        anchors.fill: parent
                         
-                        // Player controls
-                        Row {
-                            id: vcontrols
-                            // Anchor controls to bottom center of player
-                            anchors.centerIn: parent
-                            anchors.verticalCenterOffset: (parent.height / 2) - (window.width / 15)
-                            opacity: 0.0
+                        MpvObject {
+                            id: renderer
+                            anchors.fill: parent
                             
-                            spacing: 15 
-                            
-                            Button {
-                                id: playpause
-                                text: qsTr("Pause")
-                                opacity: 0.75
-                                onClicked: {
-                                    if (playpause.text == "Pause") {
-                                        renderer.command(["set", "pause", "yes"])
-                                        playpause.text = qsTr("Play")
-                                    } else {
+                            // Player controls
+                            Row {
+                                id: vcontrols
+                                // Anchor controls to bottom center of player
+                                anchors.centerIn: parent
+                                anchors.verticalCenterOffset: (parent.height / 2) - (window.width / 15)
+                                opacity: 0.0
+                                
+                                spacing: 15 
+                                
+                                Button {
+                                    id: playpause
+                                    text: qsTr("Pause")
+                                    opacity: 0.75
+                                    onClicked: {
+                                        if (playpause.text == "Pause") {
+                                            renderer.command(["set", "pause", "yes"])
+                                            playpause.text = qsTr("Play")
+                                        } else {
+                                            renderer.command(["set", "pause", "no"])
+                                            playpause.text = qsTr("Pause")
+                                        }
+                                    }
+                                }
+                                
+                                Button {
+                                    id: makelive
+                                    text: qsTr("Live")
+                                    opacity: 0.75
+                                    onClicked: {
+                                        apiobj.requestUrl("http://www.twitch.tv/geoff")
                                         renderer.command(["set", "pause", "no"])
+                                        renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
                                     }
                                 }
-                            }
-                            
-                            Button {
-                                id: makelive
-                                text: qsTr("Live")
-                                opacity: 0.75
-                                onClicked: {
-                                    apiobj.requestUrl("http://www.twitch.tv/bobross")
-                                    renderer.command(["set", "pause", "no"])
-                                    renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
-                                    playpause.text = qsTr("Pause")
-                                }
-                            }
-                            
-                            CheckBox {
-                                id: mute
-                                opacity: 0.75
-                                style: CheckBoxStyle {
-                                            label: Text {
-                                                color: "#FFFFFF"
-                                                text: "Mute"
-                                            }
-                                }
-                                checked: false
-                                onClicked: { 
-                                    if (!checked) {
-                                        renderer.command(["set", "mute", "no"])
-                                    } else {
-                                        renderer.command(["set", "mute", "yes"])
+                                
+                                CheckBox {
+                                    id: mute
+                                    opacity: 0.75
+                                    style: CheckBoxStyle {
+                                                label: Text {
+                                                    color: "#FFFFFF"
+                                                    text: "Mute"
+                                                }
+                                    }
+                                    checked: false
+                                    onClicked: { 
+                                        if (!checked) {
+                                            renderer.command(["set", "mute", "no"])
+                                        } else {
+                                            renderer.command(["set", "mute", "yes"])
+                                        }
                                     }
                                 }
-                            }
-                            
-                            Slider {
-                                id: volumeslider
-                                tickmarksEnabled: false
-                                value: 50
-                                minimumValue: 0
-                                maximumValue: 100
-                                stepSize: 5
-                                updateValueWhileDragging: true
-                                opacity: 0.75
-                                onValueChanged: renderer.command(["set", "volume", value.toString()])
+                                
+                                Slider {
+                                    id: volumeslider
+                                    tickmarksEnabled: false
+                                    value: 50
+                                    minimumValue: 0
+                                    maximumValue: 100
+                                    stepSize: 5
+                                    updateValueWhileDragging: true
+                                    opacity: 0.75
+                                    onValueChanged: renderer.command(["set", "volume", value.toString()])
+                                }
                             }
                         }
                     }
@@ -214,9 +213,6 @@ ApplicationWindow {
                 WebEngineView {
                     id: chat
                     url: "assets/sock.html"
-
-                    // TODO: Add interaction with chat view
-                    //sendChatMessage();
                 }
                 //closeChat();
             }
