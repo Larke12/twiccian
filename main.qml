@@ -213,7 +213,7 @@ ApplicationWindow {
 
                 WebEngineView {
                     id: chat
-                    url: "assets/chatframe.html"
+                    url: "assets/sock.html"
 
                     // TODO: Add interaction with chat view
                     //sendChatMessage();
