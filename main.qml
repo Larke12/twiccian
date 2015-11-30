@@ -128,7 +128,7 @@ ApplicationWindow {
                         anchors.fill: parent
                         hoverEnabled: true
                         onEntered: {
-                            vcontrols.opacity = 0.75
+                            vcontrols.opacity = 1.0
                         }
                         onExited: {
                             vcontrols.opacity = 0.0
@@ -151,7 +151,7 @@ ApplicationWindow {
                                 Button {
                                     id: playpause
                                     text: qsTr("Pause")
-                                    opacity: 0.75
+                                    opacity: 1.0
                                     onClicked: {
                                         if (playpause.text == "Pause") {
                                             renderer.command(["set", "pause", "yes"])
@@ -166,9 +166,9 @@ ApplicationWindow {
                                 Button {
                                     id: makelive
                                     text: qsTr("Live")
-                                    opacity: 0.75
+                                    opacity: 1.0
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/geoff")
+                                        apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -177,7 +177,7 @@ ApplicationWindow {
                                 
                                 CheckBox {
                                     id: mute
-                                    opacity: 0.75
+                                    opacity: 1.0
                                     style: CheckBoxStyle {
                                                 label: Text {
                                                     color: "#FFFFFF"
@@ -202,7 +202,7 @@ ApplicationWindow {
                                     maximumValue: 100
                                     stepSize: 5
                                     updateValueWhileDragging: true
-                                    opacity: 0.75
+                                    opacity: 1.0
                                     onValueChanged: renderer.command(["set", "volume", value.toString()])
                                 }
                             }
