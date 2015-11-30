@@ -26,13 +26,23 @@
 	}
 	
 	function sendMessage() {
-		exampleSocket.send(document.getElementById("chatmsg").value);
+	    exampleSocket.send(document.getElementById("chatmsg").value);
+            document.getElementById('chatmsg').value = "";
+	}
+
+	function process(e) {
+	    var code = (e.keyCode ? e.keyCode : e.which);
+	    if (code == 13) { //Enter keycode
+                sendMessage();
+	        if(event.preventDefault) event.preventDefault();
+	        return false;
+	    }
 	}
     </script>
   </div>
   <div id="footer">
     <br>
-    <textarea id="chatmsg" style="width: 98.5%; height: 55%; margin-bottom: 10px; resize: none;"></textarea>
+    <textarea id="chatmsg" style="width: 98.5%; height: 55%; margin-bottom: 10px; resize: none;" onkeypress="process(event, this)"></textarea>
 
     <button onclick="sendMessage()">Chat</button>
   </div>
