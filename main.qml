@@ -124,6 +124,17 @@ ApplicationWindow {
                     Layout.maximumWidth: window.width * 0.8
                     Layout.minimumWidth: window.width * 0.75
                     
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: {
+                            vcontrols.opacity = 0.75
+                        }
+                        onExited: {
+                            vcontrols.opacity = 0.0
+                        }
+                    }
+                    
 
                     MpvObject {
                         id: renderer
@@ -196,17 +207,6 @@ ApplicationWindow {
                                 opacity: 0.75
                                 onValueChanged: renderer.command(["set", "volume", value.toString()])
                             }
-                        }
-                    }
-                    
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: {
-                            vcontrols.opacity = 0.75
-                        }
-                        onExited: {
-                            vcontrols.opacity = 0.0
                         }
                     }
                 }
