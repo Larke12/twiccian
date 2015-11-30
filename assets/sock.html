@@ -44,31 +44,71 @@
 	}
   </style>
 </head>
-<body>
+<body onload="fetchEmotes()">
 
   <div id="chat">
 	<script>
 	var exampleSocket = new WebSocket("ws://localhost:1922/ws");
 
 	exampleSocket.onmessage = function (event) {
-		document.getElementById('chat').innerHTML += '<div id="msg">';
-		document.getElementById('chat').innerHTML += event.data;
-		document.getElementById('chat').innerHTML += '<br></div>';
-			document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+  	    document.getElementById('chat').innerHTML += '<div id="msg">';
+	    document.getElementById('chat').innerHTML += checkMessage(event.data);
+	    document.getElementById('chat').innerHTML += '<br></div>';
+	    document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 	}
 	
 	function sendMessage() {
-		exampleSocket.send(document.getElementById("chatmsg").value);
-			document.getElementById('chatmsg').value = "";
+	    exampleSocket.send(document.getElementById("chatmsg").value);
+	    document.getElementById('chatmsg').value = "";
 	}
 
 	function process(e) {
-		var code = (e.keyCode ? e.keyCode : e.which);
-		if (code == 13) { //Enter keycode
-				sendMessage();
-			if(event.preventDefault) event.preventDefault();
-			return false;
-		}
+	    var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) { //Enter keycode
+    	        sendMessage();
+		if(event.preventDefault) event.preventDefault();
+		    return false;
+	    }
+	}
+
+	function Get(yourUrl){
+	    var Httpreq = new XMLHttpRequest(); // a new request
+            Httpreq.open("GET",yourUrl,false);
+            Httpreq.send(null);
+            return Httpreq.responseText;          
+	}
+
+	function fetchEmotes() {
+	    var json = JSON.parse(localStorage.getItem('jsoncache'));
+	    if (!json) {
+                json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
+	        localStorage.setItem('jsoncache', JSON.stringify(json));
+	    }
+   	    console.log(json);
+	    window.tagMap = {};
+	    var i = null;
+	    for (i = 0; json.length > i; i += 1) {
+	        tagMap[json[i].code] = json[i].id;
+            }
+	}
+
+	function searchEmote(emote) {
+	    if (window.tagMap[emote] != null)
+	        return window.tagMap[emote];
+	    return -1;
+	}
+
+	function checkMessage(rec) {
+  	    var msg = rec.split(" ");
+            for (i = 0; i <= msg.length ; i ++) {
+	        var img = searchEmote(msg[i]);
+	        if (img != -1) {
+                    url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
+	            console.log(url);
+	            msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
+	        }
+	    }
+	    return msg.join(" ");
 	}
 	</script>
   </div>
