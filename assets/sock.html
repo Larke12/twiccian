@@ -1,132 +1,161 @@
 <html>
-<head>
-  <style type="text/css">
-        body { background-color: #1E1E1E; }
-    
-	#footer { position: fixed;
-	bottom: 0px;
-	width: 100%;
-	height: 150px; }
+	<head>
+		<style type="text/css">
+		body { background-color: #1E1E1E; }
+		
+		#footer { position: fixed;
+			bottom: 0px;
+			width: 100%;
+			height: 150px; }
 
-	#chat { height: -moz-calc(100% - 130px);
-        /* WebKit */
-        height: -webkit-calc(100% - 130px);
-        /* Opera */
-        height: -o-calc(100% - 130px);
-        /* Standard */
-        height: calc(100% - 130px);
-	overflow-y: scroll; }
+		#chat { height: -moz-calc(100% - 130px);
+			/* WebKit */
+			height: -webkit-calc(100% - 130px);
+			/* Opera */
+			height: -o-calc(100% - 130px);
+			/* Standard */
+			height: calc(100% - 130px);
+			overflow-y: scroll; }
 
-	#chat::-webkit-scrollbar { width: 0 !important }
+		#chat::-webkit-scrollbar { width: 0 !important }
 
-	#username { font-style: bold;
-	color: red;
-	font-size: 0.8em; }
+		#username { font-style: bold;
+			color: red;
+			font-size: 0.8em; }
 
-	#text { color: #D3D3BD;
-	font-size: 0.8em; }
-	
-	#msg { padding-bottom: 5px;
-	font-size: 0.8em; }
+		#text { color: #D3D3BD;
+			font-size: 0.8em; }
+		
+		#msg { padding-bottom: 5px;
+			font-size: 0.8em; }
 
-	.boxsizingBorder { -webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-        box-sizing: border-box;	}
+		.boxsizingBorder { -webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;	}
 
-	input[type="text"], textarea {background-color : #141414; 
-	color: #A9A9A4;
-	border-color: black;
-	font-size: 0.9em;
-	}
+		input[type="text"], textarea {background-color : #141414; 
+			color: #A9A9A4;
+			border-color: black;
+			font-size: 0.9em;
+		}
 
-	input[type="submit"], button { background-color: #7550BA;
-	color: white;
-	font-size: 1em;
-	font-weight: bold;
-	padding-left: 50px;
-	padding-right: 50px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	border: 1px solid #5E4094;
-	float: right;
-	margin-right: 15px;
-	}
-  </style>
-</head>
-<body onload="fetchEmotes()">
+		input[type="submit"], button { background-color: #7550BA;
+			color: white;
+			font-size: 1em;
+			font-weight: bold;
+			padding-left: 50px;
+			padding-right: 50px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			border: 1px solid #5E4094;
+			float: right;
+			margin-right: 15px;
+		}
+		</style>
+	</head>
+	<body onload="fetchEmotes()" afterload="">
 
-  <div id="chat">
-	<script>
-	var exampleSocket = new WebSocket("ws://localhost:1922/ws");
+		<div id="chat"></div>
+		<div id="footer">
+			<br>
+			<textarea id="chatmsg" style="width: 98%; height: 55%; margin-bottom: 10px; margin-right: 5px; margin-left: -3px; padding: 3px; resize: none;" onkeypress="process(event, this)"></textarea>
 
-	exampleSocket.onmessage = function (event) {
-  	    document.getElementById('chat').innerHTML += '<div id="msg">';
-	    document.getElementById('chat').innerHTML += checkMessage(event.data);
-	    document.getElementById('chat').innerHTML += '<br></div>';
-	    document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-	}
-	
-	function sendMessage() {
-	    exampleSocket.send(document.getElementById("chatmsg").value);
-	    document.getElementById('chatmsg').value = "";
-	}
+			<input type="submit" value="Chat" onclick="sendMessage()" />
+		</div>
+		
+		<script>
+		var exampleSocket = new WebSocket("ws://localhost:1922/ws");
 
-	function process(e) {
-	    var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) { //Enter keycode
-    	        sendMessage();
-		if(event.preventDefault) event.preventDefault();
-		    return false;
-	    }
-	}
+		exampleSocket.onopen = function (event) {
+			exampleSocket.send("");
+		}
 
-	function Get(yourUrl){
-	    var Httpreq = new XMLHttpRequest(); // a new request
-            Httpreq.open("GET",yourUrl,false);
-            Httpreq.send(null);
-            return Httpreq.responseText;          
-	}
+		exampleSocket.onmessage = function (event) {
+  			document.getElementById('chat').innerHTML += '<div id="msg">';
+			document.getElementById('chat').innerHTML += checkMessage(event.data);
+			document.getElementById('chat').innerHTML += '<br></div>';
+			document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 
-	function fetchEmotes() {
-	    var json = JSON.parse(localStorage.getItem('jsoncache'));
-	    if (!json) {
-                json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
-	        localStorage.setItem('jsoncache', JSON.stringify(json));
-	    }
-   	    console.log(json);
-	    window.tagMap = {};
-	    var i = null;
-	    for (i = 0; json.length > i; i += 1) {
-	        tagMap[json[i].code] = json[i].id;
-            }
-	}
+		}
+		
+		function sendMessage() {
+			exampleSocket.send(document.getElementById("chatmsg").value);
+			console.log(document.getElementById("chatmsg").value);
+			document.getElementById('chatmsg').value = "";
+		}
 
-	function searchEmote(emote) {
-	    if (window.tagMap[emote] != null)
-	        return window.tagMap[emote];
-	    return -1;
-	}
+		function process(e) {
+			var code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13) { //Enter keycode
+    				sendMessage();
+				if(event.preventDefault) event.preventDefault();
+				return false;
+			}
+		}
 
-	function checkMessage(rec) {
-  	    var msg = rec.split(" ");
-            for (i = 0; i <= msg.length ; i ++) {
-	        var img = searchEmote(msg[i]);
-	        if (img != -1) {
-                    url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
-	            console.log(url);
-	            msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
-	        }
-	    }
-	    return msg.join(" ");
-	}
-	</script>
-  </div>
-  <div id="footer">
-	<br>
-	<textarea id="chatmsg" style="width: 98%; height: 55%; margin-bottom: 10px; margin-right: 5px; margin-left: -3px; padding: 3px; resize: none;" onkeypress="process(event, this)"></textarea>
+		function Get(yourUrl){
+			var Httpreq = new XMLHttpRequest(); // a new request
+			Httpreq.open("GET",yourUrl,false);
+			Httpreq.send(null);
+			return Httpreq.responseText;          
+		}
 
-	<input type="submit" value="Chat" onclick="sendMessage()" />
-  </div>
-  
-</body>
+		function fetchEmotes() {
+			var json = JSON.parse(localStorage.getItem('jsoncache'));
+			if (!json) {
+				json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
+				var smile = new Object();
+				smile["id"] = 3;
+				smile["code"] = ":D";
+				smile["emoticon_set"] = null;
+				json.push(smile);
+				var smile2 = new Object();
+				smile2["id"] = 3;
+				smile2["code"] = ":-D";
+				smile2["emoticon_set"] = null;
+				json.push(smile2);
+				var sunglasses = new Object();
+				sunglasses["id"] = 7;
+				sunglasses["code"] = "B)";
+				sunglasses["emoticon_set"] = null;
+				json.push(sunglasses);
+				var sunglasses2 = new Object();
+				sunglasses2["id"] = 7;
+				sunglasses2["code"] = "B-)";
+				sunglasses2["emoticon_set"] = null;
+				json.push(sunglasses2);
+				localStorage.setItem('jsoncache', JSON.stringify(json));
+			}
+			
+			console.log(json);
+			window.tagMap = {};
+			var i = null;
+			for (i = 0; json.length > i; i += 1) {
+				tagMap[json[i].code] = json[i].id;
+			}
+			console.log(searchEmote("B-)"));
+			console.log(searchEmote("B)"));
+		}
+
+		function searchEmote(emote) {
+			if (window.tagMap[emote] != null)
+				return window.tagMap[emote];
+			return -1;
+		}
+
+		function checkMessage(rec) {
+  			var msg = rec.split(" ");
+			console.log(msg);
+			for (i = 0; i <= msg.length ; i ++) {
+				var img = searchEmote(msg[i]);
+				if (img != -1) {
+					url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
+					console.log(url);
+					msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
+				}
+			}
+			return msg.join(" ");
+		}
+		</script>		
+	</body>
 </html>
