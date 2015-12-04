@@ -119,14 +119,17 @@ ApplicationWindow {
                             vcontrols.opacity = 1.0
                             if (proview.visible) {
                                 propic.opacity = 0.7
+                                prodrop.opacity = 0.7
                             } else {
                                 propic.opacity = 1.0
+                                prodrop.opacity = 1.0
                             }
                         }
                         
                         onExited: {
                             vcontrols.opacity = 0.0
                             propic.opacity = 0.0
+                            prodrop.opacity = 0.0
                         }
                         
                         MpvObject {
@@ -190,6 +193,18 @@ ApplicationWindow {
                                         }
                                     }
                                 }
+                            }
+                            
+                            DropShadow {
+                                id: prodrop
+                                anchors.fill: propic
+                                horizontalOffset: 4
+                                verticalOffset: 4
+                                radius: 8.0
+                                samples: 16
+                                color: "black"
+                                opacity: 0.0
+                                source: propic
                             }
                             
                             
@@ -356,7 +371,7 @@ ApplicationWindow {
 		height: window.height
 		visible: true
         Component.onCompleted: {
-            if (apiobj.isAuthenticated() === false) {
+            if (apiobj.isAuthenticated() === true) {
                 login.visible = false
                 frame.visible = true
                 frame.tabsVisible = true
