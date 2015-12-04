@@ -254,7 +254,7 @@ ApplicationWindow {
                     //Layout.maximumWidth: window.width * 0.2
                     //Layout.minimumWidth: window.width * 0.25
                     
-                    url: "assets/sock.html"
+                    url: "assets/sock_light.html"
                 }
                 //closeChat();
             }
