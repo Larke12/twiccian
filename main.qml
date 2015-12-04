@@ -65,7 +65,7 @@ ApplicationWindow {
                         delegate: Rectangle {
                             width: (window.width) / 2
                             height: 80
-                            color: "white";
+                            color: "white"
                             border { 
                                 width: 1 
                                 color: "black" }
@@ -131,17 +131,74 @@ ApplicationWindow {
                         hoverEnabled: true
                         onEntered: {
                             vcontrols.opacity = 1.0
+                            propic.opacity = 1.0
                         }
                         onExited: {
                             vcontrols.opacity = 0.0
+                            propic.opacity = 0.0
                         }
                         
                         MpvObject {
                             id: renderer
                             anchors.fill: parent
                             
+                            // Stretch Goal: Utilize our own view
+                            ScrollView {
+                                id: proview
+                                width: 1280
+                                height: 720
+                                visible: false
+                                
+                                WebView {
+                                    id: webview
+                                    //account:Account
+                                    //openWebView(Account);
+                                    
+                                    url: "http://www.twitch.tv/bobross/profile"
+                                    anchors.fill: parent
+                                    onNavigationRequested: {
+                                        // detect URL scheme prefix, most likely an external link
+                                        var schemaRE = /^\w+:/;
+                                        if (schemaRE.test(request.url)) {
+                                            request.action = WebView.AcceptRequest;
+                                        } else {
+                                            request.action = WebView.IgnoreRequest;
+                                            // delegate request.url here
+                                        }
+                                    }
+                                }
+                            }
                             
-                            //LinearGradient
+                            // Streamer Profile Photo
+                            Rectangle {
+                                id: propic
+                                width: renderer.width / 6
+                                height: propic.width
+                                anchors.top: parent.top
+                                anchors.topMargin: propic.height / 4
+                                anchors.left: parent.left
+                                anchors.leftMargin: propic.width / 4
+                                opacity: 0.0
+                                
+                                // Load image
+                                
+                                // Click to view profile in webview
+                                MouseArea {
+                                    anchors.fill: parent
+                                    
+                                    onClicked: {
+                                        if (!proview.visible) {
+                                            proview.visible = true
+                                        } else {
+                                            proview.visible = false
+                                            webview.stop();
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
+                            // Load alpha image
                             
                             // Player controls
                             Row {
@@ -265,29 +322,7 @@ ApplicationWindow {
             id: profile
             title: "Settings"
             
-            // Stretch Goal: Utilize our own view
-            ScrollView {
-                width: 1280
-                height: 720
-                WebView {
-                    id: webview
-                    //account:Account
-                    //openWebView(Account);
-                    
-                    url: "http://www.twitch.tv/bobross/profile"
-                    anchors.fill: parent
-                    onNavigationRequested: {
-                        // detect URL scheme prefix, most likely an external link
-                        var schemaRE = /^\w+:/;
-                        if (schemaRE.test(request.url)) {
-                            request.action = WebView.AcceptRequest;
-                        } else {
-                            request.action = WebView.IgnoreRequest;
-                            // delegate request.url here
-                        }
-                    }
-                }
-            }
+            
         }
         
 		// Twitch Branded Design
