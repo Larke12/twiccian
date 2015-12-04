@@ -229,7 +229,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
+                                        apiobj.requestUrl("http://www.twitch.tv/tterraj42")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -318,8 +318,7 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Settings"
-            
-            
+
         }
         
 		// Twitch Branded Design
