@@ -74,11 +74,12 @@
 		}
 
 		exampleSocket.onmessage = function (event) {
-  			document.getElementById('chat').innerHTML += '<div id="msg">';
-			document.getElementById('chat').innerHTML += checkMessage(event.data);
-			document.getElementById('chat').innerHTML += '<br></div>';
-			document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-
+			if (event.data.search(/((\<span id='text'\>:)\s*(\<\/span\>)$)/) == -1) {
+  				document.getElementById('chat').innerHTML += '<div id="msg">';
+				document.getElementById('chat').innerHTML += checkMessage(event.data);
+				document.getElementById('chat').innerHTML += '<br></div>';
+				document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+			}
 		}
 		
 		function sendMessage() {
@@ -318,7 +319,6 @@
 
 		function checkMessage(rec) {
   			var msg = rec.split(" ");
-			console.log(msg);
 			for (i = 0; i <= msg.length ; i ++) {
 				var img = searchEmote(msg[i]);
 				if (img != -1) {
