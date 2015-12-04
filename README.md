@@ -1,63 +1,54 @@
 # Twiccian
 
 ## Project Description
-Twiccian is, or will be, a native app written for Linux to allow the user
-to watch [Twitch.tv](http://twitch.tv) streams without the use of Flash.
-Twitch.tv is a very common platform for streaming games and speedruns, but
-suffers from the fact that the web player and chat are built on Flash,
-seriously impacting the battery life and system usage of many computers. Twiccian also plans to allow for local notifications and design features to remove the need for a browser and certain extentions/plugins.
+Twiccian is, or will be, a native app written for Linux to allow the user to watch [Twitch.tv](http://twitch.tv) streams without the use of Flash. Twitch.tv is a very common platform for streaming games and speedruns, but suffers from the fact that the web player and chat are built on Flash, seriously impacting the battery life and system usage of many computers. Twiccian also plans to allow for local notifications and design features to remove the need for a browser and certain extentions/plugins.
 
+Of course, as cosmic irony would deem, shortly after we conceived this project, Twitch switched to HTML5. Still, we're doing this because we want to, and because our grades depend on it.
+
+![screenshot](http://i.imgur.com/QYOGRsn.png?1)
 
 ## How it's created
 Twiccian is built using Qt as the library/framework. The user-facing side
 of it will be written in a combination of C++ and QML, Qt's markup
 language used to facilitate easy creation of application interfaces.
 
-Twiccian will also have a [background daemon](https://github.com/octotep/twicciand), written in Go, to allow for
-a quick background interface with Twitch, which should enable us to
-provide features like notifications, as well as to act as an intermediary
-between Twitch chat and the front-end of the application, since Go makes
-concurrency and networking simple.
+Twiccian currently has a [background daemon](https://github.com/octotep/twicciand), written in Go, to allow for a quick background interface with Twitch, which enables us to act as an intermediary between the Twitch API and the front-end of the application, since Go makes concurrency and networking simple.
 
-We plan to make use of Twitch chat's [IRC
-bridge](http://help.twitch.tv/customer/portal/articles/1302780-twitch-irc),
-as well as Twitch's [REST API](https://github.com/justintv/twitch-api) and Twitch's [TMI](https://tmi.twitch.tv/group/user/usernamehere/chatters) to recreate the chat in a native fashion.
+We currently make use of Twitch chat's [IRC bridge](http://help.twitch.tv/customer/portal/articles/1302780-twitch-irc),
+as well as their [REST API](https://github.com/justintv/twitch-api) and [TMI](https://tmi.twitch.tv/group/user/usernamehere/chatters) to recreate the chat in a native fashion.
 
+
+## Installation
+Currently, Twiccian has a package on the AUR, though there's a chance we might break something before 1.0. ;)
+
+It can be found on the AUR under the name:
+```
+twiccian
+```
 
 ## Dependencies
-Twiccian requires the [mpv](http://mpv.io/) library to render and stream video, so that
-should be installed.
+Twiccian requires the following libraries to run:
+- mpv
+- Qt 5
+- youtube-dl
+- rapidjson
+- Go
 
-It can be installed from pacman:
+They can be installed from pacman:
 ``` 
-pacman -S mpv
-```
-for apt-get:
-```
-sudo apt-get install mpv
+pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit rapidjson youtube-dl git go
 ```
 
-At the moment, Twiccian currently does not fetch stream urls itself, so it
-only plays the one it was compiled with. In order to generate a compatible
-url to stream, it's currently necessary to feed the desired Twitch url
-into [youtube-dl](https://rg3.github.io/youtube-dl/).
-
-It can be installed from pacman:
+You'll also need to install the following go packages:
 ```
-pacman -S youtube-dl
-```
-for apt-get:
-```
-sudo apt-get install youtube-dl
+go get "github.com/walle/cfg"
+go get "github.com/gorilla/websocket"
+go get "github.com/sorcix/irc"
 ```
 
-And the stream url can be generated like so:
-```
-youtube-dl -g url
-```
+At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is probably your best bet.
 
 
 ## Other Documentation
-At the moment, all other documentation can be found on our
-[wiki](https://github.com/octotep/twiccian/wiki), though it's in a state
-of flux right now.
+At the moment, all other documentation can be found on our [wiki](https://github.com/octotep/twiccian/wiki), though it's in a state of flux right now.
+
