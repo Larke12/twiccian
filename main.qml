@@ -93,21 +93,6 @@ ApplicationWindow {
         }
 
         Tab {
-            id: search
-            title: "Search"
-            
-            Text {
-                id: search_temp
-                horizontalAlignment: TextInput.AlignHCenter 
-                verticalAlignment: TextInput.AlignVCenter
-                text: qsTr("This view will let you search, to the same extent as the website (API pending)")
-            }
-
-            //results:Result[]
-            //query();
-        }
-
-        Tab {
             id: stream
             title: "Stream"
             
@@ -129,10 +114,16 @@ ApplicationWindow {
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
+                        
                         onEntered: {
                             vcontrols.opacity = 1.0
-                            propic.opacity = 1.0
+                            if (proview.visible) {
+                                propic.opacity = 0.7
+                            } else {
+                                propic.opacity = 1.0
+                            }
                         }
+                        
                         onExited: {
                             vcontrols.opacity = 0.0
                             propic.opacity = 0.0
@@ -145,8 +136,8 @@ ApplicationWindow {
                             // Stretch Goal: Utilize our own view
                             ScrollView {
                                 id: proview
-                                width: 1280
-                                height: 720
+                                width: renderer.width
+                                height: renderer.height
                                 visible: false
                                 
                                 WebView {
@@ -189,8 +180,12 @@ ApplicationWindow {
                                     onClicked: {
                                         if (!proview.visible) {
                                             proview.visible = true
+                                            propic.opacity = 0.7
+                                            vcontrols.visible = false
                                         } else {
                                             proview.visible = false
+                                            propic.opacity = 1.0
+                                            vcontrols.visible = true
                                             webview.stop();
                                         }
                                     }
@@ -256,11 +251,13 @@ ApplicationWindow {
                                     
                                     onClicked: {
                                         if (checked) {
+                                            renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             splitview.orientation = Qt.Vertical
                                             renderer.height = window.height
                                             renderer.width = window.width
                                         } else {
+                                            renderer.command(["set", "fullscreen", "no"])
                                             window.showNormal()
                                             splitview.orientation = Qt.Horizontal
                                         }
@@ -360,7 +357,7 @@ ApplicationWindow {
 		height: window.height
 		visible: true
         Component.onCompleted: {
-            if (apiobj.isAuthenticated() === true) {
+            if (apiobj.isAuthenticated() === false) {
                 login.visible = false
                 frame.visible = true
                 frame.tabsVisible = true
