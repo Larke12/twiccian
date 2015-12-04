@@ -177,7 +177,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
+                                        apiobj.requestUrl("http://www.twitch.tv/cereth")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -274,7 +274,7 @@ ApplicationWindow {
                     //account:Account
                     //openWebView(Account);
                     
-                    url: "http://www.twitch.tv/bobross/profile"
+                    url: "http://www.twitch.tv/cereth/profile"
                     anchors.fill: parent
                     onNavigationRequested: {
                         // detect URL scheme prefix, most likely an external link
