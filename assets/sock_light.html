@@ -27,6 +27,10 @@
 		#text { color: #32323e;
 			font-size: 0.8em;
 			font-family: sans-serif;}
+
+		#timestamp { color: #8c8c8c;
+			font-size: 0.6em;
+			font-family: sans-serif; }
 		
 		#msg { padding-bottom: 10px;
 			font-size: 0.8em;
@@ -74,8 +78,11 @@
 		}
 
 		exampleSocket.onmessage = function (event) {
+			var d = new Date();
 			if (event.data.search(/((\<span id='text'\>:)\s*(\<\/span\>)$)/) == -1) {
+				var timestamp = "<span id='timestamp'>" + d.getHours() + ":" + d.getMinutes() + "&nbsp;&nbsp;</span>";
   				document.getElementById('chat').innerHTML += '<div id="msg">';
+				document.getElementById('chat').innerHTML += timestamp;
 				document.getElementById('chat').innerHTML += checkMessage(event.data);
 				document.getElementById('chat').innerHTML += '<br></div>';
 				document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
