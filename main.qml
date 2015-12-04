@@ -208,7 +208,21 @@ ApplicationWindow {
                             }
                             
                             
-                            // Load alpha image
+                            LinearGradient {
+                                // Anchor gradient to bottom of player
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: vcontrols.height
+                                anchors.left: parent.left
+                                anchors.leftMargin: (parent.width / 2) - (vcontrols.width / 2)
+                                
+                                start: Qt.point(0, 0)
+                                end: Qt.point(0, vcontrols.height)
+                                
+                                gradient: Gradient {
+                                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0) }
+                                    GradientStop { position: 1.0; color: "black" }
+                                }
+                            }
                             
                             // Player controls
                             Row {
