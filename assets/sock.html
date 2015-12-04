@@ -82,9 +82,9 @@
 		}
 
 		exampleSocket.onmessage = function (event) {
-		    var d = new Date();
+		var s = (new Date()).toTimeString().substr(0,5)
 		    if (event.data.search(/((\<span id='text'\>:)\s*(\<\/span\>)$)/) == -1) {
-			var timestamp = "<span id='timestamp'>" + d.getHours() + ":" + d.getMinutes() + "&nbsp;&nbsp;</span>";
+			var timestamp = "<span id='timestamp'>" + s + "&nbsp;&nbsp;</span>";
   			document.getElementById('chat').innerHTML += '<div id="msg">';
 			document.getElementById('chat').innerHTML += timestamp;
 			document.getElementById('chat').innerHTML += checkMessage(event.data);

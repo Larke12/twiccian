@@ -177,7 +177,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/cereth")
+                                        apiobj.requestUrl("http://www.twitch.tv/tterraj42")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -254,7 +254,7 @@ ApplicationWindow {
                     //Layout.maximumWidth: window.width * 0.2
                     //Layout.minimumWidth: window.width * 0.25
                     
-                    url: "assets/sock_light.html"
+                    url: "assets/sock.html"
                 }
                 //closeChat();
             }
@@ -274,7 +274,7 @@ ApplicationWindow {
                     //account:Account
                     //openWebView(Account);
                     
-                    url: "http://www.twitch.tv/cereth/profile"
+                    url: "http://www.twitch.tv/twitchplayspokemon/profile"
                     anchors.fill: parent
                     onNavigationRequested: {
                         // detect URL scheme prefix, most likely an external link
