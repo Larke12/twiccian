@@ -15,6 +15,7 @@
 
 #include <QTcpSocket>
 #include <QNetworkSession>
+#include <time.h>
 
 class SocketReader : public QObject
 {
