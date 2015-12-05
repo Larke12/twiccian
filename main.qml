@@ -26,8 +26,8 @@ import twiccian 1.0
 
 ApplicationWindow {
 	id: window
-	width: 800
-	height: 600
+    width: 1200
+    height: 800
 	visible: true
 	title: "Twiccian | result.getTitle()" // result.getTitle();
 
@@ -99,6 +99,7 @@ ApplicationWindow {
             // A Qt view which contains the mpv window and chat
             SplitView {
                 id: splitview
+                resizing: false
                 anchors.fill: parent
                 orientation: Qt.Horizontal
 
@@ -107,9 +108,10 @@ ApplicationWindow {
 					id: mpv
 					Layout.maximumHeight: window.height
 					height: window.height
-                    //width: window.width * 0.8
-                    Layout.maximumWidth: window.width * 0.8
-                    Layout.minimumWidth: window.width * 0.75
+                    //width: window.width * 0.75
+                    Layout.minimumWidth: 600
+                    Layout.minimumHeight: window.height - 400
+                    Layout.fillWidth: true
                     
                     MouseArea {
                         anchors.fill: parent
@@ -258,7 +260,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/tterraj42")
+                                        apiobj.requestUrl("http://www.twitch.tv/crumps2")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -283,12 +285,15 @@ ApplicationWindow {
                                             renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             splitview.orientation = Qt.Vertical
-                                            renderer.height = window.height
+                                            //renderer.height = window.height
                                             renderer.width = window.width
+                                            chat.height = -1
+                                            //chat.width = Screen.desktopAvailableWidth
                                         } else {
                                             renderer.command(["set", "fullscreen", "no"])
                                             window.showNormal()
                                             splitview.orientation = Qt.Horizontal
+                                            chat.width = 400
                                         }
                                     }
                                 }
@@ -333,6 +338,8 @@ ApplicationWindow {
 
                 WebEngineView {
                     id: chat
+                    width: 400
+                    Layout.minimumWidth: 400
                     //Layout.maximumHeight: window.height
                     //Layout.maximumWidth: window.width * 0.2
                     //Layout.minimumWidth: window.width * 0.25
