@@ -18,7 +18,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
-//import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.0
 import QtWebKit 3.0
 import QtWebEngine 1.1
 
@@ -26,8 +26,8 @@ import twiccian 1.0
 
 ApplicationWindow {
 	id: window
-	width: 800
-	height: 600
+    width: 1200
+    height: 800
 	visible: true
 	title: "Twiccian | result.getTitle()" // result.getTitle();
 
@@ -65,7 +65,7 @@ ApplicationWindow {
                         delegate: Rectangle {
                             width: (window.width) / 2
                             height: 80
-                            color: "white";
+                            color: "white"
                             border { 
                                 width: 1 
                                 color: "black" }
@@ -93,27 +93,13 @@ ApplicationWindow {
         }
 
         Tab {
-            id: search
-            title: "Search"
-            
-            Text {
-                id: search_temp
-                horizontalAlignment: TextInput.AlignHCenter 
-                verticalAlignment: TextInput.AlignVCenter
-                text: qsTr("This view will let you search, to the same extent as the website (API pending)")
-            }
-
-            //results:Result[]
-            //query();
-        }
-
-        Tab {
             id: stream
             title: "Stream"
             
             // A Qt view which contains the mpv window and chat
             SplitView {
                 id: splitview
+                resizing: false
                 anchors.fill: parent
                 orientation: Qt.Horizontal
 
@@ -122,26 +108,94 @@ ApplicationWindow {
 					id: mpv
 					Layout.maximumHeight: window.height
 					height: window.height
-                    //width: window.width * 0.8
-                    Layout.maximumWidth: window.width * 0.8
-                    Layout.minimumWidth: window.width * 0.75
+                    //width: window.width * 0.75
+                    Layout.minimumWidth: 600
+                    Layout.minimumHeight: window.height - 400
+                    Layout.fillWidth: true
                     
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
+                        
                         onEntered: {
                             vcontrols.opacity = 1.0
+                            if (proview.visible) {
+                                propic.opacity = 0.7
+                            } else {
+                                propic.opacity = 1.0
+                            }
                         }
+                        
                         onExited: {
                             vcontrols.opacity = 0.0
+                            propic.opacity = 0.0
                         }
                         
                         MpvObject {
                             id: renderer
                             anchors.fill: parent
                             
+                            // Stretch Goal: Utilize our own view
+                            ScrollView {
+                                id: proview
+                                width: renderer.width
+                                height: renderer.height
+                                visible: false
+                                
+                                WebView {
+                                    id: webview
+                                    //account:Account
+                                    //openWebView(Account);
+                                    
+                                    url: "http://www.twitch.tv/bobross/profile"
+                                    anchors.fill: parent
+                                    onNavigationRequested: {
+                                        // detect URL scheme prefix, most likely an external link
+                                        var schemaRE = /^\w+:/;
+                                        if (schemaRE.test(request.url)) {
+                                            request.action = WebView.AcceptRequest;
+                                        } else {
+                                            request.action = WebView.IgnoreRequest;
+                                            // delegate request.url here
+                                        }
+                                    }
+                                }
+                            }
                             
-                            //LinearGradient
+                            // Streamer Profile Photo
+                            Rectangle {
+                                id: propic
+                                width: renderer.width / 6
+                                height: propic.width
+                                anchors.top: parent.top
+                                anchors.topMargin: propic.height / 4
+                                anchors.left: parent.left
+                                anchors.leftMargin: propic.width / 4
+                                opacity: 0.0
+                                
+                                // Load image
+                                
+                                // Click to view profile in webview
+                                MouseArea {
+                                    anchors.fill: parent
+                                    
+                                    onClicked: {
+                                        if (!proview.visible) {
+                                            proview.visible = true
+                                            propic.opacity = 0.7
+                                            vcontrols.visible = false
+                                        } else {
+                                            proview.visible = false
+                                            propic.opacity = 1.0
+                                            vcontrols.visible = true
+                                            webview.stop();
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
+                            // Load alpha image
                             
                             // Player controls
                             Row {
@@ -177,7 +231,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
+                                        apiobj.requestUrl("http://www.twitch.tv/crumps2")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -199,13 +253,18 @@ ApplicationWindow {
                                     
                                     onClicked: {
                                         if (checked) {
+                                            renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             splitview.orientation = Qt.Vertical
-                                            renderer.height = window.height
+                                            //renderer.height = window.height
                                             renderer.width = window.width
+                                            chat.height = -1
+                                            //chat.width = Screen.desktopAvailableWidth
                                         } else {
+                                            renderer.command(["set", "fullscreen", "no"])
                                             window.showNormal()
                                             splitview.orientation = Qt.Horizontal
+                                            chat.width = 400
                                         }
                                     }
                                 }
@@ -250,6 +309,8 @@ ApplicationWindow {
 
                 WebEngineView {
                     id: chat
+                    width: 400
+                    Layout.minimumWidth: 400
                     //Layout.maximumHeight: window.height
                     //Layout.maximumWidth: window.width * 0.2
                     //Layout.minimumWidth: window.width * 0.25
@@ -264,30 +325,7 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Settings"
-            
-            // Stretch Goal: Utilize our own view
-            ScrollView {
-                width: 1280
-                height: 720
-                WebView {
-                    id: webview
-                    //account:Account
-                    //openWebView(Account);
-                    
-                    url: "http://www.twitch.tv/bobross/profile"
-                    anchors.fill: parent
-                    onNavigationRequested: {
-                        // detect URL scheme prefix, most likely an external link
-                        var schemaRE = /^\w+:/;
-                        if (schemaRE.test(request.url)) {
-                            request.action = WebView.AcceptRequest;
-                        } else {
-                            request.action = WebView.IgnoreRequest;
-                            // delegate request.url here
-                        }
-                    }
-                }
-            }
+
         }
         
 		// Twitch Branded Design
