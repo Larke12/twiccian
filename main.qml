@@ -29,6 +29,7 @@ ApplicationWindow {
     width: 1200
     height: 800
 	visible: true
+    color: "#FF000000"
 	title: "Twiccian | result.getTitle()" // result.getTitle();
 
     /*
