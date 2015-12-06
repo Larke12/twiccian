@@ -112,12 +112,11 @@ ApplicationWindow {
 				// Use default Item container for the MpvObject
 				Item {
 					id: mpv
-					Layout.maximumHeight: window.height
-					height: window.height
-                    //width: window.width * 0.75
-                    Layout.minimumWidth: window.width - chat.width
+                    height: window.height
                     Layout.minimumHeight: window.height - 400
-                    Layout.fillWidth: false
+					Layout.maximumHeight: window.height
+                    Layout.maximumWidth: window.width
+                    Layout.fillWidth: true
                     
                     MouseArea {
                         anchors.fill: parent
@@ -303,12 +302,11 @@ ApplicationWindow {
                                             splitview.orientation = Qt.Vertical
                                             renderer.width = window.width
                                         } else {
-                                            mpv.Layout.fillwidth = true
                                             renderer.command(["set", "fullscreen", "no"])
-                                            window.showNormal()
                                             splitview.orientation = Qt.Horizontal
+                                            window.showNormal()
                                             chat.width = 300
-                                            mpv.Layout.fillwidth = false
+                                            renderer.width = window.width - chat.width
                                         }
                                     }
                                 }
@@ -350,11 +348,12 @@ ApplicationWindow {
                         }
                     }
                 }
-
+                
                 WebEngineView {
                     id: chat
                     width: 300
-                    Layout.minimumWidth: chat.width
+                    //Layout.minimumWidth: 300
+                    //Layout.maximumWidth: 400
                     
                     url: "assets/sock.html"
                 }
