@@ -115,6 +115,7 @@ ApplicationWindow {
                     height: window.height
                     Layout.minimumHeight: window.height - 400
 					Layout.maximumHeight: window.height
+                    Layout.minimumWidth: window.width - 400
                     Layout.maximumWidth: window.width
                     Layout.fillWidth: true
                     
@@ -352,8 +353,6 @@ ApplicationWindow {
                 WebEngineView {
                     id: chat
                     width: 300
-                    //Layout.minimumWidth: 300
-                    //Layout.maximumWidth: 400
                     
                     url: "assets/sock.html"
                 }
