@@ -16,6 +16,7 @@
 #include <QTcpSocket>
 #include <QNetworkSession>
 #include "account.h"
+#include "result.h"
 #include <time.h>
 
 class SocketReader : public QObject
@@ -42,13 +43,20 @@ private:
 class SubmitUrlObj : public QObject
 {
     Q_OBJECT
-    //Q_PROPERTY(QList<QObject*> results READ getResults NOTIFY resultsChanged)
-    //Q_PROPERTY(QObject* streamer READ getStreamer NOTIFY streamerChanged)
-    //Q_PROPERTY(QObject* user READ getUser NOTIFY userChanged)
+    Q_PROPERTY(QList<QObject*> results READ getResults)
+    Q_PROPERTY(QObject* streamer READ getStreamer)
+    Q_PROPERTY(QObject* user READ getUser)
 
     QString submittedUrl;
+private:
+    Account* streamer;
+    Account* user;
+    QList<QObject*> results;
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
     Q_INVOKABLE QString getUrl();
+    Q_INVOKABLE QObject* getStreamer();
+    Q_INVOKABLE QObject* getUser();
+    Q_INVOKABLE QList<QObject*> getResults();
     Q_INVOKABLE bool isAuthenticated();
 };

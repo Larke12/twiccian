@@ -151,3 +151,15 @@ bool SubmitUrlObj::isAuthenticated() {
     return res.GetBool();
 }
 
+QObject* SubmitUrlObj::getStreamer() {
+    return streamer;
+}
+
+QObject* SubmitUrlObj::getUser() {
+    return user;
+}
+
+QList<QObject*> SubmitUrlObj::getResults() {
+    return results;
+}
+
