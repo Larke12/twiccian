@@ -51,40 +51,45 @@ ApplicationWindow {
             id: follow
             title: "Following"
             
-            Item {
-                Column {
-                    // Avoid overlapping
-                    id: cols
-                    spacing: 5
-                    x: (window.width / 4)
-                    y: cols.spacing
-                    
-                    Repeater {
-                        // Define number of results
-                        model: 10
+            ScrollView {
+                frameVisible: true
+                verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
+                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                
+                Item {
+                    id: follows
+
+                    Column {
+                        // Avoid overlapping
+                        id: cols
+                        spacing: 5
+                        x: (window.width / 4)
+                        y: cols.spacing
                         
-                        delegate: Rectangle {
-                            width: (window.width) / 2
-                            height: 80
-                            color: "white"
-                            border { 
-                                width: 1 
-                                color: "black" }
-                            radius: 3
-            
-                            TextInput {
-                                anchors.fill: parent
+                        Repeater {
+                            // Define number of results
+                            id: datarep
+                            model: 10
+                            
+                            delegate: Rectangle {
+                                width: (window.width) / 2
+                                height: 80
+                                color: "white"
+                                border { 
+                                    width: 1 
+                                    color: "black" }
+                                radius: 3
+                
+                                Text {
+                                    id: follow_temp
+                                    anchors.fill: parent
+                                    horizontalAlignment: TextInput.AlignHCenter
+                                    verticalAlignment: TextInput.AlignVCenter
+                                    text: qsTr("This view will list all of the streams\nyou follow that are live")
+                                }
                             }
                         }
                     }
-                }
-                
-                Text {
-                    id: follow_temp
-                    anchors.fill: parent
-                    horizontalAlignment: TextInput.AlignHCenter
-                    verticalAlignment: TextInput.AlignVCenter
-                    text: qsTr("This view will list all of the streams\nyou follow that are live")
                 }
             }
 
@@ -261,7 +266,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/crumps2")
+                                        apiobj.requestUrl("http://www.twitch.tv/firedragon764")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
