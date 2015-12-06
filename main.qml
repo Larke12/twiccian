@@ -153,10 +153,8 @@ ApplicationWindow {
                                 
                                 WebView {
                                     id: webview
-                                    //account:Account
-                                    //openWebView(Account);
                                     
-                                    url: "http://www.twitch.tv/bobross/profile"
+                                    //url: apiobj.streamer.getProfileUrl()
                                     anchors.fill: parent
                                     onNavigationRequested: {
                                         // detect URL scheme prefix, most likely an external link
@@ -183,6 +181,14 @@ ApplicationWindow {
                                 opacity: 0.0
                                 
                                 // Load profile image
+                                Image {
+                                    width: propic.width - 5
+                                    height: propic.height - 5
+                                    horizontalAlignment: propic.horizontalCenter
+                                    verticalAlignment: propic.verticalCenter
+                                    fillMode: Image.PreserveAspectFit
+                                    //source: apiobj.streamer.getAvatarUrl()
+                                }
                                 
                                 
                                 // Click to view profile in webview
