@@ -273,10 +273,10 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     style: CheckBoxStyle {
-                                                label: Text {
-                                                    color: "#FFFFFF"
-                                                    text: "Fullscreen"
-                                                }
+                                        label: Text {
+                                            color: "#FFFFFF"
+                                            text: "Fullscreen"
+                                        }
                                     }
                                     
                                     checked: false
@@ -304,10 +304,10 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     style: CheckBoxStyle {
-                                                label: Text {
-                                                    color: "#FFFFFF"
-                                                    text: "Mute"
-                                                }
+                                        label: Text {
+                                            color: "#FFFFFF"
+                                            text: "Mute"
+                                        }
                                     }
                                     
                                     checked: false
@@ -355,7 +355,98 @@ ApplicationWindow {
         Tab {
             id: profile
             title: "Settings"
+            
+            Item {
+                width: 310; height: 170
+            
+                Column {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    
+                    spacing: 5
+                    
+                    
+                    Row {
+                        id: winwidth
+                        
+                        Text {
+                            text: "Default Width: "
+                            color: "#FFFFFF"
+                        }
+                        
+                        TextInput {
+                            id: reswinwidth
+                            text: window.width
+                            color: "#FFFFFF"
+                            cursorVisible: false
+                        }
+                    }
+                    
+                    Row {
+                        id: winheight
+                        
+                        Text {
+                            text: "Default Height: "
+                            color: "#FFFFFF"
+                        }
+                        
+                        TextInput {
+                            id: reswinheight
+                            text: window.height
+                            color: "#FFFFFF"
+                            cursorVisible: false
+                        }
+                    }
 
+                    CheckBox {
+                        id: theme
+                        opacity: 1.0
+                        
+                        style: CheckBoxStyle {
+                                label: Text {
+                                    color: "#FFFFFF"
+                                    text: "Light Theme (coming soon)"
+                                }
+                        }
+                        
+                        checked: false
+                        
+                        /*onClicked: { 
+                            if (!checked) {
+                                // set theme to black
+                            } else {
+                                // set theme to white
+                            }
+                        }*/
+                    }
+                    
+                    CheckBox {
+                        id: resconfig
+                        opacity: 1.0
+                        
+                        style: CheckBoxStyle {
+                                label: Text {
+                                    color: "#FFFFFF"
+                                    text: "Logout (coming soon)"
+                                }
+                        }
+                        
+                        checked: false
+                        
+                        onClicked: { 
+                            if (checked) {
+                                // delete local config file (?)
+                                // uncheck
+                            }
+                        }
+                    }
+                    
+                    
+                    // BTT toggle
+                    
+                    // FFZ toggle
+                }
+            }
         }
         
 		// Twitch Branded Design
