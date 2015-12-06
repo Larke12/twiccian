@@ -122,11 +122,11 @@ ApplicationWindow {
 				// Use default Item container for the MpvObject
 				Item {
 					id: mpv
-					Layout.maximumHeight: window.height
-					height: window.height
-                    //width: window.width * 0.75
-                    Layout.minimumWidth: window.width - 400
+                    height: window.height
                     Layout.minimumHeight: window.height - 400
+					Layout.maximumHeight: window.height
+                    Layout.minimumWidth: window.width - 400
+                    Layout.maximumWidth: window.width
                     Layout.fillWidth: true
                     
                     MouseArea {
@@ -240,12 +240,14 @@ ApplicationWindow {
                                 anchors.left: parent.left
                                 anchors.leftMargin: (parent.width / 2) - (vcontrols.width / 2)
                                 
+                                //cached: true
+                                
                                 start: Qt.point(0, 0)
-                                end: Qt.point(0, vcontrols.height)
+                                end: Qt.point(vcontrols.width, vcontrols.height)
                                 
                                 gradient: Gradient {
-                                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0) }
-                                    GradientStop { position: 1.0; color: "#000000" }
+                                    GradientStop { position: 0.0; color: "#00000000" }
+                                    GradientStop { position: 1.0; color: "#FF000000" }
                                 }
                             }
                             
@@ -309,15 +311,13 @@ ApplicationWindow {
                                             renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             splitview.orientation = Qt.Vertical
-                                            //renderer.height = window.height
                                             renderer.width = window.width
-                                            chat.height = -1
-                                            //chat.width = Screen.desktopAvailableWidth
                                         } else {
                                             renderer.command(["set", "fullscreen", "no"])
-                                            window.showNormal()
                                             splitview.orientation = Qt.Horizontal
-                                            chat.width = 400
+                                            window.showNormal()
+                                            chat.width = 300
+                                            renderer.width = window.width - chat.width
                                         }
                                     }
                                 }
@@ -359,14 +359,10 @@ ApplicationWindow {
                         }
                     }
                 }
-
+                
                 WebEngineView {
                     id: chat
-                    width: 400
-                    Layout.minimumWidth: 400
-                    //Layout.maximumHeight: window.height
-                    //Layout.maximumWidth: window.width * 0.2
-                    //Layout.minimumWidth: window.width * 0.25
+                    width: 300
                     
                     url: "assets/sock.html"
                 }
