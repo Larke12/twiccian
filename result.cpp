@@ -23,67 +23,58 @@ Result::~Result() {
 	// Do stuff
 }
 
-std::string Result::getTitle() {
-	// Do stuff
-	return "Do stuff";
+QString Result::getTitle() {
+    return title;
 }
 
-void Result::setTitle(std::string argv) {
-	// Do stuff
+void Result::setTitle(QString argv) {
+    this->title = argv;
 }
 
-int Result::getViewerCount() {
-	// Do stuff
-	return -1;
+qint16 Result::getViewerCount() {
+    return viewerCount;
 }
 
-void Result::setViewerCount(int views) {
-	// Do stuff
+void Result::setViewerCount(qint16 views) {
+    this->viewerCount = views;
 }
 
-time_t Result::getStartTime() {
-	// Do stuff
-	time_t timer;
-	return timer;
+QDateTime Result::getStartTime() {
+    return startTime;
 }
 
-void Result::setStartTime(time_t start) {
-	// Do stuff
+void Result::setStartTime(QDateTime start) {
+    this->startTime = start;
 }
 
-std::string Result::getThumbnailUrl() {
-	// Do stuff
-	return "Do stuff";
+QString Result::getThumbnailUrl() {
+    return thumbnailUrl;
 }
 
-void Result::setThumbnailUrl(std::string argv) {
-	// Do stuff
+void Result::setThumbnailUrl(QString argv) {
+    this->thumbnailUrl = argv;
 }
 
-std::string Result::getGame() {
-	// Do stuff
-	return "Do stuff";
+QString Result::getGame() {
+    return game;
 }
 
-void Result::setGame(std::string argv) {
-	// Do stuff
+void Result::setGame(QString argv) {
+    this->game = argv;
 }
 
 Account Result::getStreamer() {
-	// Do stuff
-	Account acct;
-	return acct;
+    return streamer;
 }
 
 void Result::setStreamer(Account acct) {
-	// Do stuff
+    this->streamer = acct;
 }
 
 bool Result::getIsLive() {
-	// Do stuff
-	return false;
+    return isLive;
 }
 
 void Result::setIsLive(bool live) {
-	// Do stuff
+    this->isLive = live;
 }

@@ -23,38 +23,34 @@ Account::~Account() {
 	// Do stuff
 }
 
-std::string Account::getName() {
-	// Do stuff
-	return "Do stuff";
+QString Account::getName() {
+    return name;
 }
 
-void Account::setName(std::string argv) {
-	// Do stuff
+void Account::setName(QString argv) {
+    this->name = argv;
 }
 
-std::string Account::getProfileUrl() {
-	// Do stuff
-	return "Do stuff";
+QString Account::getProfileUrl() {
+    return profileUrl;
 }
 
-void Account::setProfileUrl(std::string argv) {
-	// Do stuff
+void Account::setProfileUrl(QString argv) {
+    this->profileUrl = argv;
 }
 
-std::string Account::getAvatarUrl() {
-	// Do stuff
-	return "Do stuff";
+QString Account::getAvatarUrl() {
+    return avatarUrl;
 }
 
-void Account::setAvatarUrl(std::string argv) {
-	// Do stuff
+void Account::setAvatarUrl(QString argv) {
+    this->avatarUrl = argv;
 }
 
-int Account::getFollows() {
-	// Do stuff
-	return -1;
+qint16 Account::getFollows() {
+    return follows;
 }
 
-void Account::setFollows(int follows) {
-	// Do stuff
+void Account::setFollows(qint16 follows) {
+    this->follows = follows;
 }

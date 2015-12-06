@@ -17,28 +17,30 @@
 #include <string>
 #include "account.h"
 
-class Result
+class Result : public QObject
 {
-    std::string title;
-    int viewerCount;
-    time_t startTime;
-    std::string thumbnailUrl;
-    std::string game;
+    Q_OBJECT
+
+    QString title;
+    qint16 viewerCount;
+    QDateTime startTime;
+    QString thumbnailUrl;
+    QString game;
     Account streamer;
     bool isLive;
 public:
     Result();
     virtual ~Result();
-    static std::string getTitle();
-    static void setTitle(std::string argv);
-    static int getViewerCount();
-    static void setViewerCount(int views);
-    static time_t getStartTime();
-    static void setStartTime(time_t start);
-    static std::string getThumbnailUrl();
-    static void setThumbnailUrl(std::string argv);
-    static std::string getGame();
-    static void setGame(std::string argv);
+    static QString getTitle();
+    static void setTitle(QString argv);
+    static qint16 getViewerCount();
+    static void setViewerCount(qint16 views);
+    static QDateTime getStartTime();
+    static void setStartTime(QDateTime start);
+    static QString getThumbnailUrl();
+    static void setThumbnailUrl(QString argv);
+    static QString getGame();
+    static void setGame(QString argv);
     static Account getStreamer();
     static void setStreamer(Account acct);
     static bool getIsLive();
