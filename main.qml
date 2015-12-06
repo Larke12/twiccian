@@ -182,7 +182,8 @@ ApplicationWindow {
                                 anchors.leftMargin: propic.width / 4
                                 opacity: 0.0
                                 
-                                // Load image
+                                // Load profile image
+                                
                                 
                                 // Click to view profile in webview
                                 MouseArea {
