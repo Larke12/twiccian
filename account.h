@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
+
 #include <iostream>
 #include <QString>
 #include <QDateTime>
@@ -39,3 +42,5 @@ public:
     qint16 getFollows();
     void setFollows(qint16 follows);
 };
+
+#endif // ACCOUNT_H
