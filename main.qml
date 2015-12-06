@@ -115,9 +115,9 @@ ApplicationWindow {
 					Layout.maximumHeight: window.height
 					height: window.height
                     //width: window.width * 0.75
-                    Layout.minimumWidth: window.width - 400
+                    Layout.minimumWidth: window.width - chat.width
                     Layout.minimumHeight: window.height - 400
-                    Layout.fillWidth: true
+                    Layout.fillWidth: false
                     
                     MouseArea {
                         anchors.fill: parent
@@ -301,15 +301,14 @@ ApplicationWindow {
                                             renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             splitview.orientation = Qt.Vertical
-                                            //renderer.height = window.height
                                             renderer.width = window.width
-                                            chat.height = -1
-                                            //chat.width = Screen.desktopAvailableWidth
                                         } else {
+                                            mpv.Layout.fillwidth = true
                                             renderer.command(["set", "fullscreen", "no"])
                                             window.showNormal()
                                             splitview.orientation = Qt.Horizontal
-                                            chat.width = 400
+                                            chat.width = 300
+                                            mpv.Layout.fillwidth = false
                                         }
                                     }
                                 }
@@ -354,11 +353,8 @@ ApplicationWindow {
 
                 WebEngineView {
                     id: chat
-                    width: 400
-                    Layout.minimumWidth: 400
-                    //Layout.maximumHeight: window.height
-                    //Layout.maximumWidth: window.width * 0.2
-                    //Layout.minimumWidth: window.width * 0.25
+                    width: 300
+                    Layout.minimumWidth: chat.width
                     
                     url: "assets/sock.html"
                 }
