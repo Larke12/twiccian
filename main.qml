@@ -74,10 +74,10 @@ ApplicationWindow {
                             delegate: Rectangle {
                                 width: (window.width) / 2
                                 height: 80
-                                color: "white"
+                                color: "#FFFFFF"
                                 border { 
                                     width: 1 
-                                    color: "black" }
+                                    color: "#000000" }
                                 radius: 3
                 
                                 Text {
@@ -217,7 +217,7 @@ ApplicationWindow {
                                 verticalOffset: 4
                                 radius: 8.0
                                 samples: 16
-                                color: "black"
+                                color: "#000000"
                                 opacity: 0.0
                                 source: propic
                             }
@@ -235,7 +235,7 @@ ApplicationWindow {
                                 
                                 gradient: Gradient {
                                     GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0) }
-                                    GradientStop { position: 1.0; color: "black" }
+                                    GradientStop { position: 1.0; color: "#000000" }
                                 }
                             }
                             
@@ -478,7 +478,7 @@ ApplicationWindow {
 					id: text
 					anchors.centerIn: parent
 					text: styleData.title
-					color: styleData.selected ? "white" : "black"
+					color: styleData.selected ? "#FFFFFF" : "#000000"
 				}
 			}
 			
