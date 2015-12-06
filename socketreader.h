@@ -42,9 +42,9 @@ private:
 class SubmitUrlObj : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject*> results READ getResults NOTIFY resultsChanged)
-    Q_PROPERTY(QObject* streamer READ getStreamer NOTIFY streamerChanged)
-    Q_PROPERTY(QObject* user READ getUser NOTIFY userChanged)
+    //Q_PROPERTY(QList<QObject*> results READ getResults NOTIFY resultsChanged)
+    //Q_PROPERTY(QObject* streamer READ getStreamer NOTIFY streamerChanged)
+    //Q_PROPERTY(QObject* user READ getUser NOTIFY userChanged)
 
     QString submittedUrl;
 public:
