@@ -489,8 +489,20 @@ ApplicationWindow {
 		width: window.width
 		height: window.height
 		visible: true
+
         Component.onCompleted: {
-            if (apiobj.isAuthenticated() === true) {
+            if (apiobj.isAuthenticated() === false) {
+                login.visible = true
+                frame.visible = false
+                frame.tabsVisible = false
+                /*Qt.openUrlExternally("https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login");
+                while (apiobj.isAuthenticated() === false) {
+                    console.log("HELP")
+                }
+                login.visible = false
+                frame.visible = true
+                frame.tabsVisible = true*/
+            } else {
                 login.visible = false
                 frame.visible = true
                 frame.tabsVisible = true
@@ -503,6 +515,14 @@ ApplicationWindow {
 
             url: "https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login"
             anchors.fill: parent
+
+            onUrlChanged: {
+                login.visible = false
+                logwebview.visible = false
+                frame.visible = true
+                frame.tabsVisible = true
+            }
+
             onNavigationRequested: {
                 // detect URL scheme prefix, most likely an external link
                 var schemaRE = /^\w+:/;
@@ -510,7 +530,6 @@ ApplicationWindow {
                     request.action = WebView.AcceptRequest;
                 } else {
                     request.action = WebView.IgnoreRequest;
-                    // delegate request.url here
                 }
             }
         }

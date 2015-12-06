@@ -128,6 +128,12 @@ QString SubmitUrlObj::getUrl()
 }
 
 bool SubmitUrlObj::isAuthenticated() {
+    struct timespec tim, tim2;
+    tim.tv_sec = 0;
+    tim.tv_nsec = 500000000L;
+    if(nanosleep(&tim , &tim2) < 0 ) {
+          printf("Couldn't sleep\n");
+    }
     SocketReader *reader = new SocketReader();
     QByteArray *result = reader->getAuthState();
 

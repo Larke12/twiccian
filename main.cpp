@@ -17,6 +17,7 @@
 #include "socketreader.h"
 
 #include <unistd.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -192,9 +193,6 @@ int main(int argc, char **argv)
             perror("Could not create new process to run the daemon");
             exit(-1);
         } else if (pid == 0) {
-            // Unset the umask
-            umask(0);
-
             // Create a new process group for the child
             pid_t sid = setsid();
 
@@ -202,6 +200,12 @@ int main(int argc, char **argv)
                 perror("Couldn't create new process group for the daemon");
                 exit(-1);
             } else {
+                signal(SIGCHLD, SIG_IGN);
+                signal(SIGHUP, SIG_IGN);
+                chdir("/");
+                //for (int x = sysconf(_SC_OPEN_MAX); x>0; x--) {
+                //    close (x);
+                //}
                 int ret = execlp("twicciand", "twicciand", NULL);
                 if (ret < 0) {
                     perror("Couldn't run daemon");
