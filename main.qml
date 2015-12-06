@@ -230,12 +230,14 @@ ApplicationWindow {
                                 anchors.left: parent.left
                                 anchors.leftMargin: (parent.width / 2) - (vcontrols.width / 2)
                                 
+                                //cached: true
+                                
                                 start: Qt.point(0, 0)
-                                end: Qt.point(0, vcontrols.height)
+                                end: Qt.point(vcontrols.width, vcontrols.height)
                                 
                                 gradient: Gradient {
-                                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0) }
-                                    GradientStop { position: 1.0; color: "#000000" }
+                                    GradientStop { position: 0.0; color: "#00000000" }
+                                    GradientStop { position: 1.0; color: "#FF000000" }
                                 }
                             }
                             
