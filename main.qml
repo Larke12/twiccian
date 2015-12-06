@@ -59,6 +59,16 @@ ApplicationWindow {
                 Item {
                     id: follows
 
+                    Button {
+                        id: followingrefresh
+                        text: qsTr("Refresh Following")
+                        opacity: 1.0
+
+                        onClicked: {
+                            apiobj.requestFollowing();
+                        }
+                    }
+
                     Column {
                         // Avoid overlapping
                         id: cols
@@ -524,10 +534,13 @@ ApplicationWindow {
             anchors.fill: parent
 
             onUrlChanged: {
-                login.visible = false
-                logwebview.visible = false
-                frame.visible = true
-                frame.tabsVisible = true
+                var schemaRE = /localhost:/;
+                if (schemaRE.test(url)) {
+                    login.visible = false
+                    logwebview.visible = true
+                    frame.visible = true
+                    frame.tabsVisible = true
+                }
             }
 
             onNavigationRequested: {

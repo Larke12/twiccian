@@ -27,6 +27,7 @@ public:
     SocketReader();
     ~SocketReader();
     QByteArray *sendYtDlUrl(QString cmd);
+    QByteArray *getFollowing();
     QByteArray *getAuthState();
 
 private:
@@ -54,6 +55,7 @@ private:
     QList<QObject*> results;
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
+    Q_INVOKABLE void requestFollowing();
     Q_INVOKABLE QString getUrl();
     Q_INVOKABLE QObject* getStreamer();
     Q_INVOKABLE QObject* getUser();

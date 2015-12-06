@@ -66,6 +66,37 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
     return buffer;
 }
 
+QByteArray *SocketReader::getFollowing() {
+    blocksize = 0;
+
+    QByteArray *buffer = new QByteArray();
+
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        std::string json = " { \"api\":\"twitch\",\"name\":\"getFollowedStreams\",\"params\":{\"limit\":10,\"offset\":0}}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        printf("WHAT I NEED IN MY LIFE: %s", json.c_str());
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
+        qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
+
+        printf("\nThe IMPORTANT RESULT IS: %s\n", buffer->constData());
+        fflush(stdout);
+    }
+
+    return buffer;
+}
+
 QByteArray *SocketReader::getAuthState() {
     blocksize = 0;
 
@@ -149,6 +180,28 @@ bool SubmitUrlObj::isAuthenticated() {
     fflush(stdout);
 
     return res.GetBool();
+}
+
+void SubmitUrlObj::requestFollowing() {
+    // Pass string to daemon
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->getFollowing();
+
+    QString urlJson = "";
+    urlJson.append(result->constData());
+    printf("Supposed result: %s\n", urlJson.toStdString().c_str());
+    fflush(stdout);
+
+    Document json;
+    json.Parse(urlJson.toStdString().c_str());
+    Value& res = json["_total"];
+    printf("%d\n", res.GetInt());
+    fflush(stdout);
+
+    int total = res.GetInt();
+
+    printf("TEST: %d", total);
+    fflush(stdout);
 }
 
 QObject* SubmitUrlObj::getStreamer() {
