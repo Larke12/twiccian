@@ -26,8 +26,8 @@ import twiccian 1.0
 
 ApplicationWindow {
 	id: window
-    width: 1200
-    height: 800
+    width: 1000
+    height: 650
 	visible: true
     color: "#FF000000"
 	title: "Twiccian | result.getTitle()" // result.getTitle();
@@ -110,7 +110,7 @@ ApplicationWindow {
 					Layout.maximumHeight: window.height
 					height: window.height
                     //width: window.width * 0.75
-                    Layout.minimumWidth: 600
+                    Layout.minimumWidth: window.width - 400
                     Layout.minimumHeight: window.height - 400
                     Layout.fillWidth: true
                     
