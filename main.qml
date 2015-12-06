@@ -26,8 +26,8 @@ import twiccian 1.0
 
 ApplicationWindow {
 	id: window
-    width: 1200
-    height: 800
+    width: 1000
+    height: 650
 	visible: true
 	title: "Twiccian | result.getTitle()" // result.getTitle();
 
@@ -231,7 +231,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/crumps2")
+                                        apiobj.requestUrl("http://www.twitch.tv/twitchplayspokemon")
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -368,13 +368,13 @@ ApplicationWindow {
                 login.visible = true
                 frame.visible = false
                 frame.tabsVisible = false
-                Qt.openUrlExternally("https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login");
+                /*Qt.openUrlExternally("https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login");
                 while (apiobj.isAuthenticated() === false) {
                     console.log("HELP")
                 }
                 login.visible = false
                 frame.visible = true
-                frame.tabsVisible = true
+                frame.tabsVisible = true*/
             } else {
                 login.visible = false
                 frame.visible = true
@@ -383,23 +383,28 @@ ApplicationWindow {
         }
 
         // Login WebView
-        /*WebView {
+        WebView {
             id: logwebview
 
             url: "https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login"
             anchors.fill: parent
+
+            onUrlChanged: {
+                login.visible = false
+                logwebview.visible = false
+                frame.visible = true
+                frame.tabsVisible = true
+            }
+
             onNavigationRequested: {
                 // detect URL scheme prefix, most likely an external link
-                console.log(request.url)
                 var schemaRE = /^\w+:/;
                 if (schemaRE.test(request.url)) {
                     request.action = WebView.AcceptRequest;
                 } else {
                     request.action = WebView.IgnoreRequest;
-                    // delegate request.url here
-                    console.log("test false")
                 }
             }
-        }*/
+        }
     }
 }
