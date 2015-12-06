@@ -74,10 +74,10 @@ ApplicationWindow {
                             delegate: Rectangle {
                                 width: (window.width) / 2
                                 height: 80
-                                color: "white"
+                                color: "#FFFFFF"
                                 border { 
                                     width: 1 
-                                    color: "black" }
+                                    color: "#000000" }
                                 radius: 3
                 
                                 Text {
@@ -153,10 +153,8 @@ ApplicationWindow {
                                 
                                 WebView {
                                     id: webview
-                                    //account:Account
-                                    //openWebView(Account);
                                     
-                                    url: "http://www.twitch.tv/bobross/profile"
+                                    //url: apiobj.streamer.getProfileUrl()
                                     anchors.fill: parent
                                     onNavigationRequested: {
                                         // detect URL scheme prefix, most likely an external link
@@ -183,6 +181,14 @@ ApplicationWindow {
                                 opacity: 0.0
                                 
                                 // Load profile image
+                                Image {
+                                    width: propic.width - 5
+                                    height: propic.height - 5
+                                    horizontalAlignment: propic.horizontalCenter
+                                    verticalAlignment: propic.verticalCenter
+                                    fillMode: Image.PreserveAspectFit
+                                    //source: apiobj.streamer.getAvatarUrl()
+                                }
                                 
                                 
                                 // Click to view profile in webview
@@ -211,7 +217,7 @@ ApplicationWindow {
                                 verticalOffset: 4
                                 radius: 8.0
                                 samples: 16
-                                color: "black"
+                                color: "#000000"
                                 opacity: 0.0
                                 source: propic
                             }
@@ -229,7 +235,7 @@ ApplicationWindow {
                                 
                                 gradient: Gradient {
                                     GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0) }
-                                    GradientStop { position: 1.0; color: "black" }
+                                    GradientStop { position: 1.0; color: "#000000" }
                                 }
                             }
                             
@@ -267,7 +273,8 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/cereth")
+                                        apiobj.requestUrl("http://www.twitch.tv/xkilios")
+                                        //apiobj.getUrl()
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -471,7 +478,7 @@ ApplicationWindow {
 					id: text
 					anchors.centerIn: parent
 					text: styleData.title
-					color: styleData.selected ? "white" : "black"
+					color: styleData.selected ? "#FFFFFF" : "#000000"
 				}
 			}
 			

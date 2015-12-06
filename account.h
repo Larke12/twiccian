@@ -32,7 +32,6 @@ class Account : public QObject
 public:
     Account();
     Account(QString name, QString profileUrl, QString avatarUrl, qint16 follows);
-    virtual ~Account();
     QString getName();
     void setName(QString argv);
     QString getProfileUrl();
