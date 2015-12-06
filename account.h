@@ -16,6 +16,7 @@
 #include <iostream>
 #include <QString>
 #include <QDateTime>
+#include <QObject>
 
 class Account : public QObject
 {
@@ -27,13 +28,14 @@ class Account : public QObject
     qint16 follows;
 public:
     Account();
+    Account(QString name, QString profileUrl, QString avatarUrl, qint16 follows);
     virtual ~Account();
-    static QString getName();
-    static void setName(QString argv);
-    static QString getProfileUrl();
-    static void setProfileUrl(QString argv);
-    static QString getAvatarUrl();
-    static void setAvatarUrl(QString argv);
-    static qint16 getFollows();
-    static void setFollows(qint16 follows);
+    QString getName();
+    void setName(QString argv);
+    QString getProfileUrl();
+    void setProfileUrl(QString argv);
+    QString getAvatarUrl();
+    void setAvatarUrl(QString argv);
+    qint16 getFollows();
+    void setFollows(qint16 follows);
 };

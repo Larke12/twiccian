@@ -15,34 +15,38 @@
 
 #include <iostream>
 #include <string>
+#include <QString>
+#include <QDateTime>
+#include <QObject>
 #include "account.h"
 
 class Result : public QObject
 {
     Q_OBJECT
 
+private:
     QString title;
     qint16 viewerCount;
     QDateTime startTime;
     QString thumbnailUrl;
     QString game;
-    Account streamer;
+    Account* streamer;
     bool isLive;
 public:
-    Result();
+    Result(QString title, qint16 viewerCount, QDateTime startTime, QString thumbnailUrl, QString game, Account* streamer, bool isLive);
     virtual ~Result();
-    static QString getTitle();
-    static void setTitle(QString argv);
-    static qint16 getViewerCount();
-    static void setViewerCount(qint16 views);
-    static QDateTime getStartTime();
-    static void setStartTime(QDateTime start);
-    static QString getThumbnailUrl();
-    static void setThumbnailUrl(QString argv);
-    static QString getGame();
-    static void setGame(QString argv);
-    static Account getStreamer();
-    static void setStreamer(Account acct);
-    static bool getIsLive();
-    static void setIsLive(bool live);
+    QString getTitle();
+    void setTitle(QString argv);
+    qint16 getViewerCount();
+    void setViewerCount(qint16 views);
+    QDateTime getStartTime();
+    void setStartTime(QDateTime start);
+    QString getThumbnailUrl();
+    void setThumbnailUrl(QString argv);
+    QString getGame();
+    void setGame(QString argv);
+    Account* getStreamer();
+    void setStreamer(Account* acct);
+    bool getIsLive();
+    void setIsLive(bool live);
 };

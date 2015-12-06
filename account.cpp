@@ -16,7 +16,14 @@
 #include "account.h"
 
 Account::Account() {
-	// Do stuff
+    // Do stuff
+}
+
+Account::Account(QString name, QString profileUrl, QString avatarUrl, qint16 follows) {
+    this->name = name;
+    this->profileUrl = profileUrl;
+    this->avatarUrl = avatarUrl;
+    this->follows = follows;
 }
 
 Account::~Account() {

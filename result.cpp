@@ -15,8 +15,14 @@
 
 #include "result.h"
 
-Result::Result() {
-	// Do stuff
+Result::Result(QString title, qint16 viewerCount, QDateTime startTime, QString thumbnailUrl, QString game, Account* streamer, bool isLive) {
+    this->title = title;
+    this->viewerCount = viewerCount;
+    this->startTime = startTime;
+    this->thumbnailUrl = thumbnailUrl;
+    this->game = game;
+    this->streamer = new Account(streamer->getName(), streamer->getProfileUrl(), streamer->getAvatarUrl(), streamer->getFollows());
+    this->isLive = isLive;
 }
 
 Result::~Result() {
@@ -63,12 +69,12 @@ void Result::setGame(QString argv) {
     this->game = argv;
 }
 
-Account Result::getStreamer() {
+Account* Result::getStreamer() {
     return streamer;
 }
 
-void Result::setStreamer(Account acct) {
-    this->streamer = acct;
+void Result::setStreamer(Account* acct) {
+    this->streamer = new Account(acct->getName(), acct->getProfileUrl(), acct->getAvatarUrl(), acct->getFollows());
 }
 
 bool Result::getIsLive() {
