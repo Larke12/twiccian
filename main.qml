@@ -274,6 +274,7 @@ ApplicationWindow {
                                     
                                     onClicked: {
                                         apiobj.requestUrl("http://www.twitch.tv/cereth")
+                                        //apiobj.getUrl()
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
