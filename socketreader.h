@@ -15,6 +15,7 @@
 
 #include <QTcpSocket>
 #include <QNetworkSession>
+#include "account.h"
 
 class SocketReader : public QObject
 {
@@ -37,11 +38,12 @@ private:
 
 };
 
-// REMOVE THIS CLASS FOR THE 50% WORKING SYSTEM
 class SubmitUrlObj : public QObject
 {
     Q_OBJECT
-    //Q_PROPERTY(QString Url READ Url WRITE setUrl NOTIFY UrlChanged)
+    Q_PROPERTY(QList<QObject*> results READ getResults NOTIFY resultsChanged)
+    Q_PROPERTY(QObject* streamer READ getStreamer NOTIFY streamerChanged)
+    Q_PROPERTY(QObject* user READ getUser NOTIFY userChanged)
 
     QString submittedUrl;
 public:

@@ -97,7 +97,6 @@ QByteArray *SocketReader::getAuthState() {
     return buffer;
 }
 
-// REMOVE THESE METHODS FOR 50% WORKING SYSTEM
 void SubmitUrlObj::requestUrl(QString submittedUrl)
 {
     // Pass string to daemon
