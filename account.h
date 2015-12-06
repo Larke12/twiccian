@@ -14,6 +14,8 @@
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
+#include <QString>
+#include <QDateTime>
 
 class Account : public QObject
 {
