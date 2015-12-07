@@ -30,7 +30,7 @@ ApplicationWindow {
     height: 650
 	visible: true
     color: "#FF000000"
-	title: "Twiccian | result.getTitle()" // result.getTitle();
+    title: "Twiccian"
 
     /*
       This section is for API calls between QML and C++
