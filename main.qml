@@ -51,7 +51,7 @@ ApplicationWindow {
         Tab {
             id: follow
             title: "Following"
-            
+
             ScrollView {
                 frameVisible: true
                 verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
@@ -83,11 +83,11 @@ ApplicationWindow {
                             id: list
                             clip: true
                             width: window.width; height: window.height
-                            currentIndex: -1
                             spacing: 20
 
-                            Component.onCompleted: {
-                                list.currentIndex = -1
+                            footer: Rectangle {
+                                height: 100
+                                color: "transparent"
                             }
 
                             model: myModel
@@ -121,11 +121,11 @@ ApplicationWindow {
                             }
 
                             onCurrentIndexChanged: {
-                                console.log(list.currentIndex)
                                 if (list.currentIndex != -1 && follows.selected) {
                                     window.title = "Twiccian | " + apiobj.getResults()[list.currentIndex].getTitle()
                                     apiobj.setStreamer(list.currentIndex)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     frame.currentIndex = 1
                                 }
@@ -143,7 +143,8 @@ ApplicationWindow {
         Tab {
             id: stream
             title: "Stream"
-            
+            property bool paused: false
+
             // A Qt view which contains the mpv window and chat
             SplitView {
                 id: splitview
@@ -185,7 +186,15 @@ ApplicationWindow {
                         MpvObject {
                             id: renderer
                             anchors.fill: parent
-                            
+
+                            onVisibleChanged: {
+                                if (frame.currentIndex == 1) {
+                                    if (apiobj.getUrl() !== "") {
+                                        renderer.command(["loadfile", apiobj.getUrl()])
+                                    }
+                                }
+                            }
+
                             // Stretch Goal: Utilize our own view
                             ScrollView {
                                 id: proview
@@ -302,9 +311,11 @@ ApplicationWindow {
                                     
                                     onClicked: {
                                         if (playpause.text == "Pause") {
+                                            stream.paused = true
                                             renderer.command(["set", "pause", "yes"])
                                             playpause.text = qsTr("Play")
                                         } else {
+                                            stream.paused = false
                                             renderer.command(["set", "pause", "no"])
                                             playpause.text = qsTr("Pause")
                                         }
@@ -397,6 +408,12 @@ ApplicationWindow {
                     width: 300
                     
                     url: "assets/sock.html"
+                    onVisibleChanged: {
+                        if (frame.currentIndex == 1) {
+                            chat.reload()
+                        }
+                    }
+
                 }
                 //closeChat();
             }

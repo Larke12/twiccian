@@ -115,6 +115,37 @@ QByteArray *SocketReader::getAuthState() {
             return buffer;
         }
 
+        qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
+
+        printf("\nThe RESULT IS: %s\n", buffer->constData());
+        fflush(stdout);
+    }
+
+    return buffer;
+}
+
+QByteArray *SocketReader::changeChat(QString username) {
+    blocksize = 0;
+
+    QByteArray *buffer = new QByteArray();
+
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        std::string json = " { \"api\":\"local\",\"name\":\"changeChat\",\"params\":{\"query\":\""+username.toStdString()+"\"}}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        printf("%s", json.c_str());
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
         //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
@@ -218,6 +249,15 @@ void SubmitUrlObj::requestFollowing() {
     }
     context->setContextProperty("myModel",QVariant::fromValue(getResults()));
     fflush(stdout);
+}
+
+void SubmitUrlObj::changeChat(QString username) {
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->changeChat(username);
+
+    QString responseJson = "";
+    responseJson.append(result->constData());
+
 }
 
 QObject* SubmitUrlObj::getStreamer() {

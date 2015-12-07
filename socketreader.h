@@ -31,6 +31,7 @@ public:
     QByteArray *sendYtDlUrl(QString cmd);
     QByteArray *getFollowing();
     QByteArray *getAuthState();
+    QByteArray *changeChat(QString username);
 
 private:
     QTcpSocket *sock;
@@ -58,6 +59,7 @@ private:
     QQmlContext *context;
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
+    Q_INVOKABLE void changeChat(QString username);
     Q_INVOKABLE void requestFollowing();
     Q_INVOKABLE QString getUrl();
     Q_INVOKABLE QList<QObject*> getResults();
