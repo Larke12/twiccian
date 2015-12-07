@@ -18,6 +18,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include <QDataStream>
+#include <QList>
 #include <iostream>
 
 using namespace rapidjson;
@@ -40,7 +41,9 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
     QByteArray *buffer = new QByteArray();
 
     if (sock->state() == QAbstractSocket::ConnectedState) {
-        std::string charurl = url.toStdString();
+        printf("MADE IT: %s\n", url.toStdString().c_str());
+        fflush(stdout);
+        std::string charurl = url.trimmed().toStdString();
         std::string json = " { \"api\":\"local\",\"name\":\"getStreamUrl\",\"params\":{\"url\":\"" + charurl + "\"}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
@@ -55,7 +58,7 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
             return buffer;
         }
 
-        qint16 size = sock->bytesAvailable();
+        //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
 
@@ -76,8 +79,6 @@ QByteArray *SocketReader::getFollowing() {
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
-        printf("WHAT I NEED IN MY LIFE: %s", json.c_str());
-
         sock->waitForReadyRead();
         QDataStream in(sock);
         in.setVersion(QDataStream::Qt_4_0);
@@ -86,12 +87,9 @@ QByteArray *SocketReader::getFollowing() {
             return buffer;
         }
 
-        qint16 size = sock->bytesAvailable();
+        //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
-
-        printf("\nThe IMPORTANT RESULT IS: %s\n", buffer->constData());
-        fflush(stdout);
     }
 
     return buffer;
@@ -117,7 +115,7 @@ QByteArray *SocketReader::getAuthState() {
             return buffer;
         }
 
-        qint16 size = sock->bytesAvailable();
+        //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
 
@@ -133,11 +131,11 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
     // Pass string to daemon
     SocketReader *reader = new SocketReader();
     QByteArray *result = reader->sendYtDlUrl(submittedUrl);
+    printf("I made it\n");
+    fflush(stdout);
 
     QString urlJson = "";
     urlJson.append(result->constData());
-    printf("Supposed result: %s\n", urlJson.toStdString().c_str());
-    fflush(stdout);
 
     Document json;
     json.Parse(urlJson.toStdString().c_str());
@@ -187,25 +185,47 @@ void SubmitUrlObj::requestFollowing() {
     SocketReader *reader = new SocketReader();
     QByteArray *result = reader->getFollowing();
 
-    QString urlJson = "";
-    urlJson.append(result->constData());
-    printf("Supposed result: %s\n", urlJson.toStdString().c_str());
-    fflush(stdout);
+    QString responseJson = "";
+    responseJson.append(result->constData());
 
     Document json;
-    json.Parse(urlJson.toStdString().c_str());
-    Value& res = json["_total"];
-    printf("%d\n", res.GetInt());
-    fflush(stdout);
+    json.Parse(responseJson.toStdString().c_str());
+    Value& resultArr = json["result"]["streams"];
+    results.clear();
+    for (uint i=0; i < resultArr.Size(); i++) {
+        Result* next = new Result();
+        Account* accnext = new Account();
+        const Value& stream = resultArr[i];
+        const Value& channel = stream["channel"];
 
-    int total = res.GetInt();
+        next->setTitle(channel["status"].GetString());
+        next->setViewerCount(stream["viewers"].GetInt());
+        next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
+                                                 "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+        next->setThumbnailUrl(stream["preview"]["medium"].GetString());
+        next->setGame(stream["game"].GetString());
+        accnext->setName(channel["name"].GetString());
+        accnext->setProfileUrl(channel["url"].GetString());
+        accnext->setAvatarUrl(channel["logo"].GetString());
+        accnext->setFollows(channel["followers"].GetInt());
+        next->setStreamer(accnext);
+        next->setIsLive(stream["is_playlist"].GetBool());
+        results.append(next);
+    }
 
-    printf("TEST: %d", total);
+    for (int i=0; i<results.count(); i++) {
+        printf("%s\n", qobject_cast<Result*>(results[i])->getTitle().toStdString().c_str());
+    }
+    context->setContextProperty("myModel",QVariant::fromValue(getResults()));
     fflush(stdout);
 }
 
 QObject* SubmitUrlObj::getStreamer() {
     return streamer;
+}
+
+void SubmitUrlObj::setStreamer(int index) {
+    this->streamer = qobject_cast<Result*>(results[index])->getStreamer();
 }
 
 QObject* SubmitUrlObj::getUser() {
@@ -216,3 +236,6 @@ QList<QObject*> SubmitUrlObj::getResults() {
     return results;
 }
 
+void SubmitUrlObj::setContext(QQmlContext *ctxt) {
+    this->context = ctxt;
+}

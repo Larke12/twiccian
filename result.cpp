@@ -25,6 +25,17 @@ Result::Result(QString title, qint16 viewerCount, QDateTime startTime, QString t
     this->isLive = isLive;
 }
 
+Result::Result() {
+    // Do stuff
+    this->title = "";
+    this->viewerCount = 0;
+    this->startTime = QDateTime::currentDateTime();
+    this->thumbnailUrl = "";
+    this->game = "";
+    this->streamer = new Account();
+    this->isLive = false;
+}
+
 Result::~Result() {
 	// Do stuff
 }

@@ -228,8 +228,16 @@ int main(int argc, char **argv)
     qmlRegisterType<MpvObject>("twiccian", 1, 0, "MpvObject");
     qmlRegisterType<SubmitUrlObj>("twiccian", 1, 0, "Api");
 
+    QList<QObject*> dataList;
+    //dataList.append(new Result());
+
     // Render the qml using a QQmlApplicationEngine
     QQmlApplicationEngine engine("main.qml");
+    QQmlContext *ctxt = engine.rootContext();
+    ctxt->setContextProperty("myModel", QVariant::fromValue(dataList));
+    QObject *rootObject = engine.rootObjects()[0];
+    SubmitUrlObj *api = rootObject->findChild<SubmitUrlObj*>(QString("apiobj"));
+    api->setContext(ctxt);
 
     return app.exec();
 }

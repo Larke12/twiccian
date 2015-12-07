@@ -37,6 +37,7 @@ ApplicationWindow {
       */
     Api {
         id: apiobj
+        objectName: "apiobj"
     }
 
     // A Qt view split into tabs, tabs update and play even when not in view once opened
@@ -73,29 +74,53 @@ ApplicationWindow {
                         // Avoid overlapping
                         id: cols
                         spacing: 5
-                        x: (window.width / 4)
+                        x: (window.width / 4.5)
                         y: cols.spacing
-                        
-                        Repeater {
-                            // Define number of results
-                            id: datarep
-                            model: 10
-                            
+
+                        ListView {
+                            id: list
+                            width: window.width; height: window.height
+                            currentIndex: -1
+                            spacing: 20
+
+                            property bool selected: false
+
+                            model: myModel
                             delegate: Rectangle {
-                                width: (window.width) / 2
-                                height: 80
-                                color: "#FFFFFF"
-                                border { 
-                                    width: 1 
-                                    color: "#000000" }
+                                height: 100
+                                border.color: "#000000"
+                                border.width: 2
                                 radius: 3
-                
+                                width: parent.width * 0.75
+                                color: (ListView.isCurrentItem && list.selected) ? "#0000FF" : "#FFFFFF"
+                                Image {
+                                    id: thumb
+                                    sourceSize.height: parent.height
+                                    source: thumbnailUrl
+                                }
                                 Text {
-                                    id: follow_temp
+                                    x: parent.x + 180
+                                    text: title
+                                    width: window.width * 0.75 - 180
+                                    font.bold: true
+                                    wrapMode: Text.Wrap
+                                }
+                                MouseArea {
                                     anchors.fill: parent
-                                    horizontalAlignment: TextInput.AlignHCenter
-                                    verticalAlignment: TextInput.AlignVCenter
-                                    text: qsTr("This view will list all of the streams\nyou follow that are live")
+                                    onClicked: {
+                                        list.currentIndex = index
+                                        list.selected = true
+                                    }
+                                }
+                            }
+
+                            onCurrentItemChanged: {
+                                if (list.selected) {
+                                    window.title = "Twiccian | " + apiobj.getResults()[list.currentIndex].getTitle()
+                                    apiobj.setStreamer(list.currentIndex)
+                                    console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    frame.currentIndex = 1
                                 }
                             }
                         }
@@ -285,7 +310,7 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        apiobj.requestUrl("http://www.twitch.tv/xkilios")
+                                        //apiobj.requestUrl("http://www.twitch.tv/xkilios")
                                         //apiobj.getUrl()
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
@@ -430,7 +455,7 @@ ApplicationWindow {
                         
                         checked: false
                         
-                        /*onClicked: { 
+                        /*onClicked: {
                             if (!checked) {
                                 // set theme to black
                             } else {
@@ -508,13 +533,6 @@ ApplicationWindow {
                 login.visible = true
                 frame.visible = false
                 frame.tabsVisible = false
-                /*Qt.openUrlExternally("https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=mya9g4l7ucpsbwe2sjlj749d4hqzvvj&redirect_uri=http://localhost:19210&scope=user_read+user_follows_edit+user_subscriptions+chat_login");
-                while (apiobj.isAuthenticated() === false) {
-                    console.log("HELP")
-                }
-                login.visible = false
-                frame.visible = true
-                frame.tabsVisible = true*/
             } else {
                 login.visible = false
                 frame.visible = true

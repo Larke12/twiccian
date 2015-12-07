@@ -32,13 +32,13 @@ class Account : public QObject
 public:
     Account();
     Account(QString name, QString profileUrl, QString avatarUrl, qint16 follows);
-    QString getName();
+    Q_INVOKABLE QString getName();
     void setName(QString argv);
-    QString getProfileUrl();
+    Q_INVOKABLE QString getProfileUrl();
     void setProfileUrl(QString argv);
-    QString getAvatarUrl();
+    Q_INVOKABLE QString getAvatarUrl();
     void setAvatarUrl(QString argv);
-    qint16 getFollows();
+    Q_INVOKABLE qint16 getFollows();
     void setFollows(qint16 follows);
 };
 

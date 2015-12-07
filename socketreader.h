@@ -14,9 +14,11 @@
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QTcpSocket>
+#include <QQmlContext>
 #include <QNetworkSession>
 #include "account.h"
 #include "result.h"
+#include "main.h"
 #include <time.h>
 
 class SocketReader : public QObject
@@ -53,12 +55,15 @@ private:
     Account* streamer;
     Account* user;
     QList<QObject*> results;
+    QQmlContext *context;
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
     Q_INVOKABLE void requestFollowing();
     Q_INVOKABLE QString getUrl();
-    Q_INVOKABLE QObject* getStreamer();
-    Q_INVOKABLE QObject* getUser();
     Q_INVOKABLE QList<QObject*> getResults();
+    Q_INVOKABLE QObject* getStreamer();
+    Q_INVOKABLE void setStreamer(int index);
+    Q_INVOKABLE QObject* getUser();
+    Q_INVOKABLE void setContext(QQmlContext *ctxt);
     Q_INVOKABLE bool isAuthenticated();
 };

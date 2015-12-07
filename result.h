@@ -23,6 +23,13 @@
 class Result : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString title READ getTitle WRITE setTitle CONSTANT)
+    Q_PROPERTY(qint16 viewerCount READ getViewerCount WRITE setViewerCount CONSTANT)
+    Q_PROPERTY(QDateTime startTime READ getStartTime WRITE setStartTime CONSTANT)
+    Q_PROPERTY(QString thumbnailUrl READ getThumbnailUrl WRITE setThumbnailUrl CONSTANT)
+    Q_PROPERTY(QString game READ getGame WRITE setGame CONSTANT)
+    Q_PROPERTY(Account* streamer READ getStreamer WRITE setStreamer CONSTANT)
+    Q_PROPERTY(bool isLive READ getIsLive WRITE setIsLive CONSTANT)
 
 private:
     QString title;
@@ -33,20 +40,21 @@ private:
     Account* streamer;
     bool isLive;
 public:
+    Result();
     Result(QString title, qint16 viewerCount, QDateTime startTime, QString thumbnailUrl, QString game, Account* streamer, bool isLive);
     virtual ~Result();
-    QString getTitle();
+    Q_INVOKABLE QString getTitle();
     void setTitle(QString argv);
-    qint16 getViewerCount();
+    Q_INVOKABLE qint16 getViewerCount();
     void setViewerCount(qint16 views);
-    QDateTime getStartTime();
+    Q_INVOKABLE QDateTime getStartTime();
     void setStartTime(QDateTime start);
-    QString getThumbnailUrl();
+    Q_INVOKABLE QString getThumbnailUrl();
     void setThumbnailUrl(QString argv);
-    QString getGame();
+    Q_INVOKABLE QString getGame();
     void setGame(QString argv);
-    Account* getStreamer();
+    Q_INVOKABLE Account* getStreamer();
     void setStreamer(Account* acct);
-    bool getIsLive();
+    Q_INVOKABLE bool getIsLive();
     void setIsLive(bool live);
 };
