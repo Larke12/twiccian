@@ -59,6 +59,7 @@ ApplicationWindow {
                 
                 Item {
                     id: follows
+                    property bool selected: false
 
                     Button {
                         id: followingrefresh
@@ -66,6 +67,7 @@ ApplicationWindow {
                         opacity: 1.0
 
                         onClicked: {
+                            follows.selected = false
                             apiobj.requestFollowing();
                         }
                     }
@@ -79,11 +81,14 @@ ApplicationWindow {
 
                         ListView {
                             id: list
+                            clip: true
                             width: window.width; height: window.height
                             currentIndex: -1
                             spacing: 20
 
-                            property bool selected: false
+                            Component.onCompleted: {
+                                list.currentIndex = -1
+                            }
 
                             model: myModel
                             delegate: Rectangle {
@@ -92,7 +97,7 @@ ApplicationWindow {
                                 border.width: 2
                                 radius: 3
                                 width: parent.width * 0.75
-                                color: (ListView.isCurrentItem && list.selected) ? "#0000FF" : "#FFFFFF"
+                                color: (ListView.isCurrentItem && follows.selected) ? "#0000FF" : "#FFFFFF"
                                 Image {
                                     id: thumb
                                     sourceSize.height: parent.height
@@ -108,14 +113,16 @@ ApplicationWindow {
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
+                                        follows.selected = true
+                                        list.currentIndex = -1
                                         list.currentIndex = index
-                                        list.selected = true
                                     }
                                 }
                             }
 
-                            onCurrentItemChanged: {
-                                if (list.selected) {
+                            onCurrentIndexChanged: {
+                                console.log(list.currentIndex)
+                                if (list.currentIndex != -1 && follows.selected) {
                                     window.title = "Twiccian | " + apiobj.getResults()[list.currentIndex].getTitle()
                                     apiobj.setStreamer(list.currentIndex)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
