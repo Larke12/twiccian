@@ -39,6 +39,12 @@ ApplicationWindow {
         id: apiobj
         objectName: "apiobj"
     }
+    
+    Item {
+        id: updateStream
+        opacity: 0.0
+        visible: false
+    }
 
     // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
@@ -122,6 +128,7 @@ ApplicationWindow {
 
                             onCurrentIndexChanged: {
                                 if (list.currentIndex != -1 && follows.selected) {
+                                    updateStream.visible = true
                                     window.title = "Twiccian | " + apiobj.getResults()[list.currentIndex].getTitle()
                                     apiobj.setStreamer(list.currentIndex)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
@@ -143,7 +150,6 @@ ApplicationWindow {
         Tab {
             id: stream
             title: "Stream"
-            property bool paused: false
 
             // A Qt view which contains the mpv window and chat
             SplitView {
@@ -188,7 +194,7 @@ ApplicationWindow {
                             anchors.fill: parent
 
                             onVisibleChanged: {
-                                if (frame.currentIndex == 1) {
+                                if (frame.currentIndex == 1 && updateStream.visible == true) {
                                     if (apiobj.getUrl() !== "") {
                                         renderer.command(["loadfile", apiobj.getUrl()])
                                     }
@@ -353,11 +359,13 @@ ApplicationWindow {
                                         if (checked) {
                                             renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
+                                            frame.tabsVisible = false
                                             splitview.orientation = Qt.Vertical
                                             renderer.width = window.width
                                         } else {
                                             renderer.command(["set", "fullscreen", "no"])
                                             splitview.orientation = Qt.Horizontal
+                                            frame.tabsVisible = true
                                             window.showNormal()
                                             chat.width = 300
                                             renderer.width = window.width - chat.width
@@ -409,8 +417,9 @@ ApplicationWindow {
                     
                     url: "assets/sock.html"
                     onVisibleChanged: {
-                        if (frame.currentIndex == 1) {
+                        if (frame.currentIndex == 1 && updateStream.visible == true) {
                             chat.reload()
+                            updateStream.visible = false
                         }
                     }
 
