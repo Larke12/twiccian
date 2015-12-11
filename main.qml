@@ -40,6 +40,7 @@ ApplicationWindow {
         objectName: "apiobj"
     }
     
+    // Logic boolean for stream
     Item {
         id: updateStream
         opacity: 0.0
@@ -69,7 +70,12 @@ ApplicationWindow {
 
                     Button {
                         id: followingrefresh
-                        text: qsTr("Refresh Following")
+                        anchors.top: parent.top
+                        anchors.topMargin: 10
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        
+                        text: qsTr("Refresh")
                         opacity: 1.0
 
                         onClicked: {
@@ -104,11 +110,13 @@ ApplicationWindow {
                                 radius: 3
                                 width: parent.width * 0.75
                                 color: (ListView.isCurrentItem && follows.selected) ? "#0000FF" : "#FFFFFF"
+                                
                                 Image {
                                     id: thumb
                                     sourceSize.height: parent.height
                                     source: thumbnailUrl
                                 }
+                                
                                 Text {
                                     x: parent.x + 180
                                     text: title
@@ -116,6 +124,7 @@ ApplicationWindow {
                                     font.bold: true
                                     wrapMode: Text.Wrap
                                 }
+                                
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
@@ -211,7 +220,12 @@ ApplicationWindow {
                                 WebView {
                                     id: webview
                                     
-                                    //url: apiobj.streamer.getProfileUrl()
+                                    /*url: {
+                                        if (updateStream.visible == true) {
+                                            apiobj.getStreamer().getProfileUrl()
+                                            console.log(apiobj.getStreamer().getProfileUrl())
+                                        }
+                                    }*/
                                     anchors.fill: parent
                                     onNavigationRequested: {
                                         // detect URL scheme prefix, most likely an external link
@@ -239,12 +253,11 @@ ApplicationWindow {
                                 
                                 // Load profile image
                                 Image {
-                                    width: propic.width - 5
-                                    height: propic.height - 5
-                                    horizontalAlignment: propic.horizontalCenter
-                                    verticalAlignment: propic.verticalCenter
-                                    fillMode: Image.PreserveAspectFit
-                                    //source: apiobj.streamer.getAvatarUrl()
+                                    id: avatar
+                                    width: propic.width
+                                    height: propic.height
+                                    //fillMode: Image.PreserveAspectFit
+                                    // Source is set at time of chat loading
                                 }
                                 
                                 
@@ -317,11 +330,9 @@ ApplicationWindow {
                                     
                                     onClicked: {
                                         if (playpause.text == "Pause") {
-                                            stream.paused = true
                                             renderer.command(["set", "pause", "yes"])
                                             playpause.text = qsTr("Play")
                                         } else {
-                                            stream.paused = false
                                             renderer.command(["set", "pause", "no"])
                                             playpause.text = qsTr("Pause")
                                         }
@@ -334,8 +345,6 @@ ApplicationWindow {
                                     opacity: 1.0
                                     
                                     onClicked: {
-                                        //apiobj.requestUrl("http://www.twitch.tv/xkilios")
-                                        //apiobj.getUrl()
                                         renderer.command(["set", "pause", "no"])
                                         renderer.command(["loadfile", apiobj.getUrl()]) // API OBJ
                                         playpause.text = qsTr("Pause")
@@ -420,6 +429,8 @@ ApplicationWindow {
                         if (frame.currentIndex == 1 && updateStream.visible == true) {
                             chat.reload()
                             updateStream.visible = false
+                            
+                            avatar.source = apiobj.getStreamer().getAvatarUrl()
                         }
                     }
 
@@ -563,13 +574,19 @@ ApplicationWindow {
 
         Component.onCompleted: {
             if (apiobj.isAuthenticated() === false) {
+                // Load stream view
+                frame.currentIndex = 1
                 login.visible = true
                 frame.visible = false
                 frame.tabsVisible = false
+                // Load following view
+                //frame.currentIndex = 0
             } else {
+                frame.currentIndex = 1
                 login.visible = false
                 frame.visible = true
                 frame.tabsVisible = true
+                //frame.currentIndex = 0
             }
         }
 
