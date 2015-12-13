@@ -66,11 +66,24 @@ ApplicationWindow {
             id: follow
             title: "Following"
 
+            onLoaded: {
+                apiobj.requestFollowing()
+            }
+
             ScrollView {
                 frameVisible: true
                 verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
                 horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                
+
+
+                onVisibleChanged: {
+                    if (frame.currentIndex == 0) {
+                        follows.selected = false
+                        apiobj.requestFollowing()
+                    }
+                }
+
+
                 Item {
                     id: follows
                     property bool selected: false
