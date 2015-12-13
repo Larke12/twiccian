@@ -179,7 +179,141 @@ ApplicationWindow {
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
-                                    frame.currentIndex = 1
+                                    frame.currentIndex = 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Tab {
+            id: search
+            title: "Search"
+
+            ScrollView {
+                frameVisible: true
+                verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
+                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                Item {
+                    id: searchs
+                    property bool selected: false
+
+                    TextField {
+                       id: searchQuery
+                       anchors.top: parent.top
+                       anchors.topMargin: 10
+                       anchors.left: parent.left
+                       anchors.leftMargin: 10
+                       placeholderText: "Username or query"
+                    }
+
+                    Button {
+                        id: searchSubmit
+                        anchors.top: searchQuery.bottom
+                        anchors.topMargin: 10
+                        anchors.left: searchQuery.left
+
+                        text: qsTr("Search")
+                        opacity: 1.0
+
+                        onClicked: {
+                            searchs.selected = false
+                            apiobj.requestStreamSearch(searchQuery.text)
+                        }
+                    }
+
+                    Column {
+                        // Avoid overlapping
+                        id: searchcols
+                        spacing: 5
+                        x: (window.width / 4.5)
+                        y: searchcols.spacing
+
+                        ListView {
+                            id: searchlist
+                            clip: true
+                            width: window.width; height: window.height
+                            spacing: 20
+
+                            footer: Rectangle {
+                                height: 100
+                                color: "transparent"
+                            }
+
+                            model: searchModel
+                            delegate: Rectangle {
+                                id: searchlistrect
+                                height: 100
+                                border.color: "#000000"
+                                border.width: 2
+                                radius: 3
+                                width: parent.width * 0.75
+                                color: (ListView.isCurrentItem && searchs.selected) ? "#B9A3E3" : "#FFFFFF"
+
+                                Image {
+                                    id: searchthumb
+                                    anchors.top: parent.top
+                                    anchors.topMargin: searchlistrect.border.width
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: searchlistrect.border.width
+                                    sourceSize.height: parent.height - (searchlistrect.border.width * 2)
+                                    source: thumbnailUrl
+                                }
+
+                                Column {
+                                    id: searchStreamInfo
+                                    //x: parent.x + 180
+                                    anchors.top: parent.top
+                                    anchors.topMargin: searchlistrect.border.width
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: searchthumb.width + (searchlistrect.border.width * 2)
+
+                                    spacing: 2
+
+                                    Text {
+                                        text: title
+                                        width: window.width * 0.75 - 180
+                                        font.bold: true
+                                        wrapMode: Text.Wrap
+                                    }
+
+                                    Text {
+                                        text: "Now Playing " + game
+                                        width: window.width * 0.75 - 180
+                                        font.bold: false
+                                        wrapMode: Text.Wrap
+                                    }
+
+                                    Text {
+                                        text: streamer.getName() + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                        width: window.width * 0.75 - 180
+                                        font.bold: false
+                                        wrapMode: Text.Wrap
+                                    }
+                                }
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        searchs.selected = true
+                                        searchlist.currentIndex = -1
+                                        searchlist.currentIndex = index
+                                    }
+                                }
+                            }
+
+                            onCurrentIndexChanged: {
+                                if (searchlist.currentIndex != -1 && searchs.selected) {
+                                    updateStream.visible = true
+                                    window.title = apiobj.getSearches()[searchlist.currentIndex].getTitle() + " -  Twiccian"
+                                    apiobj.setStreamerSearch(searchlist.currentIndex)
+                                    console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    apiobj.changeChat(apiobj.getStreamer().getName())
+                                    apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    frame.currentIndex = 2
                                 }
                             }
                         }
@@ -242,8 +376,9 @@ ApplicationWindow {
                             anchors.fill: parent
 
                             onVisibleChanged: {
-                                if (frame.currentIndex == 1 && updateStream.visible == true) {
+                                if (frame.currentIndex == 2 && updateStream.visible == true) {
                                     if (apiobj.getUrl() !== "") {
+                                        renderer.command(["stop"])
                                         renderer.command(["loadfile", apiobj.getUrl()])
                                     }
                                 }
@@ -479,7 +614,7 @@ ApplicationWindow {
                         }
                     }
                     onVisibleChanged: {
-                        if (frame.currentIndex == 1 && updateStream.visible == true) {
+                        if (frame.currentIndex == 2 && updateStream.visible == true) {
                             chat.reload()
                             updateStream.visible = false
 
@@ -577,14 +712,14 @@ ApplicationWindow {
         Component.onCompleted: {
             if (apiobj.isAuthenticated() === false) {
                 // Load stream view
-                frame.currentIndex = 1
+                frame.currentIndex = 2
                 login.visible = true
                 frame.visible = false
                 frame.tabsVisible = false
                 // Load following view
                 //frame.currentIndex = 0
             } else {
-                frame.currentIndex = 1
+                frame.currentIndex = 2
                 login.visible = false
                 frame.visible = true
                 frame.tabsVisible = true

@@ -66,9 +66,32 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
 
         printf("\nThe RESULT IS: %s\n", buffer->constData());
         fflush(stdout);
-    } else {
-        QString str = " {\"result\":\"\"}";
-        buffer->append(str);
+    }
+
+    return buffer;
+}
+
+QByteArray *SocketReader::searchStreams(QString query) {
+    blocksize = 0;
+
+    QByteArray *buffer = new QByteArray();
+
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        std::string json = " { \"api\":\"twitch\",\"name\":\"searchStreams\",\"params\":{\"query\":\"" + query.toStdString() + "\",\"limit\":10,\"offset\":0}}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
+        //qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
     }
 
     return buffer;
@@ -95,9 +118,6 @@ QByteArray *SocketReader::getFollowing() {
         //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
-    } else {
-        QString str = " {\"result\":\"\"}";
-        buffer->append(str);
     }
 
     return buffer;
@@ -178,7 +198,7 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
 
     Document json;
     json.Parse(urlJson.toStdString().c_str());
-    if (json.HasMember("result")) {
+    if (json.IsObject() && json.HasMember("result")) {
         Value& res = json["result"];
         printf("%s\n", res.GetString());
         fflush(stdout);
@@ -188,9 +208,6 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
 
         printf("TEST: %s", url.toStdString().c_str());
         fflush(stdout);
-    } else {
-        QString url("");
-        this->submittedUrl = url;
     }
 }
 
@@ -201,12 +218,12 @@ QString SubmitUrlObj::getUrl()
 }
 
 bool SubmitUrlObj::isAuthenticated() {
-    struct timespec tim, tim2;
-    tim.tv_sec = 0;
-    tim.tv_nsec = 500000000L;
-    if(nanosleep(&tim , &tim2) < 0 ) {
-          printf("Couldn't sleep\n");
-    }
+    //struct timespec tim, tim2;
+    //tim.tv_sec = 0;
+    //tim.tv_nsec = 500000000L;
+    //if(nanosleep(&tim , &tim2) < 0 ) {
+    //      printf("Couldn't sleep\n");
+    //}
     SocketReader *reader = new SocketReader();
     QByteArray *result = reader->getAuthState();
 
@@ -217,7 +234,7 @@ bool SubmitUrlObj::isAuthenticated() {
 
     Document json;
     json.Parse(urlJson.toStdString().c_str());
-    if (!json.HasMember("result")) {
+    if (json.IsObject() && !json.HasMember("result")) {
         printf("Could not check if daemon is authenticated");
         fflush(stdout);
         return false;
@@ -237,18 +254,21 @@ bool SubmitUrlObj::isLightTheme() {
     return res;
 }
 
-void SubmitUrlObj::requestFollowing() {
+void SubmitUrlObj::requestStreamSearch(QString query) {
     // Pass string to daemon
     SocketReader *reader = new SocketReader();
-    QByteArray *result = reader->getFollowing();
+    QByteArray *result = reader->searchStreams(query);
 
     QString responseJson = "";
     responseJson.append(result->constData());
 
+    printf("\n\n%s\n\n\n", responseJson.toStdString().c_str());
+    fflush(stdout);
+
     Document json;
     json.Parse(responseJson.toStdString().c_str());
-    results.clear();
-    if (json.HasMember("result")) {
+    searches.clear();
+    if (json.IsObject() && json.HasMember("result")) {
         Value& resultArr = json["result"]["streams"];
         for (uint i=0; i < resultArr.Size(); i++) {
             Result* next = new Result();
@@ -264,7 +284,57 @@ void SubmitUrlObj::requestFollowing() {
             next->setGame(stream["game"].GetString());
             accnext->setName(channel["name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
-            accnext->setAvatarUrl(channel["logo"].GetString());
+            if (channel["logo"].IsNull()) {
+                accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
+            } else {
+                accnext->setAvatarUrl(channel["logo"].GetString());
+            }
+            accnext->setFollows(channel["followers"].GetInt());
+            next->setStreamer(accnext);
+            next->setIsLive(stream["is_playlist"].GetBool());
+            searches.append(next);
+        }
+    }
+
+    for (int i=0; i<searches.count(); i++) {
+        printf("%s\n", qobject_cast<Result*>(searches[i])->getTitle().toStdString().c_str());
+    }
+    context->setContextProperty("searchModel",QVariant::fromValue(getSearches()));
+    fflush(stdout);
+}
+
+void SubmitUrlObj::requestFollowing() {
+    // Pass string to daemon
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->getFollowing();
+
+    QString responseJson = "";
+    responseJson.append(result->constData());
+
+    Document json;
+    json.Parse(responseJson.toStdString().c_str());
+    results.clear();
+    if (json.IsObject() && json.HasMember("result")) {
+        Value& resultArr = json["result"]["streams"];
+        for (uint i=0; i < resultArr.Size(); i++) {
+            Result* next = new Result();
+            Account* accnext = new Account();
+            const Value& stream = resultArr[i];
+            const Value& channel = stream["channel"];
+
+            next->setTitle(channel["status"].GetString());
+            next->setViewerCount(stream["viewers"].GetInt());
+            next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
+                                                     "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+            next->setThumbnailUrl(stream["preview"]["medium"].GetString());
+            next->setGame(stream["game"].GetString());
+            accnext->setName(channel["name"].GetString());
+            accnext->setProfileUrl(channel["url"].GetString());
+            if (channel["logo"].IsNull()) {
+                accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
+            } else {
+                accnext->setAvatarUrl(channel["logo"].GetString());
+            }
             accnext->setFollows(channel["followers"].GetInt());
             next->setStreamer(accnext);
             next->setIsLive(stream["is_playlist"].GetBool());
@@ -296,8 +366,16 @@ void SubmitUrlObj::setStreamer(int index) {
     this->streamer = qobject_cast<Result*>(results[index])->getStreamer();
 }
 
+void SubmitUrlObj::setStreamerSearch(int index) {
+    this->streamer = qobject_cast<Result*>(searches[index])->getStreamer();
+}
+
 QObject* SubmitUrlObj::getUser() {
     return user;
+}
+
+QList<QObject*> SubmitUrlObj::getSearches() {
+    return searches;
 }
 
 QList<QObject*> SubmitUrlObj::getResults() {

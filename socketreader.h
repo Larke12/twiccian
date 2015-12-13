@@ -30,6 +30,7 @@ public:
     SocketReader();
     ~SocketReader();
     QByteArray *sendYtDlUrl(QString cmd);
+    QByteArray *searchStreams(QString query);
     QByteArray *getFollowing();
     QByteArray *getAuthState();
     QByteArray *changeChat(QString username);
@@ -57,15 +58,19 @@ private:
     Account* streamer;
     Account* user;
     QList<QObject*> results;
+    QList<QObject*> searches;
     QQmlContext *context;
 public:
     Q_INVOKABLE void requestUrl(QString submittedUrl);
     Q_INVOKABLE void changeChat(QString username);
     Q_INVOKABLE void requestFollowing();
+    Q_INVOKABLE void requestStreamSearch(QString query);
     Q_INVOKABLE QString getUrl();
     Q_INVOKABLE QList<QObject*> getResults();
+    Q_INVOKABLE QList<QObject*> getSearches();
     Q_INVOKABLE QObject* getStreamer();
     Q_INVOKABLE void setStreamer(int index);
+    Q_INVOKABLE void setStreamerSearch(int index);
     Q_INVOKABLE QObject* getUser();
     Q_INVOKABLE void setContext(QQmlContext *ctxt);
     Q_INVOKABLE bool isAuthenticated();

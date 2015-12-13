@@ -229,12 +229,14 @@ int main(int argc, char **argv)
     qmlRegisterType<SubmitUrlObj>("twiccian", 1, 0, "Api");
 
     QList<QObject*> dataList;
+    QList<QObject*> searchList;
     //dataList.append(new Result());
 
     // Render the qml using a QQmlApplicationEngine
     QQmlApplicationEngine engine("main.qml");
     QQmlContext *ctxt = engine.rootContext();
     ctxt->setContextProperty("myModel", QVariant::fromValue(dataList));
+    ctxt->setContextProperty("searchModel", QVariant::fromValue(searchList));
     QObject *rootObject = engine.rootObjects()[0];
     SubmitUrlObj *api = rootObject->findChild<SubmitUrlObj*>(QString("apiobj"));
     api->setContext(ctxt);
