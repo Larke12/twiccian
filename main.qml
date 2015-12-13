@@ -111,6 +111,7 @@ ApplicationWindow {
 
                             model: myModel
                             delegate: Rectangle {
+                                id: listrect
                                 height: 100
                                 border.color: "#000000"
                                 border.width: 2
@@ -120,13 +121,21 @@ ApplicationWindow {
                                 
                                 Image {
                                     id: thumb
-                                    sourceSize.height: parent.height
+                                    anchors.top: parent.top
+                                    anchors.topMargin: listrect.border.width
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: listrect.border.width
+                                    sourceSize.height: parent.height - (listrect.border.width * 2)
                                     source: thumbnailUrl
                                 }
                                 
                                 Column {
                                     id: streamInfo
-                                    x: parent.x + 180
+                                    //x: parent.x + 180
+                                    anchors.top: parent.top
+                                    anchors.topMargin: listrect.border.width
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: thumb.width + (listrect.border.width * 2)
                                     
                                     spacing: 2
                                     
