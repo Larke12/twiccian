@@ -206,14 +206,18 @@ ApplicationWindow {
                         hoverEnabled: true
                         
                         onEntered: {
-                            vcontrols.opacity = 1.0
-                            gradientItem.visible = true
                             if (proview.visible) {
                                 propic.opacity = 0.7
                                 prodrop.opacity = 0.7
+                                
+                                vcontrols.opacity = 0.0
+                                gradientItem.visible = false
                             } else {
                                 propic.opacity = 1.0
                                 prodrop.opacity = 1.0
+                                
+                                vcontrols.opacity = 1.0
+                                gradientItem.visible = true
                             }
                         }
                         
@@ -294,7 +298,7 @@ ApplicationWindow {
                                     onClicked: {
                                         if (!proview.visible) {
                                             proview.visible = true
-                                            propic.opacity = 0.7
+                                            propic.opacity = 0.6
                                             vcontrols.visible = false
                                             gradientItem.visible = false
                                         } else {
