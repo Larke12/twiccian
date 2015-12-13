@@ -20,6 +20,7 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/prctl.h>
 #include <dirent.h>
 #include <fcntl.h>
 
@@ -29,6 +30,7 @@
 
 #include <QObject>
 #include <QtGlobal>
+#include <QProcess>
 #include <QOpenGLContext>
 #include <QGuiApplication>
 
@@ -184,36 +186,10 @@ int main(int argc, char **argv)
     closedir(procdir);
 
     // Run the daemon if necessary
-    if (!daemon_running) {
-        // First, fork the daemon
-        pid_t pid = fork();
-
-        // Check for forking error
-        if (pid < 0) {
-            perror("Could not create new process to run the daemon");
-            exit(-1);
-        } else if (pid == 0) {
-            // Create a new process group for the child
-            //pid_t sid = setsid();
-
-            //if (sid < 0) {
-                //perror("Couldn't create new process group for the daemon");
-                //exit(-1);
-            //} else {
-                signal(SIGCHLD, SIG_IGN);
-                signal(SIGHUP, SIG_IGN);
-                chdir("/");
-                //for (int x = sysconf(_SC_OPEN_MAX); x>0; x--) {
-                //    close (x);
-                //}
-                int ret = execlp("twicciand", "twicciand", NULL);
-                if (ret < 0) {
-                    perror("Couldn't run daemon");
-                    exit(-1);
-                }
-            //}
-        }
-    }
+    QString program = "twicciand";
+    QStringList args;
+    QProcess *daemon = new QProcess();
+    daemon->start(program, args);
 
     // Return to the qt application's working directory
     chdir(cwd);

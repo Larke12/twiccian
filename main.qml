@@ -589,7 +589,7 @@ ApplicationWindow {
                                 Slider {
                                     id: volumeslider
                                     tickmarksEnabled: false
-                                    value: 50
+                                    value: 100
                                     minimumValue: 0
                                     maximumValue: 100
                                     stepSize: 5

@@ -264,9 +264,6 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
     QString responseJson = "";
     responseJson.append(result->constData());
 
-    printf("\n\n%s\n\n\n", responseJson.toStdString().c_str());
-    fflush(stdout);
-
     Document json;
     json.Parse(responseJson.toStdString().c_str());
     searches.clear();
