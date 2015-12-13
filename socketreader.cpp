@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Twiccian.  If not, see <http://www.gnu.org/licenses/>.
 
+#define TIMEOUT 5000
+
 #include "socketreader.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -28,7 +30,7 @@ SocketReader::SocketReader() {
     // Initialize tcpSocket
     sock = new QTcpSocket(this);
     sock->connectToHost("localhost", 1921);
-    sock->waitForConnected();
+    sock->waitForConnected(TIMEOUT);
 }
 
 SocketReader::~SocketReader() {
@@ -64,6 +66,9 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
 
         printf("\nThe RESULT IS: %s\n", buffer->constData());
         fflush(stdout);
+    } else {
+        QString str = " {\"result\":\"\"}";
+        buffer->append(str);
     }
 
     return buffer;
@@ -90,6 +95,9 @@ QByteArray *SocketReader::getFollowing() {
         //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
+    } else {
+        QString str = " {\"result\":\"\"}";
+        buffer->append(str);
     }
 
     return buffer;
