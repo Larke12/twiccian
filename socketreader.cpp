@@ -369,6 +369,15 @@ QObject* SubmitUrlObj::getStreamer() {
     return streamer;
 }
 
+QObject* SubmitUrlObj::getResult() {
+    return curResult;
+}
+
+void SubmitUrlObj::setResult(int index) {
+    this->curResult = qobject_cast<Result*>(results[index]);
+}
+
+
 void SubmitUrlObj::setStreamer(int index) {
     this->streamer = qobject_cast<Result*>(results[index])->getStreamer();
 }

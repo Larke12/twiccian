@@ -176,6 +176,7 @@ ApplicationWindow {
                                     updateStream.visible = true
                                     window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
+                                    apiobj.setResult(list.currentIndex)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
@@ -391,7 +392,7 @@ ApplicationWindow {
                                 height: renderer.height
                                 visible: false
                                 
-                                WebView {
+                                /*WebView {
                                     id: webview
                                     
                                     /*url: {
@@ -399,7 +400,7 @@ ApplicationWindow {
                                             apiobj.getStreamer().getProfileUrl()
                                             console.log(apiobj.getStreamer().getProfileUrl())
                                         }
-                                    }*/
+                                    }
                                     anchors.fill: parent
                                     onNavigationRequested: {
                                         // detect URL scheme prefix, most likely an external link
@@ -411,7 +412,7 @@ ApplicationWindow {
                                             // delegate request.url here
                                         }
                                     }
-                                }
+                                }*/
                             }
                             
                             // Streamer Profile Photo
@@ -433,13 +434,35 @@ ApplicationWindow {
                                     //fillMode: Image.PreserveAspectFit
                                     // Source is set at time of chat loading
                                 }
+
+                                Rectangle {
+                                    id: titlebkg
+                                    color: "#AA000000"
+                                    width: childrenRect.width + 20
+                                    height: childrenRect.height
+                                    anchors.left: avatar.right
+                                    anchors.leftMargin: 10
+
+                                    Text {
+                                        id: titletext
+                                        anchors.left: titlebkg.left
+                                        anchors.leftMargin: 10
+                                        width: renderer.width - avatar.width - 75
+                                        font.bold: true
+                                        font.pointSize: 18
+                                        color: "white"
+                                        text: ""
+                                        wrapMode: Text.Wrap
+                                    }
+                                }
+
                                 
                                 
                                 // Click to view profile in webview
                                 MouseArea {
                                     anchors.fill: parent
                                     
-                                    onClicked: {
+                                    /*onClicked: {
                                         if (!proview.visible) {
                                             proview.visible = true
                                             propic.opacity = 0.6
@@ -450,9 +473,9 @@ ApplicationWindow {
                                             propic.opacity = 1.0
                                             vcontrols.visible = true
                                             gradientItem.visible = true
-                                            webview.stop();
+                                            //webview.stop();
                                         }
-                                    }
+                                    }*/
                                 }
                             }
                             
@@ -618,7 +641,8 @@ ApplicationWindow {
                             chat.reload()
                             updateStream.visible = false
 
-                            webview.url = apiobj.getStreamer().getProfileUrlAsUrl() + "/profile"
+                            //webview.url = apiobj.getStreamer().getProfileUrlAsUrl() + "/profile"
+                            titletext.text = apiobj.getResult().getTitle()
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
                         }
