@@ -18,6 +18,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
+import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
 import QtWebKit 3.0
 import QtWebEngine 1.1
@@ -453,39 +454,6 @@ ApplicationWindow {
                     
                     spacing: 5
                     
-                    
-                    Row {
-                        id: winwidth
-                        
-                        Text {
-                            text: "Default Width: "
-                            color: "#FFFFFF"
-                        }
-                        
-                        TextInput {
-                            id: reswinwidth
-                            text: window.width
-                            color: "#FFFFFF"
-                            cursorVisible: false
-                        }
-                    }
-                    
-                    Row {
-                        id: winheight
-                        
-                        Text {
-                            text: "Default Height: "
-                            color: "#FFFFFF"
-                        }
-                        
-                        TextInput {
-                            id: reswinheight
-                            text: window.height
-                            color: "#FFFFFF"
-                            cursorVisible: false
-                        }
-                    }
-
                     CheckBox {
                         id: theme
                         opacity: 1.0
@@ -498,6 +466,10 @@ ApplicationWindow {
                         }
                         
                         checked: false
+
+                        Settings {
+                            property alias checked: theme.checked
+                        }
                         
                         /*onClicked: {
                             if (!checked) {
@@ -507,32 +479,6 @@ ApplicationWindow {
                             }
                         }*/
                     }
-                    
-                    CheckBox {
-                        id: resconfig
-                        opacity: 1.0
-                        
-                        style: CheckBoxStyle {
-                                label: Text {
-                                    color: "#FFFFFF"
-                                    text: "Logout (coming soon)"
-                                }
-                        }
-                        
-                        checked: false
-                        
-                        onClicked: { 
-                            if (checked) {
-                                // delete local config file (?)
-                                // uncheck
-                            }
-                        }
-                    }
-                    
-                    
-                    // BTT toggle
-                    
-                    // FFZ toggle
                 }
             }
         }
