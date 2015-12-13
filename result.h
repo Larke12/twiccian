@@ -23,13 +23,13 @@
 class Result : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString title READ getTitle WRITE setTitle CONSTANT)
-    Q_PROPERTY(qint16 viewerCount READ getViewerCount WRITE setViewerCount CONSTANT)
-    Q_PROPERTY(QDateTime startTime READ getStartTime WRITE setStartTime CONSTANT)
-    Q_PROPERTY(QString thumbnailUrl READ getThumbnailUrl WRITE setThumbnailUrl CONSTANT)
-    Q_PROPERTY(QString game READ getGame WRITE setGame CONSTANT)
-    Q_PROPERTY(Account* streamer READ getStreamer WRITE setStreamer CONSTANT)
-    Q_PROPERTY(bool isLive READ getIsLive WRITE setIsLive CONSTANT)
+    Q_PROPERTY(QString title READ getTitle WRITE setTitle)
+    Q_PROPERTY(qint16 viewerCount READ getViewerCount WRITE setViewerCount)
+    Q_PROPERTY(QDateTime startTime READ getStartTime WRITE setStartTime)
+    Q_PROPERTY(QString thumbnailUrl READ getThumbnailUrl WRITE setThumbnailUrl)
+    Q_PROPERTY(QString game READ getGame WRITE setGame)
+    Q_PROPERTY(Account* streamer READ getStreamer WRITE setStreamer)
+    Q_PROPERTY(bool isLive READ getIsLive WRITE setIsLive)
 
 private:
     QString title;
