@@ -194,12 +194,12 @@ int main(int argc, char **argv)
             exit(-1);
         } else if (pid == 0) {
             // Create a new process group for the child
-            pid_t sid = setsid();
+            //pid_t sid = setsid();
 
-            if (sid < 0) {
-                perror("Couldn't create new process group for the daemon");
-                exit(-1);
-            } else {
+            //if (sid < 0) {
+                //perror("Couldn't create new process group for the daemon");
+                //exit(-1);
+            //} else {
                 signal(SIGCHLD, SIG_IGN);
                 signal(SIGHUP, SIG_IGN);
                 chdir("/");
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
                     perror("Couldn't run daemon");
                     exit(-1);
                 }
-            }
+            //}
         }
     }
 
