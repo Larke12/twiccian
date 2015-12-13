@@ -181,11 +181,13 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     
                     MouseArea {
+                        id: mpvMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
                         
                         onEntered: {
                             vcontrols.opacity = 1.0
+                            gradientItem.visible = true
                             if (proview.visible) {
                                 propic.opacity = 0.7
                                 prodrop.opacity = 0.7
@@ -197,6 +199,7 @@ ApplicationWindow {
                         
                         onExited: {
                             vcontrols.opacity = 0.0
+                            gradientItem.visible = false
                             propic.opacity = 0.0
                             prodrop.opacity = 0.0
                         }
@@ -246,7 +249,7 @@ ApplicationWindow {
                             // Streamer Profile Photo
                             Rectangle {
                                 id: propic
-                                width: renderer.width / 6
+                                width: 150
                                 height: propic.width
                                 anchors.top: parent.top
                                 anchors.topMargin: propic.height / 4
@@ -273,10 +276,12 @@ ApplicationWindow {
                                             proview.visible = true
                                             propic.opacity = 0.7
                                             vcontrols.visible = false
+                                            gradientItem.visible = false
                                         } else {
                                             proview.visible = false
                                             propic.opacity = 1.0
                                             vcontrols.visible = true
+                                            gradientItem.visible = true
                                             webview.stop();
                                         }
                                     }
@@ -295,22 +300,28 @@ ApplicationWindow {
                                 source: propic
                             }
                             
-                            
-                            LinearGradient {
+                            Item {
+                                id: gradientItem
+                                width: parent.width
+                                height: vcontrols.height * 4
                                 // Anchor gradient to bottom of player
                                 anchors.bottom: parent.bottom
-                                anchors.bottomMargin: vcontrols.height
-                                anchors.left: parent.left
-                                anchors.leftMargin: (parent.width / 2) - (vcontrols.width / 2)
+                                anchors.bottomMargin: -vcontrols.height
+                                visible: false
                                 
-                                //cached: true
-                                
-                                start: Qt.point(0, 0)
-                                end: Qt.point(vcontrols.width, vcontrols.height)
-                                
-                                gradient: Gradient {
-                                    GradientStop { position: 0.0; color: "#00000000" }
-                                    GradientStop { position: 1.0; color: "#FF000000" }
+                                LinearGradient {
+                                    id: gradientArt
+                                    anchors.fill: parent
+                                    
+                                    //cached: true
+                                    
+                                    start: Qt.point(0, 0)
+                                    end: Qt.point(0, 60)
+                                    
+                                    gradient: Gradient {
+                                        GradientStop { position: 0.0; color: "#00000000" }
+                                        GradientStop { position: 1.0; color: "#FF000000" }
+                                    }
                                 }
                             }
                             
