@@ -443,6 +443,7 @@ ApplicationWindow {
                             chat.reload()
                             updateStream.visible = false
 
+                            webview.url = apiobj.getStreamer().getProfileUrlAsUrl() + "/profile"
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
                         }

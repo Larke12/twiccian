@@ -20,6 +20,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QObject>
+#include <QUrl>
 
 class Account : public QObject
 {
@@ -35,6 +36,7 @@ public:
     Q_INVOKABLE QString getName();
     void setName(QString argv);
     Q_INVOKABLE QString getProfileUrl();
+    Q_INVOKABLE QUrl getProfileUrlAsUrl();
     void setProfileUrl(QString argv);
     Q_INVOKABLE QString getAvatarUrl();
     void setAvatarUrl(QString argv);

@@ -41,6 +41,10 @@ QString Account::getProfileUrl() {
     return profileUrl;
 }
 
+QUrl Account::getProfileUrlAsUrl() {
+    return QUrl(profileUrl);
+}
+
 void Account::setProfileUrl(QString argv) {
     this->profileUrl = argv;
 }
