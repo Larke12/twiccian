@@ -178,15 +178,19 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
 
     Document json;
     json.Parse(urlJson.toStdString().c_str());
-    Value& res = json["result"];
-    printf("%s\n", res.GetString());
-    fflush(stdout);
+    if (json.HasMember("result")) {
+        Value& res = json["result"];
+        printf("%s\n", res.GetString());
+        fflush(stdout);
 
-    QString url(res.GetString());
-    this->submittedUrl = url;
+        QString url(res.GetString());
+        this->submittedUrl = url;
 
-    printf("TEST: %s", url.toStdString().c_str());
-    fflush(stdout);
+        printf("TEST: %s", url.toStdString().c_str());
+        fflush(stdout);
+    } else {
+        QString url("");
+    }
 }
 
 QString SubmitUrlObj::getUrl()
