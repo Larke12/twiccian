@@ -48,6 +48,12 @@ ApplicationWindow {
         visible: false
     }
 
+    Item {
+        id: isLight
+        opacity: 0.0
+        visible: apiobj.isLightTheme();
+    }
+
     // A Qt view split into tabs, tabs update and play even when not in view once opened
     TabView {
         id: frame
@@ -425,13 +431,20 @@ ApplicationWindow {
                     id: chat
                     width: 300
                     
-                    url: "assets/sock.html"
+                    url: {
+                        if (isLight.visible == false) {
+                            "assets/sock.html"
+                        } else {
+                            "assets/sock_light.html"
+                        }
+                    }
                     onVisibleChanged: {
                         if (frame.currentIndex == 1 && updateStream.visible == true) {
                             chat.reload()
                             updateStream.visible = false
-                            
+
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
+                            //console.log(apiobj.getStreamer().getAvatarUrl())
                         }
                     }
 
@@ -461,23 +474,26 @@ ApplicationWindow {
                         style: CheckBoxStyle {
                                 label: Text {
                                     color: "#FFFFFF"
-                                    text: "Light Theme (coming soon)"
+                                    text: "Light Theme"
                                 }
                         }
                         
                         checked: false
 
                         Settings {
+                            id: themeSettings
                             property alias checked: theme.checked
                         }
                         
-                        /*onClicked: {
+                        onClicked: {
                             if (!checked) {
                                 // set theme to black
+                               isLight.visible = false
                             } else {
                                 // set theme to white
+                               isLight.visible = true
                             }
-                        }*/
+                        }
                     }
                 }
             }

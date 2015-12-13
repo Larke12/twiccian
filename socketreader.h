@@ -16,6 +16,7 @@
 #include <QTcpSocket>
 #include <QQmlContext>
 #include <QNetworkSession>
+#include <QSettings>
 #include "account.h"
 #include "result.h"
 #include "main.h"
@@ -68,4 +69,5 @@ public:
     Q_INVOKABLE QObject* getUser();
     Q_INVOKABLE void setContext(QQmlContext *ctxt);
     Q_INVOKABLE bool isAuthenticated();
+    Q_INVOKABLE bool isLightTheme();
 };

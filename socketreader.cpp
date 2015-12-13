@@ -211,6 +211,13 @@ bool SubmitUrlObj::isAuthenticated() {
     return res.GetBool();
 }
 
+bool SubmitUrlObj::isLightTheme() {
+    QSettings settings;
+    //bool res = settings.value("theme/checked").toBool();
+    bool res = settings.value("checked").toBool();
+    return res;
+}
+
 void SubmitUrlObj::requestFollowing() {
     // Pass string to daemon
     SocketReader *reader = new SocketReader();
