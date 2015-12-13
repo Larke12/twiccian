@@ -77,7 +77,9 @@ QByteArray *SocketReader::searchStreams(QString query) {
     QByteArray *buffer = new QByteArray();
 
     if (sock->state() == QAbstractSocket::ConnectedState) {
-        std::string json = " { \"api\":\"twitch\",\"name\":\"searchStreams\",\"params\":{\"query\":\"" + query.toStdString() + "\",\"limit\":10,\"offset\":0}}";
+        QString fixed;
+        fixed.append(QUrl::toPercentEncoding(query));
+        std::string json = " { \"api\":\"twitch\",\"name\":\"searchStreams\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"limit\":10,\"offset\":0}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
@@ -281,7 +283,11 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
                                                      "yyyy-MM-dd'T'hh:mm:ss'Z'"));
             next->setThumbnailUrl(stream["preview"]["medium"].GetString());
-            next->setGame(stream["game"].GetString());
+            if (stream["game"].IsNull()) {
+                next->setGame("");
+            } else {
+                next->setGame(stream["game"].GetString());
+            }
             accnext->setName(channel["name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
             if (channel["logo"].IsNull()) {
@@ -327,7 +333,11 @@ void SubmitUrlObj::requestFollowing() {
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
                                                      "yyyy-MM-dd'T'hh:mm:ss'Z'"));
             next->setThumbnailUrl(stream["preview"]["medium"].GetString());
-            next->setGame(stream["game"].GetString());
+            if (stream["game"].IsNull()) {
+                next->setGame("");
+            } else {
+                next->setGame(stream["game"].GetString());
+            }
             accnext->setName(channel["name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
             if (channel["logo"].IsNull()) {
