@@ -124,12 +124,32 @@ ApplicationWindow {
                                     source: thumbnailUrl
                                 }
                                 
-                                Text {
+                                Column {
+                                    id: streamInfo
                                     x: parent.x + 180
-                                    text: title
-                                    width: window.width * 0.75 - 180
-                                    font.bold: true
-                                    wrapMode: Text.Wrap
+                                    
+                                    spacing: 2
+                                    
+                                    Text {
+                                        text: title
+                                        width: window.width * 0.75 - 180
+                                        font.bold: true
+                                        wrapMode: Text.Wrap
+                                    }
+                                    
+                                    Text {
+                                        text: "Now Playing " + game
+                                        width: window.width * 0.75 - 180
+                                        font.bold: false
+                                        wrapMode: Text.Wrap
+                                    }
+                                    
+                                    Text {
+                                        text: streamer.getName() + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                        width: window.width * 0.75 - 180
+                                        font.bold: false
+                                        wrapMode: Text.Wrap
+                                    }
                                 }
                                 
                                 MouseArea {
