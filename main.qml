@@ -145,7 +145,7 @@ ApplicationWindow {
                             onCurrentIndexChanged: {
                                 if (list.currentIndex != -1 && follows.selected) {
                                     updateStream.visible = true
-                                    window.title = "Twiccian | " + apiobj.getResults()[list.currentIndex].getTitle()
+                                    window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
@@ -157,10 +157,6 @@ ApplicationWindow {
                     }
                 }
             }
-
-            //results:Result[]
-            //queryLive();
-            //queryRecent();
         }
 
         Tab {
@@ -449,7 +445,6 @@ ApplicationWindow {
                     }
 
                 }
-                //closeChat();
             }
             //close();
         }

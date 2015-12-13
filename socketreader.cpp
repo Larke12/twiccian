@@ -123,7 +123,7 @@ QByteArray *SocketReader::getAuthState() {
             return buffer;
         }
 
-        qint16 size = sock->bytesAvailable();
+        //qint16 size = sock->bytesAvailable();
 
         buffer->append(sock->readAll());
 
