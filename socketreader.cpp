@@ -190,6 +190,7 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
         fflush(stdout);
     } else {
         QString url("");
+        this->submittedUrl = url;
     }
 }
 
@@ -216,11 +217,17 @@ bool SubmitUrlObj::isAuthenticated() {
 
     Document json;
     json.Parse(urlJson.toStdString().c_str());
-    Value& res = json["result"];
-    printf("%s\n", res.GetBool() ? "true" : "false");
-    fflush(stdout);
+    if (!json.HasMember("result")) {
+        printf("Could not check if daemon is authenticated");
+        fflush(stdout);
+        return false;
+    } else {
+        Value& res = json["result"];
+        printf("%s\n", res.GetBool() ? "true" : "false");
+        fflush(stdout);
 
-    return res.GetBool();
+        return res.GetBool();
+    }
 }
 
 bool SubmitUrlObj::isLightTheme() {
@@ -240,27 +247,29 @@ void SubmitUrlObj::requestFollowing() {
 
     Document json;
     json.Parse(responseJson.toStdString().c_str());
-    Value& resultArr = json["result"]["streams"];
     results.clear();
-    for (uint i=0; i < resultArr.Size(); i++) {
-        Result* next = new Result();
-        Account* accnext = new Account();
-        const Value& stream = resultArr[i];
-        const Value& channel = stream["channel"];
+    if (json.HasMember("result")) {
+        Value& resultArr = json["result"]["streams"];
+        for (uint i=0; i < resultArr.Size(); i++) {
+            Result* next = new Result();
+            Account* accnext = new Account();
+            const Value& stream = resultArr[i];
+            const Value& channel = stream["channel"];
 
-        next->setTitle(channel["status"].GetString());
-        next->setViewerCount(stream["viewers"].GetInt());
-        next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
-                                                 "yyyy-MM-dd'T'hh:mm:ss'Z'"));
-        next->setThumbnailUrl(stream["preview"]["medium"].GetString());
-        next->setGame(stream["game"].GetString());
-        accnext->setName(channel["name"].GetString());
-        accnext->setProfileUrl(channel["url"].GetString());
-        accnext->setAvatarUrl(channel["logo"].GetString());
-        accnext->setFollows(channel["followers"].GetInt());
-        next->setStreamer(accnext);
-        next->setIsLive(stream["is_playlist"].GetBool());
-        results.append(next);
+            next->setTitle(channel["status"].GetString());
+            next->setViewerCount(stream["viewers"].GetInt());
+            next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
+                                                     "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+            next->setThumbnailUrl(stream["preview"]["medium"].GetString());
+            next->setGame(stream["game"].GetString());
+            accnext->setName(channel["name"].GetString());
+            accnext->setProfileUrl(channel["url"].GetString());
+            accnext->setAvatarUrl(channel["logo"].GetString());
+            accnext->setFollows(channel["followers"].GetInt());
+            next->setStreamer(accnext);
+            next->setIsLive(stream["is_playlist"].GetBool());
+            results.append(next);
+        }
     }
 
     for (int i=0; i<results.count(); i++) {
