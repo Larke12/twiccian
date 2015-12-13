@@ -116,7 +116,7 @@ ApplicationWindow {
                                 border.width: 2
                                 radius: 3
                                 width: parent.width * 0.75
-                                color: (ListView.isCurrentItem && follows.selected) ? "#0000FF" : "#FFFFFF"
+                                color: (ListView.isCurrentItem && follows.selected) ? "#B9A3E3" : "#FFFFFF"
                                 
                                 Image {
                                     id: thumb
