@@ -189,7 +189,7 @@ ApplicationWindow {
                                     updateStream.visible = true
                                     window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
-                                    apiobj.setResult(list.currentIndex)
+                                    apiobj.setResult(list.currentIndex, 0)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
@@ -324,6 +324,7 @@ ApplicationWindow {
                                     updateStream.visible = true
                                     window.title = apiobj.getSearches()[searchlist.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamerSearch(searchlist.currentIndex)
+                                    apiobj.setResult(searchlist.currentIndex, 1)
                                     console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())

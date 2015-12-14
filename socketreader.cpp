@@ -373,8 +373,12 @@ QObject* SubmitUrlObj::getResult() {
     return curResult;
 }
 
-void SubmitUrlObj::setResult(int index) {
-    this->curResult = qobject_cast<Result*>(results[index]);
+void SubmitUrlObj::setResult(int index, int list) {
+    if (list == 0) {
+        this->curResult = qobject_cast<Result*>(results[index]);
+    } else {
+        this->curResult = qobject_cast<Result*>(searches[index]);
+    }
 }
 
 

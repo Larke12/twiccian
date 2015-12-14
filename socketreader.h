@@ -71,7 +71,7 @@ public:
     Q_INVOKABLE QList<QObject*> getSearches();
     Q_INVOKABLE QObject* getStreamer();
     Q_INVOKABLE QObject* getResult();
-    Q_INVOKABLE void setResult(int index);
+    Q_INVOKABLE void setResult(int index, int list);
     Q_INVOKABLE void setStreamer(int index);
     Q_INVOKABLE void setStreamerSearch(int index);
     Q_INVOKABLE QObject* getUser();
