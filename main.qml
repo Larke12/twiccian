@@ -405,30 +405,8 @@ ApplicationWindow {
                                 width: renderer.width
                                 height: renderer.height
                                 visible: false
-                                
-                                /*WebView {
-                                    id: webview
-                                    
-                                    /*url: {
-                                        if (updateStream.visible == true) {
-                                            apiobj.getStreamer().getProfileUrl()
-                                            console.log(apiobj.getStreamer().getProfileUrl())
-                                        }
-                                    }
-                                    anchors.fill: parent
-                                    onNavigationRequested: {
-                                        // detect URL scheme prefix, most likely an external link
-                                        var schemaRE = /^\w+:/;
-                                        if (schemaRE.test(request.url)) {
-                                            request.action = WebView.AcceptRequest;
-                                        } else {
-                                            request.action = WebView.IgnoreRequest;
-                                            // delegate request.url here
-                                        }
-                                    }
-                                }*/
                             }
-                            
+
                             // Streamer Profile Photo
                             Rectangle {
                                 id: propic
@@ -471,25 +449,13 @@ ApplicationWindow {
                                 }
 
                                 
-                                
-                                // Click to view profile in webview
+                                // Click to view profile in native browser
                                 MouseArea {
                                     anchors.fill: parent
                                     
-                                    /*onClicked: {
-                                        if (!proview.visible) {
-                                            proview.visible = true
-                                            propic.opacity = 0.6
-                                            vcontrols.visible = false
-                                            gradientItem.visible = false
-                                        } else {
-                                            proview.visible = false
-                                            propic.opacity = 1.0
-                                            vcontrols.visible = true
-                                            gradientItem.visible = true
-                                            //webview.stop();
-                                        }
-                                    }*/
+                                    onClicked: {
+                                            Qt.openUrlExternally(apiobj.getStreamer().getProfileUrlAsUrl() + "/profile")
+                                    }
                                 }
                             }
                             
@@ -655,7 +621,6 @@ ApplicationWindow {
                             chat.reload()
                             updateStream.visible = false
 
-                            //webview.url = apiobj.getStreamer().getProfileUrlAsUrl() + "/profile"
                             titletext.text = apiobj.getResult().getTitle()
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
