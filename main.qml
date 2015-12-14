@@ -67,7 +67,7 @@ ApplicationWindow {
             title: "Following"
 
             onLoaded: {
-                apiobj.requestFollowing()
+                //apiobj.requestFollowing()
             }
 
             ScrollView {
@@ -76,12 +76,12 @@ ApplicationWindow {
                 horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
 
-                onVisibleChanged: {
+                /*onVisibleChanged: {
                     if (frame.currentIndex == 0) {
                         follows.selected = false
                         apiobj.requestFollowing()
                     }
-                }
+                }*/
 
 
                 Item {
@@ -393,7 +393,7 @@ ApplicationWindow {
                             onVisibleChanged: {
                                 if (frame.currentIndex == 2 && updateStream.visible == true) {
                                     if (apiobj.getUrl() !== "") {
-                                        renderer.command(["stop"])
+                                        //renderer.command(["stop"])
                                         renderer.command(["loadfile", apiobj.getUrl()])
                                     }
                                 }
@@ -423,7 +423,6 @@ ApplicationWindow {
                                     id: avatar
                                     width: propic.width
                                     height: propic.height
-                                    //fillMode: Image.PreserveAspectFit
                                     // Source is set at time of chat loading
                                 }
 

@@ -176,6 +176,7 @@ int main(int argc, char **argv)
 
             // If the command is twicciand, we found our match; break out
             if (strncmp(cmdline, "twicciand", 9) == 0) {
+                // WARNING
                 daemon_running = true;
                 printf("Daemon is already running!\n");
                 break;
