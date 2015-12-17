@@ -32,6 +32,7 @@ ApplicationWindow {
 	visible: true
     color: "#FF000000"
     title: "Twiccian"
+    property string profileUrl: ""
 
     /*
       This section is for API calls between QML and C++
@@ -190,7 +191,8 @@ ApplicationWindow {
                                     window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
                                     apiobj.setResult(list.currentIndex, 0)
-                                    console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    //console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    profileUrl = "http://www.twitch.tv/"+apiobj.getStreamer().getName()
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     frame.currentIndex = 2
@@ -325,7 +327,7 @@ ApplicationWindow {
                                     window.title = apiobj.getSearches()[searchlist.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamerSearch(searchlist.currentIndex)
                                     apiobj.setResult(searchlist.currentIndex, 1)
-                                    console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    //console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     frame.currentIndex = 2
@@ -453,7 +455,7 @@ ApplicationWindow {
                                     anchors.fill: parent
                                     
                                     onClicked: {
-                                            Qt.openUrlExternally(apiobj.getStreamer().getProfileUrlAsUrl() + "/profile")
+                                            Qt.openUrlExternally(profileUrl + "/profile")
                                     }
                                 }
                             }
