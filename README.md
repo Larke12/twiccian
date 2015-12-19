@@ -42,6 +42,7 @@ pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffec
 You'll also need to install the following go packages:
 ```
 go get "github.com/walle/cfg"
+go get "github.com/gorilla/handlers"
 go get "github.com/gorilla/websocket"
 go get "github.com/sorcix/irc"
 ```
