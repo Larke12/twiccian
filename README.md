@@ -36,7 +36,7 @@ Twiccian requires the following libraries to run:
 
 They can be installed from pacman:
 ``` 
-pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffects rapidjson youtube-dl git go
+sudo pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffects mpv rapidjson youtube-dl git go
 ```
 
 You'll also need to install the following go packages:
