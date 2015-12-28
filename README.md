@@ -47,14 +47,14 @@ go get "github.com/gorilla/websocket"
 go get "github.com/sorcix/irc"
 ```
 
-At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is probably your best bet. If you want to clone this repo instead, install the depencencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfuly building twicciand. You will have to run qmake multiple times if you are missing dependencies.
+At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is probably your best bet. If you want to clone this repo instead, install the depencencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfuly building twicciand. You will have to run `qmake` multiple times if you are missing dependencies.
 ```
 qmake
 make
 ./Twiccian
 ```
 
-More build information will be put here soon...
+More build information will be put here soon... The go web service page needs to go to `/use/share/twicciand` so the app can login.
 
 ## Other Documentation
 At the moment, all other documentation can be found on our [wiki](https://github.com/octotep/twiccian/wiki), though it's in a state of flux right now.
