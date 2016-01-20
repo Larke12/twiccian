@@ -36,7 +36,7 @@ Twiccian requires the following libraries to run:
 
 They can be installed from pacman (recommended you use pacaur or similar):
 ``` 
-sudo pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffects mpv rapidjson youtube-dl git go
+$ sudo pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffects mpv rapidjson youtube-dl git go
 ```
 
 You'll also need to install the following go packages:
@@ -49,8 +49,8 @@ go get "github.com/sorcix/irc"
 
 At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is probably your best bet. If you want to clone this repo instead, install the depencencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfuly building twicciand. You will have to run `qmake` multiple times if you are missing dependencies.
 ```
-qmake
-make
+$ qmake
+$ make
 ```
 
 Now that both parts of Twiccian have been built, the next part either works or needs to be worked around. Run `./twicciand` where it was built and follow the instructions from there. If you hit a 404, navigate to `~/.config/twicciand/twicciand.config` and add the following to the file:
@@ -61,7 +61,7 @@ token= [copy the token code that appears between #access_token= and the followin
 
 Copy the two HTML files from the `assets` folder to `/usr/share/twiccian` and then restart `twicciand`. If the daemon runs without saying you have no token/errors, head over to where you built Twiccian and run the application!
 ```
-./Twiccian
+$ ./Twiccian
 ```
 
 ## Known Issues
