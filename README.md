@@ -34,7 +34,7 @@ Twiccian requires the following libraries to run:
 - rapidjson
 - Go
 
-They can be installed from pacman:
+They can be installed from pacman (recommended you use pacaur or similar):
 ``` 
 sudo pacman -S qt5-base qt5-quickcontrols qt5-webengine qt5-webkit qt5-graphicaleffects mpv rapidjson youtube-dl git go
 ```
@@ -51,10 +51,24 @@ At the moment, we don't have an official way to actually _install_ it, so if you
 ```
 qmake
 make
+```
+
+Now that both parts of Twiccian have been built, the next part either works or needs to be worked around. Run `./twicciand` where it was built and follow the instructions from there. If you hit a 404, navigate to `~/.config/twicciand/twicciand.config` and add the following to the file:
+```
+user= [your username]
+token= [copy the token code that appears between #access_token= and the following & in your browser]
+```
+
+Copy the two HTML files from the `assets` folder to `/usr/share/twiccian` and then restart `twicciand`. If the daemon runs without saying you have no token/errors, head over to where you built Twiccian and run the application!
+```
 ./Twiccian
 ```
 
-More build information will be put here soon... The go web service page needs to go to `/use/share/twicciand` so the app can login.
+## Known Issues
+A lot of this should be automated, but sometimes it doesn't work. If we ever come back to this application, expect these to be fixed.
+
+* The daemon doesn't always write to the files or make the directories.
+* Twiccian will have segmentation faults and rapidjson errors after any action.
 
 ## Other Documentation
 At the moment, all other documentation can be found on our [wiki](https://github.com/octotep/twiccian/wiki), though it's in a state of flux right now.
