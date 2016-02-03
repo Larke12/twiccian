@@ -54,7 +54,7 @@ $ go get "github.com/gorilla/websocket"
 $ go get "github.com/sorcix/irc"
 ```
 
-At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is your best option. If you want to clone this repo instead, install the depencencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfuly building `twicciand` (using go).
+At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is your best option. If you want to clone this repo instead, install the dependencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfully building `twicciand` (using go).
 ```
 $ qmake
 $ make
