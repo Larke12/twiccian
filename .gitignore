@@ -33,6 +33,8 @@ Thumbs.db
 *.rc
 /.qmake.cache
 /.qmake.stash
+/debug/
+Twiccian
 
 # xemacs temporary files
 *.flc
