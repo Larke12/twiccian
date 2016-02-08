@@ -550,18 +550,20 @@ ApplicationWindow {
                                     
                                     checked: false
                                     
+                                    
                                     onClicked: {
                                         if (checked) {
                                             renderer.command(["set", "fullscreen", "yes"])
                                             window.showFullScreen()
                                             frame.tabsVisible = false
                                             splitview.orientation = Qt.Vertical
+                                            // No need to set chat width, set via renderer width
                                             renderer.width = window.width
                                         } else {
                                             renderer.command(["set", "fullscreen", "no"])
-                                            splitview.orientation = Qt.Horizontal
-                                            frame.tabsVisible = true
                                             window.showNormal()
+                                            frame.tabsVisible = true
+                                            splitview.orientation = Qt.Horizontal
                                             chat.width = 300
                                             renderer.width = window.width - chat.width
                                         }
