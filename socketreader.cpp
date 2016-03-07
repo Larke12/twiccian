@@ -231,6 +231,7 @@ bool SubmitUrlObj::isAuthenticated() {
 
     QString urlJson = "";
     urlJson.append(result->constData());
+    printf("If you have a rapidjson error, make sure the daemon is running!");
     printf("Supposed result: %s\n", urlJson.toStdString().c_str());
     fflush(stdout);
 
