@@ -231,8 +231,8 @@ bool SubmitUrlObj::isAuthenticated() {
 
     QString urlJson = "";
     urlJson.append(result->constData());
-    printf("If you have a rapidjson error, make sure the daemon is running!");
-    printf("Supposed result: %s\n", urlJson.toStdString().c_str());
+    printf("If you have a rapidjson error, make sure the daemon is running!\n");
+    //printf("Supposed result: %s\n", urlJson.toStdString().c_str());
     fflush(stdout);
 
     Document json;
@@ -243,7 +243,7 @@ bool SubmitUrlObj::isAuthenticated() {
         return false;
     } else {
         Value& res = json["result"];
-        printf("%s\n", res.GetBool() ? "true" : "false");
+        //printf("%s\n", res.GetBool() ? "true" : "false");
         fflush(stdout);
 
         return res.GetBool();
