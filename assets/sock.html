@@ -64,7 +64,7 @@
 					     }
 		</style>
 		</head>
-		<body onload="fetchEmotes()" afterload="">
+		<body onload="fetchEmotes(); fetchBadges();" afterload="">
 
 		<div id="chat"></div>
 		<div id="footer">
@@ -115,6 +115,22 @@
 		    return Httpreq.responseText;          
 		}
 
+		function fetchBadges() {
+			var json = JSON.parse(localStorage.getItem('jsoncache'));
+
+			if (!json) {
+				json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/test_user1/badges"))["badges"];
+				localStorage.setItem('jsoncache', JSON.stringify(json));
+			}
+
+			console.log(json);
+			window.tagMap = {};
+			var i = null;
+			for (i = 0; json.length > i; i += 1) {
+				tagMap[json[i].code] = json[i].id;
+			}
+		}
+			
 		function fetchEmotes() {
 		    var json = JSON.parse(localStorage.getItem('jsoncache'));
 		    if (!json) {
@@ -322,9 +338,15 @@
 		    console.log(searchEmote("B)"));
 		}
 
+		function searchBadge(badge) {
+			if (window.tagMap[badge] != null)
+				return window.tagMap[badge];
+			return -1;
+		}
+		
 		function searchEmote(emote) {
 		    if (window.tagMap[emote] != null)
-		    return window.tagMap[emote];
+			    return window.tagMap[emote];
 		    return -1;
 		}
 
@@ -333,13 +355,18 @@
 		    for (i = 0; i <= msg.length ; i ++) {
 			var img = searchEmote(msg[i]);
 			if (img != -1) {
-			    url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
-			    console.log(url);
-			    msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
+				url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
+				console.log(url);
+				msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
 			}
+			img = searchBadge(msg[i]);
+			if (img != -1) {
+				url = 'https://static-cdn.jtvnw.net/badges/v1/' + window.tagMap[msg[i]] + '/1.0';
+				console.log(url);
+				msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
 		    }
 		    return msg.join(" ");
 		}
 		</script>		
 		</body>
-		</html>
+</html>
