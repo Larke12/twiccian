@@ -605,7 +605,7 @@ ApplicationWindow {
 						}
 					}
 				}
-				
+
 				WebEngineView {
 					id: chat
 					width: 300
@@ -627,7 +627,6 @@ ApplicationWindow {
 							//console.log(apiobj.getStreamer().getAvatarUrl())
 						}
 					}
-
 				}
 			}
 			//close();

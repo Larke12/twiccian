@@ -4,7 +4,7 @@ var exampleSocket = new WebSocket("ws://localhost:1922/ws");
 // Once the websocket opens, send a blank message
 // I don't remember exactly why this does, might be just to affirm to twicciand that everything went alright
 exampleSocket.onopen = function (event) {
-    exampleSocket.send("");
+    //exampleSocket.send("");
 }
 
 // On message received from twicciand
