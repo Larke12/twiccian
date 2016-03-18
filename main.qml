@@ -607,16 +607,17 @@ ApplicationWindow {
 				}
 
 				WebEngineView {
-					id: chat
-					width: 300
+                    id: chat
+                    width: 300
 					
 					url: {
 						if (isLight.visible == false) {
 							"assets/sock.html"
 						} else {
 							"assets/sock_light.html"
-						}
-					}
+                        }
+                    }
+
 					onVisibleChanged: {
 						if (frame.currentIndex == 2 && updateStream.visible == true) {
 							chat.reload()
@@ -626,7 +627,7 @@ ApplicationWindow {
 							avatar.source = apiobj.getStreamer().getAvatarUrl()
 							//console.log(apiobj.getStreamer().getAvatarUrl())
 						}
-					}
+                    }
 				}
 			}
 			//close();
