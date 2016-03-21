@@ -1,10 +1,11 @@
 // Open websocket connection to twicciand
 var exampleSocket = new WebSocket("ws://localhost:1922/ws");
 
-// DEBUG: Once the websocket opens, clear json cache and send a blank message
+// Once the websocket opens, send a blank message
+// I don't remember exactly why this does, might be just to affirm to twicciand that everything went alright
 exampleSocket.onopen = function (event) {
 	$.ajaxSetup({ cache:false });
-	//exampleSocket.send("");
+	exampleSocket.send("");
 }
 
 // On message received from twicciand
@@ -58,8 +59,6 @@ function fetchEmotes() {
 	if (!json) {
 		// Get the JSON object from Twitch's API endpoint
 		json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
-		var getBadge = JSON.parse(Get("https://api.twitch.tv/kraken/chat/kraken_test_user/badges"))["badges"];
-		json.push(getBadge);
 
 		// Add the missing emotes (mostly the smilies) manually
 		var smile = new Object();
@@ -268,8 +267,8 @@ function fetchEmotes() {
 	}
 
 	// Debug output
-	//console.log(searchEmote("B-)"));
-	//console.log(searchEmote("B)"));
+	console.log(searchEmote("B-)"));
+	console.log(searchEmote("B)"));
 }
 
 // Looks for an emote in the hashmap from the given string
@@ -284,17 +283,12 @@ function searchEmote(emote) {
 function checkMessage(rec) {
 	var msg = rec.split(" ");
 	for (i = 0; i <= msg.length ; i ++) {
-		// Find emotes
 		var img = searchEmote(msg[i]);
 		if (img != -1) {
 			url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
 			console.log(url);
 			msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
 		}
-		// Find badges
-/*		if (element.getAttribute(`data-usertype`).includes('mod')) {
-			// nothing	
-		}
-	}*/
+	}
 	return msg.join(" ");
 }
