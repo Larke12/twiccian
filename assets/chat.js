@@ -59,6 +59,10 @@ function fetchEmotes() {
 	if (!json) {
 		// Get the JSON object from Twitch's API endpoint
 		json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
+		var bttv = JSON.parse(Get("https://api.betterttv.net/2/emotes"))["emoticons_btt"];
+		var getBadges = JSON.parse(Get("https://api.twitch.tv/kraken/chat/kraken_test_user/badges"))["badges"];
+		json.push(bttv);
+		json.push(getBadges);
 
 		// Add the missing emotes (mostly the smilies) manually
 		var smile = new Object();
@@ -255,7 +259,7 @@ function fetchEmotes() {
 		localStorage.setItem('jsoncache', JSON.stringify(json));
 	}
 
-	console.log(json);
+	//console.log(json);
 
 	// Initialize an empty hashmap for the emotes
 	window.tagMap = {};
@@ -267,8 +271,8 @@ function fetchEmotes() {
 	}
 
 	// Debug output
-	console.log(searchEmote("B-)"));
-	console.log(searchEmote("B)"));
+	//console.log(searchEmote("B-)"));
+	//console.log(searchEmote("B)"));
 }
 
 // Looks for an emote in the hashmap from the given string
@@ -286,9 +290,13 @@ function checkMessage(rec) {
 		var img = searchEmote(msg[i]);
 		if (img != -1) {
 			url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + window.tagMap[msg[i]] + '/1.0';
-			console.log(url);
+			//console.log(url);
 			msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
-		}
+		} 
+			//url = 'https://cdn.betterttv.net/emote/' + window.tagMap[msg[i]] + '/1x';
+			//console.log(url);
+			//msg[i] = "<img src=\"" + url + "\" alt=\"" + msg[i] + "\" title=\"" + msg[i] + "\"/>";
 	}
 	return msg.join(" ");
 }
+
