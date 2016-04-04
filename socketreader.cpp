@@ -79,7 +79,7 @@ QByteArray *SocketReader::searchStreams(QString query) {
     if (sock->state() == QAbstractSocket::ConnectedState) {
         QString fixed;
         fixed.append(QUrl::toPercentEncoding(query));
-        std::string json = " { \"api\":\"twitch\",\"name\":\"searchStreams\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"limit\":10,\"offset\":0}}";
+        std::string json = " { \"api\":\"twitch\",\"name\":\"searchStreams\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"limit\":100,\"offset\":0}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
@@ -105,7 +105,7 @@ QByteArray *SocketReader::getFollowing() {
     QByteArray *buffer = new QByteArray();
 
     if (sock->state() == QAbstractSocket::ConnectedState) {
-        std::string json = " { \"api\":\"twitch\",\"name\":\"getFollowedStreams\",\"params\":{\"limit\":10,\"offset\":0}}";
+        std::string json = " { \"api\":\"twitch\",\"name\":\"getFollowedStreams\",\"params\":{\"limit\":100,\"offset\":0}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 

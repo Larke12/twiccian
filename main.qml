@@ -226,8 +226,10 @@ ApplicationWindow {
 					   placeholderText: "Username or query"
                        
                        Keys.onReturnPressed: {
-                           searchs.selected = false
-                           apiobj.requestStreamSearch(searchQuery.text)
+                           if (searchQuery.text != "") {
+                                   searchs.selected = false
+                                   apiobj.requestStreamSearch(searchQuery.text)
+                           }
                        }
 					}
 
@@ -243,8 +245,10 @@ ApplicationWindow {
                         isDefault: true
 
 						onClicked: {
-							searchs.selected = false
-							apiobj.requestStreamSearch(searchQuery.text)
+                            if (searchQuery.text != "") {
+                                    searchs.selected = false
+                                    apiobj.requestStreamSearch(searchQuery.text)
+                            }
 						}
 					}
 
