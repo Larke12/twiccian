@@ -64,7 +64,7 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
 
         buffer->append(sock->readAll());
 
-        printf("\nThe RESULT IS: %s\n", buffer->constData());
+        //printf("\nThe RESULT IS: %s\n", buffer->constData());
         fflush(stdout);
     }
 
@@ -135,7 +135,7 @@ QByteArray *SocketReader::getAuthState() {
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
-        printf("%s", json.c_str());
+        //printf("%s", json.c_str());
 
         sock->waitForReadyRead();
         QDataStream in(sock);
@@ -166,7 +166,7 @@ QByteArray *SocketReader::changeChat(QString username) {
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
-        printf("%s", json.c_str());
+        //printf("%s", json.c_str());
 
         sock->waitForReadyRead();
         QDataStream in(sock);
@@ -269,6 +269,8 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
     searches.clear();
     if (json.IsObject() && json.HasMember("result")) {
         Value& resultArr = json["result"]["streams"];
+        printf("ARR SIZE: %i\n", sizeof(resultArr));
+        printf("ARR SIZE: %i\n", resultArr.Size());
         for (uint i=0; i < resultArr.Size(); i++) {
             Result* next = new Result();
             Account* accnext = new Account();

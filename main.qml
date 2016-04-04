@@ -292,7 +292,6 @@ ApplicationWindow {
 
 								Column {
 									id: searchStreamInfo
-									//x: parent.x + 180
 									anchors.top: parent.top
 									anchors.topMargin: searchlistrect.border.width
 									anchors.left: parent.left
