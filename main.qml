@@ -224,6 +224,11 @@ ApplicationWindow {
 					   anchors.left: parent.left
 					   anchors.leftMargin: 10
 					   placeholderText: "Username or query"
+                       
+                       Keys.onReturnPressed: {
+                           searchs.selected = false
+                           apiobj.requestStreamSearch(searchQuery.text)
+                       }
 					}
 
 					Button {
@@ -234,6 +239,8 @@ ApplicationWindow {
 
 						text: qsTr("Search")
 						opacity: 1.0
+                        
+                        isDefault: true
 
 						onClicked: {
 							searchs.selected = false

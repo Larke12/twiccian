@@ -43,7 +43,7 @@ QByteArray *SocketReader::sendYtDlUrl(QString url) {
     QByteArray *buffer = new QByteArray();
 
     if (sock->state() == QAbstractSocket::ConnectedState) {
-        printf("MADE IT: %s\n", url.toStdString().c_str());
+        //printf("MADE IT: %s\n", url.toStdString().c_str());
         fflush(stdout);
         std::string charurl = url.trimmed().toStdString();
         std::string json = " { \"api\":\"local\",\"name\":\"getStreamUrl\",\"params\":{\"url\":\"" + charurl + "\"}}";
@@ -192,7 +192,7 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
     // Pass string to daemon
     SocketReader *reader = new SocketReader();
     QByteArray *result = reader->sendYtDlUrl(submittedUrl);
-    printf("I made it\n");
+    //printf("I made it\n");
     fflush(stdout);
 
     QString urlJson = "";
