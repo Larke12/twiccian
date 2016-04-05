@@ -191,7 +191,6 @@ ApplicationWindow {
 									window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
 									apiobj.setStreamer(list.currentIndex)
 									apiobj.setResult(list.currentIndex, 0)
-									//console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
 									profileUrl = "http://www.twitch.tv/"+apiobj.getStreamer().getName()
 									apiobj.changeChat(apiobj.getStreamer().getName())
 									apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
@@ -223,9 +222,10 @@ ApplicationWindow {
 					   anchors.topMargin: 10
 					   anchors.left: parent.left
 					   anchors.leftMargin: 10
-					   placeholderText: "Username or query"
+					   placeholderText: "Search..."
                        
                        Keys.onReturnPressed: {
+                           // Default action, search streams
                            if (searchQuery.text != "") {
                                    searchs.selected = false
                                    apiobj.requestStreamSearch(searchQuery.text)
@@ -233,24 +233,50 @@ ApplicationWindow {
                        }
 					}
 
-					Button {
-						id: searchSubmit
-						anchors.top: searchQuery.bottom
-						anchors.topMargin: 10
-						anchors.left: searchQuery.left
-
-						text: qsTr("Search")
-						opacity: 1.0
+                    Column {
+                        id: searchButtons
+                        spacing: 10
+                        anchors.top: searchQuery.bottom
+                        anchors.topMargin: 10
+                        anchors.left: searchQuery.left
                         
-                        isDefault: true
-
-						onClicked: {
-                            if (searchQuery.text != "") {
-                                    searchs.selected = false
-                                    apiobj.requestStreamSearch(searchQuery.text)
+                        Button {
+                            id: searchStreams
+    
+                            text: qsTr(" Search Streams ")
+                            opacity: 1.0
+                            
+                            isDefault: true
+    
+                            onClicked: {
+                                if (searchQuery.text != "") {
+                                        searchs.selected = false
+                                        apiobj.requestStreamSearch(searchQuery.text)
+                                }
                             }
-						}
-					}
+                        }
+                        
+                        Button {
+                            id: searchGames
+    
+                            text: qsTr("  Search Games  ")
+                            opacity: 1.0
+                            
+                            isDefault: true
+    
+                            onClicked: {
+                                if (searchQuery.text != "") {
+                                        //searchs.selected = false
+                                        //apiobj.requestGameSearch(searchQuery.text)
+                                        searchQuery.placeholderText = "In progress..."
+                                }
+                            }
+                        }
+                        
+                        // No search for channels yet, current system would require 
+                        // them to link to browser like profile view
+                    }
+					
 
 					Column {
 						// Avoid overlapping
@@ -337,7 +363,8 @@ ApplicationWindow {
 									window.title = apiobj.getSearches()[searchlist.currentIndex].getTitle() + " -  Twiccian"
 									apiobj.setStreamerSearch(searchlist.currentIndex)
 									apiobj.setResult(searchlist.currentIndex, 1)
-									//console.log("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+									//console.log("TEST NAME: " + apiobj.getStreamer().getName() + " LOG\n")
+                                    profileUrl = "http://www.twitch.tv/"+apiobj.getStreamer().getName()
 									apiobj.changeChat(apiobj.getStreamer().getName())
 									apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
 									frame.currentIndex = 2

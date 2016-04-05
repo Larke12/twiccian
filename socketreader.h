@@ -31,6 +31,7 @@ public:
     ~SocketReader();
     QByteArray *sendYtDlUrl(QString cmd);
     QByteArray *searchStreams(QString query);
+    QByteArray *searchGames(QString query);                 //
     QByteArray *getFollowing();
     QByteArray *getAuthState();
     QByteArray *changeChat(QString username);
@@ -66,6 +67,7 @@ public:
     Q_INVOKABLE void changeChat(QString username);
     Q_INVOKABLE void requestFollowing();
     Q_INVOKABLE void requestStreamSearch(QString query);
+    Q_INVOKABLE void requestGameSearch(QString query);    //
     Q_INVOKABLE QString getUrl();
     Q_INVOKABLE QList<QObject*> getResults();
     Q_INVOKABLE QList<QObject*> getSearches();

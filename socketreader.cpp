@@ -99,6 +99,34 @@ QByteArray *SocketReader::searchStreams(QString query) {
     return buffer;
 }
 
+QByteArray *SocketReader::searchGames(QString query) {
+    blocksize = 0;
+
+    QByteArray *buffer = new QByteArray();
+
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        QString fixed;
+        fixed.append(QUrl::toPercentEncoding(query));
+        std::string json = " { \"api\":\"twitch\",\"name\":\"searchGames\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"limit\":100,\"offset\":0}}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
+        //qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
+    }
+
+    return buffer;
+}
+
 QByteArray *SocketReader::getFollowing() {
     blocksize = 0;
 
@@ -269,8 +297,7 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
     searches.clear();
     if (json.IsObject() && json.HasMember("result")) {
         Value& resultArr = json["result"]["streams"];
-        printf("ARR SIZE: %i\n", sizeof(resultArr));
-        printf("ARR SIZE: %i\n", resultArr.Size());
+        
         for (uint i=0; i < resultArr.Size(); i++) {
             Result* next = new Result();
             Account* accnext = new Account();
@@ -300,6 +327,90 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             searches.append(next);
         }
     }
+
+    for (int i=0; i<searches.count(); i++) {
+        printf("%s\n", qobject_cast<Result*>(searches[i])->getTitle().toStdString().c_str());
+    }
+    context->setContextProperty("searchModel",QVariant::fromValue(getSearches()));
+    fflush(stdout);
+}
+
+void SubmitUrlObj::requestGameSearch(QString query) {
+    // Pass string to daemon
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->searchGames(query);
+
+    QString responseJson = "";
+    responseJson.append(result->constData());
+
+    Document json;
+    json.Parse(responseJson.toStdString().c_str());
+    searches.clear();
+    /*if (json.IsObject() && json.HasMember("result")) {
+        Value& resultArr = json["result"]["streams"];
+        
+        for (uint i=0; i < resultArr.Size(); i++) {
+            Result* next = new Result();
+            Account* accnext = new Account();
+            const Value& stream = resultArr[i];
+            const Value& channel = stream["channel"];
+
+            next->setTitle(channel["status"].GetString());
+            next->setViewerCount(stream["viewers"].GetInt());
+            next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
+                                                     "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+            next->setThumbnailUrl(stream["preview"]["medium"].GetString());
+            if (stream["game"].IsNull()) {
+                next->setGame("");
+            } else {
+                next->setGame(stream["game"].GetString());
+            }
+            accnext->setName(channel["name"].GetString());
+            accnext->setProfileUrl(channel["url"].GetString());
+            if (channel["logo"].IsNull()) {
+                accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
+            } else {
+                accnext->setAvatarUrl(channel["logo"].GetString());
+            }
+            accnext->setFollows(channel["followers"].GetInt());
+            next->setStreamer(accnext);
+            next->setIsLive(stream["is_playlist"].GetBool());
+            searches.append(next);
+        }
+    }*/
+    
+    if (json.IsObject() && json.HasMember("result")) {
+            Value& resultArr = json["result"]["streams"];
+            
+            for (uint i=0; i < resultArr.Size(); i++) {
+                Result* next = new Result();
+                Account* accnext = new Account();
+                const Value& stream = resultArr[i];
+                const Value& games = stream["games"];
+    
+                //next->setTitle(games["status"].GetString());
+                next->setViewerCount(games["popularity"].GetInt());
+                /*next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
+                                                         "yyyy-MM-dd'T'hh:mm:ss'Z'"));*/
+                next->setThumbnailUrl(games["logo"]["medium"].GetString());
+                /*if (stream["game"].IsNull()) {
+                    next->setGame("");
+                } else {
+                    next->setGame(stream["game"].GetString());
+                }*/
+                accnext->setName(games["name"].GetString());
+                accnext->setProfileUrl(games["url"].GetString());
+                /*if (games["logo"].IsNull()) {
+                    accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
+                } else {
+                    accnext->setAvatarUrl(games["logo"].GetString());
+                }*/
+                //accnext->setFollows(games["followers"].GetInt());
+                //next->setStreamer(accnext);
+                //next->setIsLive(stream["is_playlist"].GetBool());
+                searches.append(next);
+            }
+        }
 
     for (int i=0; i<searches.count(); i++) {
         printf("%s\n", qobject_cast<Result*>(searches[i])->getTitle().toStdString().c_str());
