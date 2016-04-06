@@ -150,7 +150,7 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
 
 int main(int argc, char **argv)
 {    
-    bool daemon_running = false;
+    //bool daemon_running = false;
 
     // Store the current working directory for the qt application
     char cwd[1024];
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
             // If the command is twicciand, we found our match; break out
             if (strncmp(cmdline, "twicciand", 9) == 0) {
                 // WARNING
-                daemon_running = true;
+                //daemon_running = true;
                 printf("Daemon is already running!\n");
                 break;
             }

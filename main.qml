@@ -21,7 +21,7 @@ import QtQuick.Dialogs 1.2
 import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
 import QtWebKit 3.0
-import QtWebEngine 1.1
+import QtWebEngine 1.2
 
 import twiccian 1.0
 

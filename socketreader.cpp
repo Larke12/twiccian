@@ -177,7 +177,7 @@ QByteArray *SocketReader::getAuthState() {
 
         buffer->append(sock->readAll());
 
-        printf("\nThe RESULT IS: %s\n", buffer->constData());
+        //printf("\nThe RESULT IS: %s\n", buffer->constData());
         fflush(stdout);
     }
 
@@ -208,7 +208,7 @@ QByteArray *SocketReader::changeChat(QString username) {
 
         buffer->append(sock->readAll());
 
-        printf("\nThe RESULT IS: %s\n", buffer->constData());
+        //printf("\nThe RESULT IS: %s\n", buffer->constData());
         fflush(stdout);
     }
 
@@ -236,7 +236,7 @@ void SubmitUrlObj::requestUrl(QString submittedUrl)
         QString url(res.GetString());
         this->submittedUrl = url;
 
-        printf("TEST: %s", url.toStdString().c_str());
+        //printf("TEST: %s", url.toStdString().c_str());
         fflush(stdout);
     }
 }
