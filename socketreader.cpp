@@ -107,7 +107,7 @@ QByteArray *SocketReader::searchGames(QString query) {
     if (sock->state() == QAbstractSocket::ConnectedState) {
         QString fixed;
         fixed.append(QUrl::toPercentEncoding(query));
-        std::string json = " { \"api\":\"twitch\",\"name\":\"searchGames\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"limit\":100,\"offset\":0}}";
+        std::string json = " { \"api\":\"twitch\",\"name\":\"searchGames\",\"params\":{\"query\":\"" + fixed.toStdString() + "\",\"type\":\"suggest\",\"live\":true}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
@@ -346,47 +346,15 @@ void SubmitUrlObj::requestGameSearch(QString query) {
     Document json;
     json.Parse(responseJson.toStdString().c_str());
     searches.clear();
-    /*if (json.IsObject() && json.HasMember("result")) {
-        Value& resultArr = json["result"]["streams"];
-        
-        for (uint i=0; i < resultArr.Size(); i++) {
-            Result* next = new Result();
-            Account* accnext = new Account();
-            const Value& stream = resultArr[i];
-            const Value& channel = stream["channel"];
-
-            next->setTitle(channel["status"].GetString());
-            next->setViewerCount(stream["viewers"].GetInt());
-            next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
-                                                     "yyyy-MM-dd'T'hh:mm:ss'Z'"));
-            next->setThumbnailUrl(stream["preview"]["medium"].GetString());
-            if (stream["game"].IsNull()) {
-                next->setGame("");
-            } else {
-                next->setGame(stream["game"].GetString());
-            }
-            accnext->setName(channel["name"].GetString());
-            accnext->setProfileUrl(channel["url"].GetString());
-            if (channel["logo"].IsNull()) {
-                accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
-            } else {
-                accnext->setAvatarUrl(channel["logo"].GetString());
-            }
-            accnext->setFollows(channel["followers"].GetInt());
-            next->setStreamer(accnext);
-            next->setIsLive(stream["is_playlist"].GetBool());
-            searches.append(next);
-        }
-    }*/
-    
     if (json.IsObject() && json.HasMember("result")) {
-            Value& resultArr = json["result"]["streams"];
+            //Value& resultArr = json["result"]["games"];
+            Value& resultArr = json["result"];
             
-            for (uint i=0; i < resultArr.Size(); i++) {
+            //for (uint i=0; i < resultArr.Size(); i++) {
                 Result* next = new Result();
                 Account* accnext = new Account();
-                const Value& stream = resultArr[i];
-                const Value& games = stream["games"];
+                const Value& games = resultArr;
+                //const Value& games = stream["games"];
     
                 //next->setTitle(games["status"].GetString());
                 next->setViewerCount(games["popularity"].GetInt());
@@ -409,7 +377,7 @@ void SubmitUrlObj::requestGameSearch(QString query) {
                 //next->setStreamer(accnext);
                 //next->setIsLive(stream["is_playlist"].GetBool());
                 searches.append(next);
-            }
+            //}
         }
 
     for (int i=0; i<searches.count(); i++) {

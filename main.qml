@@ -266,9 +266,9 @@ ApplicationWindow {
     
                             onClicked: {
                                 if (searchQuery.text != "") {
-                                        //searchs.selected = false
-                                        //apiobj.requestGameSearch(searchQuery.text)
-                                        searchQuery.placeholderText = "In progress..."
+                                        searchs.selected = false
+                                        apiobj.requestGameSearch(searchQuery.text)
+                                        //searchQuery.placeholderText = "In progress..."
                                 }
                             }
                         }
