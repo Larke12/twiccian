@@ -484,16 +484,10 @@ void SubmitUrlObj::requestGames() {
             const Value& stream = resultArr[i];
 
             next->setTitle(stream["name"].GetString());
-            /*if (stream["game"].IsNull()) {
-                next->setGame("");
-            } else {
-                next->setGame(stream["game"].GetString());
-            }*/
             accnext->setName(stream["name"].GetString());
-            //accnext->setProfileUrl(stream["url"].GetString());
-            next->setThumbnailUrl(stream["logo"]["medium"].GetString());
+            next->setThumbnailUrl(stream["box"]["medium"].GetString());
             next->setStreamer(accnext);
-            //next->setIsLive(stream["is_playlist"].GetBool());
+
             results.append(next);
         }
     }

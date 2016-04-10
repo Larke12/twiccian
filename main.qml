@@ -141,7 +141,8 @@ ApplicationWindow {
                         ListView {
                             id: listG
                             clip: true
-                            width: window.width; height: window.height
+                            width: window.width;
+                            height: window.height
                             spacing: 20
 
                             footer: Rectangle {
@@ -152,29 +153,29 @@ ApplicationWindow {
                             model: myModel
                             delegate: Rectangle {
                                 id: listrectG
-                                height: 100
+                                height: 190
                                 border.color: "#000000"
                                 border.width: 2
                                 radius: 3
-                                width: parent.width * 0.75
+                                width: parent.width / 2
                                 color: (ListView.isCurrentItem && follows.selected) ? "#B9A3E3" : "#FFFFFF"
 
-                                /*Image {
-                                    id: thumb
+                                Image {
+                                    id: thumbG
                                     anchors.top: parent.top
-                                    anchors.topMargin: listrect.border.width
+                                    anchors.topMargin: listrectG.border.width
                                     anchors.left: parent.left
-                                    anchors.leftMargin: listrect.border.width
-                                    sourceSize.height: parent.height - (listrect.border.width * 2)
+                                    anchors.leftMargin: listrectG.border.width
+                                    sourceSize.height: parent.height - (listrectG.border.width * 2)
                                     source: thumbnailUrl
-                                }*/
+                                }
 
                                 Column {
                                     id: streamInfoG
                                     anchors.top: parent.top
                                     anchors.topMargin: listrectG.border.width
                                     anchors.left: parent.left
-                                    anchors.leftMargin: thumb.width + (listrectG.border.width * 2)
+                                    anchors.leftMargin: thumbG.width + (listrectG.border.width * 2)
 
                                     spacing: 2
 
@@ -280,7 +281,7 @@ ApplicationWindow {
                             }
 
                             onCurrentIndexChanged: {
-                                if (list.currentIndex != -1 && follows.selected) {
+                                if (list.currentIndex != -1 && follows.selected && colsLive.visible == true) {
                                     updateStream.visible = true
                                     window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
@@ -289,6 +290,12 @@ ApplicationWindow {
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
                                     frame.currentIndex = 2
+                                }
+                                if (list.currentIndex != -1 && follows.selected && colsGame.visible == true) {
+                                    window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
+                                    apiobj.setResult(list.currentIndex, 0)
+                                    apiobj.requestStreamSearch(apiobj.getResults()[list.currentIndex].getTitle())
+                                    frame.currentIndex = 1
                                 }
                             }
                         }
@@ -355,7 +362,6 @@ ApplicationWindow {
 
                             text: qsTr("  Search Games  ")
                             opacity: 1.0
-                            visible: false
 
                             isDefault: true
 
