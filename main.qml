@@ -82,10 +82,10 @@ ApplicationWindow {
                     if (frame.currentIndex == 0 && colsLive.visible == true) {
                         follows.selected = false
                         apiobj.requestFollowing()
-                    } else {
+                    } /*else {
                         follows.selected = false
-                        //apiobj.requestGames()
-                    }
+                        apiobj.requestGames()
+                    }*/
                 }
 
                 Item {
@@ -94,7 +94,7 @@ ApplicationWindow {
 
                     Column {
                         id: refreshbuttons
-                        spacing: 5
+                        spacing: 10
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.left: parent.left
@@ -102,8 +102,9 @@ ApplicationWindow {
 
                         Button {
                             id: followingrefresh
+                            width: 100
 
-                            text: qsTr("Live")
+                            text: qsTr(" View Live ")
                             opacity: 1.0
 
                             onClicked: {
@@ -116,8 +117,9 @@ ApplicationWindow {
 
                         Button {
                             id: gamerefresh
+                            width: 100
 
-                            text: qsTr("Games")
+                            text: qsTr(" View Games ")
                             opacity: 1.0
 
                             onClicked: {
@@ -211,7 +213,8 @@ ApplicationWindow {
                         ListView {
                             id: list
                             clip: true
-                            width: window.width; height: window.height
+                            width: window.width
+                            height: window.height
                             spacing: 20
 
                             footer: Rectangle {
@@ -281,7 +284,7 @@ ApplicationWindow {
                             }
 
                             onCurrentIndexChanged: {
-                                if (list.currentIndex != -1 && follows.selected && colsLive.visible == true) {
+                                if (list.currentIndex != -1 && follows.selected && colsLive.visible == true && colsGame.visible == false) {
                                     updateStream.visible = true
                                     window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamer(list.currentIndex)
@@ -292,10 +295,9 @@ ApplicationWindow {
                                     frame.currentIndex = 2
                                 }
                                 if (list.currentIndex != -1 && follows.selected && colsGame.visible == true) {
-                                    //window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
-                                    //apiobj.setResult(list.currentIndex, 0)
                                     apiobj.requestGameSearch(apiobj.getResults()[list.currentIndex].getTitle())
                                     frame.currentIndex = 1
+                                    follow.selected = false
                                 }
                             }
                         }
@@ -323,6 +325,7 @@ ApplicationWindow {
                         anchors.topMargin: 10
                         anchors.left: parent.left
                         anchors.leftMargin: 10
+                        width: searchButtons.width
                         placeholderText: "Search..."
 
                         Keys.onReturnPressed: {
@@ -461,10 +464,10 @@ ApplicationWindow {
                                     window.title = apiobj.getSearches()[searchlist.currentIndex].getTitle() + " -  Twiccian"
                                     apiobj.setStreamerSearch(searchlist.currentIndex)
                                     apiobj.setResult(searchlist.currentIndex, 1)
-                                    //console.log("TEST NAME: " + apiobj.getStreamer().getName() + " LOG\n")
                                     profileUrl = "http://www.twitch.tv/"+apiobj.getStreamer().getName()
                                     apiobj.changeChat(apiobj.getStreamer().getName())
                                     apiobj.requestUrl("http://www.twitch.tv/"+apiobj.getStreamer().getName())
+                                    searchs.selected = false
                                     frame.currentIndex = 2
                                 }
                             }
