@@ -136,7 +136,7 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.leftMargin: window.width / 4.5
                         anchors.top: parent.top
-                        anchors.topMargin: colsLive.spacing
+                        anchors.topMargin: colsGame.spacing
 
                         ListView {
                             id: listG
@@ -292,9 +292,9 @@ ApplicationWindow {
                                     frame.currentIndex = 2
                                 }
                                 if (list.currentIndex != -1 && follows.selected && colsGame.visible == true) {
-                                    window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
-                                    apiobj.setResult(list.currentIndex, 0)
-                                    apiobj.requestStreamSearch(apiobj.getResults()[list.currentIndex].getTitle())
+                                    //window.title = apiobj.getResults()[list.currentIndex].getTitle() + " -  Twiccian"
+                                    //apiobj.setResult(list.currentIndex, 0)
+                                    apiobj.requestGameSearch(apiobj.getResults()[list.currentIndex].getTitle())
                                     frame.currentIndex = 1
                                 }
                             }
@@ -347,8 +347,6 @@ ApplicationWindow {
                             text: qsTr(" Search Streams ")
                             opacity: 1.0
 
-                            isDefault: true
-
                             onClicked: {
                                 if (searchQuery.text != "") {
                                     searchs.selected = false
@@ -363,13 +361,10 @@ ApplicationWindow {
                             text: qsTr("  Search Games  ")
                             opacity: 1.0
 
-                            isDefault: true
-
                             onClicked: {
                                 if (searchQuery.text != "") {
                                     searchs.selected = false
                                     apiobj.requestGameSearch(searchQuery.text)
-                                    //searchQuery.placeholderText = "In progress..."
                                 }
                             }
                         }
@@ -386,7 +381,7 @@ ApplicationWindow {
                         anchors.left: parent.left
                         anchors.leftMargin: window.width / 4.5
                         anchors.top: parent.top
-                        anchors.topMargin: colsLive.spacing
+                        anchors.topMargin: searchcols.spacing
 
                         ListView {
                             id: searchlist
