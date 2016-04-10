@@ -366,7 +366,7 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
 void SubmitUrlObj::requestGameSearch(QString query) {
     // Pass string to daemon
     SocketReader *reader = new SocketReader();
-    QByteArray *result = reader->searchStreams(query);
+    QByteArray *result = reader->searchGames(query);
 
     QString responseJson = "";
     responseJson.append(result->constData());
