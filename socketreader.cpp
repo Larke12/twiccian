@@ -153,6 +153,32 @@ QByteArray *SocketReader::getFollowing() {
     return buffer;
 }
 
+QByteArray *SocketReader::getGames() {
+    blocksize = 0;
+
+    QByteArray *buffer = new QByteArray();
+
+    if (sock->state() == QAbstractSocket::ConnectedState) {
+        std::string json = " { \"api\":\"twitch\",\"name\":\"getFollowedGames\"}";
+        sock->write(json.c_str(), json.length());
+        sock->waitForBytesWritten();
+
+        sock->waitForReadyRead();
+        QDataStream in(sock);
+        in.setVersion(QDataStream::Qt_4_0);
+
+        if (sock->bytesAvailable() < (int)sizeof(quint16)) {
+            return buffer;
+        }
+
+        //qint16 size = sock->bytesAvailable();
+
+        buffer->append(sock->readAll());
+    }
+
+    return buffer;
+}
+
 QByteArray *SocketReader::getAuthState() {
     blocksize = 0;
 
@@ -259,7 +285,8 @@ bool SubmitUrlObj::isAuthenticated() {
 
     QString urlJson = "";
     urlJson.append(result->constData());
-    printf("Make sure the daemon is running to surpress the rapidjson error.\nSupposed result: %s\n", urlJson.toStdString().c_str());
+    printf("Make sure the daemon is running to surpress the rapidjson error.\nSupposed result: %s\n",
+           urlJson.toStdString().c_str());
     fflush(stdout);
 
     Document json;
@@ -304,6 +331,7 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             const Value& stream = resultArr[i];
             const Value& channel = stream["channel"];
 
+            printf("%s", channel["status"].GetString());
             next->setTitle(channel["status"].GetString());
             next->setViewerCount(stream["viewers"].GetInt());
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
@@ -426,6 +454,46 @@ void SubmitUrlObj::requestFollowing() {
             accnext->setFollows(channel["followers"].GetInt());
             next->setStreamer(accnext);
             next->setIsLive(stream["is_playlist"].GetBool());
+            results.append(next);
+        }
+    }
+
+    for (int i=0; i<results.count(); i++) {
+        printf("%s\n", qobject_cast<Result*>(results[i])->getTitle().toStdString().c_str());
+    }
+    context->setContextProperty("myModel",QVariant::fromValue(getResults()));
+    fflush(stdout);
+}
+
+void SubmitUrlObj::requestGames() {
+    // Pass string to daemon
+    SocketReader *reader = new SocketReader();
+    QByteArray *result = reader->getGames();
+
+    QString responseJson = "";
+    responseJson.append(result->constData());
+
+    Document json;
+    json.Parse(responseJson.toStdString().c_str());
+    results.clear();
+    if (json.IsObject() && json.HasMember("result")) {
+        Value& resultArr = json["result"]["follows"];
+        for (uint i=0; i < resultArr.Size(); i++) {
+            Result* next = new Result();
+            Account* accnext = new Account();
+            const Value& stream = resultArr[i];
+
+            next->setTitle(stream["name"].GetString());
+            /*if (stream["game"].IsNull()) {
+                next->setGame("");
+            } else {
+                next->setGame(stream["game"].GetString());
+            }*/
+            accnext->setName(stream["name"].GetString());
+            //accnext->setProfileUrl(stream["url"].GetString());
+            next->setThumbnailUrl(stream["logo"]["medium"].GetString());
+            next->setStreamer(accnext);
+            //next->setIsLive(stream["is_playlist"].GetBool());
             results.append(next);
         }
     }
