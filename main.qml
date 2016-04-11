@@ -510,19 +510,22 @@ ApplicationWindow {
                                 prodrop.opacity = 0.7
 
                                 vcontrols.opacity = 0.0
-                                gradientItem.visible = false
+                                gradientBottom.visible = false
+                                gradientTop.visible = false
                             } else {
                                 propic.opacity = 1.0
                                 prodrop.opacity = 1.0
 
                                 vcontrols.opacity = 1.0
-                                gradientItem.visible = true
+                                gradientBottom.visible = true
+                                gradientTop.visible = true
                             }
                         }
 
                         onExited: {
                             vcontrols.opacity = 0.0
-                            gradientItem.visible = false
+                            gradientBottom.visible = false
+                            gradientTop.visible = false
                             propic.opacity = 0.0
                             prodrop.opacity = 0.0
                         }
@@ -547,6 +550,31 @@ ApplicationWindow {
                                 height: renderer.height
                                 visible: false
                             }
+                            
+                            Item {
+                                id: gradientTop
+                                width: parent.width
+                                height: propic.height * 2
+                                // Anchor gradient to top of player
+                                anchors.top: parent.top
+                                anchors.topMargin: 0
+                                visible: false
+
+                                LinearGradient {
+                                    id: gradientArtTop
+                                    anchors.fill: parent
+
+                                    //cached: true
+
+                                    start: Qt.point(60, 60)
+                                    end: Qt.point(60, 0)
+
+                                    gradient: Gradient {
+                                        GradientStop { position: 0.0; color: "#00000000" }
+                                        GradientStop { position: 1.0; color: "#FF000000" }
+                                    }
+                                }
+                            }
 
                             // Streamer Profile Photo
                             Rectangle {
@@ -554,7 +582,7 @@ ApplicationWindow {
                                 width: 150
                                 height: propic.width
                                 anchors.top: parent.top
-                                anchors.topMargin: propic.height / 4
+                                anchors.topMargin: propic.height / 8
                                 anchors.left: parent.left
                                 anchors.leftMargin: propic.width / 4
                                 opacity: 0.0
@@ -566,42 +594,57 @@ ApplicationWindow {
                                     height: propic.height
                                     // Source is set at time of chat loading
                                 }
-
-                                Text {
-                                    id: open_web
-                                    width: avatar.width
-                                    height: avatar.height
-                                    anchors.left: avatar.left
-                                    anchors.leftMargin: avatar.width / 6
+                                
+                                Item {
+                                    id: open_web_group
+                                    visible: false
+                                    anchors.horizontalCenter: avatar.horizontalCenter
+                                    anchors.horizontalCenterOffset: -avatar.width / 3
                                     anchors.bottom: avatar.bottom
-                                    anchors.bottomMargin: -avatar.height + 20
-                                    text:"Open in Browser"
+                                    anchors.bottomMargin: 20
+                                    
+                                    Text {
+                                        id: open_web
+                                        width: avatar.width
+                                        height: avatar.height
+                                        color: "#000000"
+                                        text: "Open in Browser"
+                                    }
+                                    
+                                    DropShadow {
+                                        anchors.fill: open_web
+                                        horizontalOffset: 0
+                                        verticalOffset: 0
+                                        radius: 4.0
+                                        samples: 16
+                                        spread: 0.6
+                                        color: "#FFFFFF"
+                                        source: open_web
+                                    }
                                 }
 
-                                DropShadow {
-                                    anchors.fill: open_web
-                                    horizontalOffset: 0
-                                    verticalOffset: 0
-                                    radius: 4.0
-                                    samples: 16
-                                    spread: 0.6
-                                    color: "#FFFFFF"
-                                    source: open_web
+                                MouseArea {
+                                    anchors.fill: parent
+                                    
+                                    hoverEnabled: true
+                                    
+                                    onEntered: {
+                                        open_web_group.visible = true
+                                    }
+                                    onExited:  {
+                                        open_web_group.visible = false
+                                    }
                                 }
-
-                                Rectangle {
-                                    id: titlebkg
-                                    color: "#AA000000"
-                                    width: childrenRect.width + 20
-                                    height: childrenRect.height
+                                
+                                Column {
+                                    id: livetext
+                                    spacing: 5
                                     anchors.left: avatar.right
                                     anchors.leftMargin: 10
                                     
-                                    Column {
-                                        id: livetext
-                                        spacing: 5
-                                        anchors.left: titlebkg.left
-                                        anchors.leftMargin: 10
+                                    Item {
+                                        id: titlegroup
+                                        visible: false
                                         
                                         Text {
                                             id: titletext
@@ -609,24 +652,54 @@ ApplicationWindow {
                                             width: renderer.width - avatar.width - 75
                                             font.bold: true
                                             font.pointSize: 16
-                                            color: "white"
-                                            text: ""
-                                            wrapMode: Text.Wrap
-                                        }
-                                        
-                                        Text {
-                                            id: streamertext
-    
-                                            width: renderer.width - avatar.width - 75
-                                            font.bold: true
-                                            font.pointSize: 16
-                                            color: "white"
+                                            color: "#FFFFFF"
                                             text: ""
                                             wrapMode: Text.Wrap
                                         }
                                     }
+                                    
+                                    DropShadow {
+                                        //anchors.fill: titletext
+                                        width: titletext.width
+                                        height: titletext.height
+                                        horizontalOffset: 0
+                                        verticalOffset: 0
+                                        radius: 4.0
+                                        samples: 16
+                                        spread: 0.6
+                                        color: "#000000"
+                                        source: titletext
+                                    }
+                                    
+                                    Item {
+                                        id: viewergroup
+                                        visible: false
+                                        
+                                        Text {
+                                            id: viewertext
+    
+                                            width: renderer.width - avatar.width - 75
+                                            font.bold: false
+                                            font.pointSize: 12
+                                            color: "#FFFFFF"
+                                            text: ""
+                                            wrapMode: Text.Wrap
+                                        }
+                                    }
+                                    
+                                    DropShadow {
+                                        //anchors.fill: viewertext
+                                        width: viewertext.width
+                                        height: viewertext.height
+                                        horizontalOffset: 0
+                                        verticalOffset: 0
+                                        radius: 4.0
+                                        samples: 16
+                                        spread: 0.6
+                                        color: "#000000"
+                                        source: viewertext
+                                    }
                                 }
-
 
                                 // Click to view profile in native browser
                                 MouseArea {
@@ -651,7 +724,7 @@ ApplicationWindow {
                             }
 
                             Item {
-                                id: gradientItem
+                                id: gradientBottom
                                 width: parent.width
                                 height: vcontrols.height * 4
                                 // Anchor gradient to bottom of player
@@ -660,7 +733,7 @@ ApplicationWindow {
                                 visible: false
 
                                 LinearGradient {
-                                    id: gradientArt
+                                    id: gradientArtBottom
                                     anchors.fill: parent
 
                                     //cached: true
@@ -802,6 +875,7 @@ ApplicationWindow {
                             updateStream.visible = false
 
                             titletext.text = apiobj.getResult().getGame()
+                            viewertext.text = "with " + apiobj.getResult().getViewerCount() + (apiobj.getResult().getViewerCount() === 1 ?  " viewer" : " viewers")
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
                         }
