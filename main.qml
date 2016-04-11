@@ -104,7 +104,7 @@ ApplicationWindow {
                             id: followingrefresh
                             width: 100
 
-                            text: qsTr(" View Live ")
+                            text: qsTr(" Live Channels ")
                             opacity: 1.0
 
                             onClicked: {
@@ -119,7 +119,7 @@ ApplicationWindow {
                             id: gamerefresh
                             width: 100
 
-                            text: qsTr(" View Games ")
+                            text: qsTr(" Live Games ")
                             opacity: 1.0
 
                             onClicked: {

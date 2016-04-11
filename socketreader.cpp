@@ -330,9 +330,13 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             Account* accnext = new Account();
             const Value& stream = resultArr[i];
             const Value& channel = stream["channel"];
-
-            printf("%s", channel["status"].GetString());
-            next->setTitle(channel["status"].GetString());
+            
+            if (!channel["status"].IsNull()) {
+                //printf("%s\n", channel["status"].GetString());
+                next->setTitle(channel["status"].GetString());
+            } else {
+                next->setTitle("Untitled Broadcast");
+            }
             next->setViewerCount(stream["viewers"].GetInt());
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
                                                      "yyyy-MM-dd'T'hh:mm:ss'Z'"));
@@ -356,9 +360,9 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
         }
     }
 
-    for (int i=0; i<searches.count(); i++) {
+    /*for (int i=0; i<searches.count(); i++) {
         printf("%s\n", qobject_cast<Result*>(searches[i])->getTitle().toStdString().c_str());
-    }
+    }*/
     context->setContextProperty("searchModel",QVariant::fromValue(getSearches()));
     fflush(stdout);
 }
@@ -383,8 +387,12 @@ void SubmitUrlObj::requestGameSearch(QString query) {
             const Value& stream = resultArr[i];
             const Value& channel = stream["channel"];
 
-            printf("%s", channel["status"].GetString());
-            next->setTitle(channel["status"].GetString());
+            if (!channel["status"].IsNull()) {
+                //printf("%s\n", channel["status"].GetString());
+                next->setTitle(channel["status"].GetString());
+            } else {
+                next->setTitle("Untitled Broadcast");
+            }
             next->setViewerCount(stream["viewers"].GetInt());
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
                                                      "yyyy-MM-dd'T'hh:mm:ss'Z'"));
@@ -408,9 +416,9 @@ void SubmitUrlObj::requestGameSearch(QString query) {
         }
     }
 
-    for (int i=0; i<searches.count(); i++) {
+    /*for (int i=0; i<searches.count(); i++) {
         printf("%s\n", qobject_cast<Result*>(searches[i])->getTitle().toStdString().c_str());
-    }
+    }*/
     context->setContextProperty("searchModel",QVariant::fromValue(getSearches()));
     fflush(stdout);
 }
@@ -434,7 +442,12 @@ void SubmitUrlObj::requestFollowing() {
             const Value& stream = resultArr[i];
             const Value& channel = stream["channel"];
 
-            next->setTitle(channel["status"].GetString());
+            if (!channel["status"].IsNull()) {
+                //printf("%s\n", channel["status"].GetString());
+                next->setTitle(channel["status"].GetString());
+            } else {
+                next->setTitle("Untitled Broadcast");
+            }
             next->setViewerCount(stream["viewers"].GetInt());
             next->setStartTime(QDateTime::fromString(stream["created_at"].GetString(),
                                                      "yyyy-MM-dd'T'hh:mm:ss'Z'"));
@@ -458,9 +471,9 @@ void SubmitUrlObj::requestFollowing() {
         }
     }
 
-    for (int i=0; i<results.count(); i++) {
+    /*for (int i=0; i<results.count(); i++) {
         printf("%s\n", qobject_cast<Result*>(results[i])->getTitle().toStdString().c_str());
-    }
+    }*/
     context->setContextProperty("myModel",QVariant::fromValue(getResults()));
     fflush(stdout);
 }
@@ -492,9 +505,9 @@ void SubmitUrlObj::requestGames() {
         }
     }
 
-    for (int i=0; i<results.count(); i++) {
+    /*for (int i=0; i<results.count(); i++) {
         printf("%s\n", qobject_cast<Result*>(results[i])->getTitle().toStdString().c_str());
-    }
+    }*/
     context->setContextProperty("myModel",QVariant::fromValue(getResults()));
     fflush(stdout);
 }
