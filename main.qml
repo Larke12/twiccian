@@ -99,10 +99,11 @@ ApplicationWindow {
                         anchors.topMargin: 10
                         anchors.left: parent.left
                         anchors.leftMargin: 10
+                        width: 120
 
                         Button {
                             id: followingrefresh
-                            width: 100
+                            width: refreshbuttons.width
 
                             text: qsTr(" Live Channels ")
                             opacity: 1.0
@@ -117,9 +118,9 @@ ApplicationWindow {
 
                         Button {
                             id: gamerefresh
-                            width: 100
+                            width: refreshbuttons.width
 
-                            text: qsTr(" Live Games ")
+                            text: qsTr(" Followed Games ")
                             opacity: 1.0
 
                             onClicked: {
@@ -595,17 +596,34 @@ ApplicationWindow {
                                     height: childrenRect.height
                                     anchors.left: avatar.right
                                     anchors.leftMargin: 10
-
-                                    Text {
-                                        id: titletext
+                                    
+                                    Column {
+                                        id: livetext
+                                        spacing: 5
                                         anchors.left: titlebkg.left
                                         anchors.leftMargin: 10
-                                        width: renderer.width - avatar.width - 75
-                                        font.bold: true
-                                        font.pointSize: 18
-                                        color: "white"
-                                        text: ""
-                                        wrapMode: Text.Wrap
+                                        
+                                        Text {
+                                            id: titletext
+                                            
+                                            width: renderer.width - avatar.width - 75
+                                            font.bold: true
+                                            font.pointSize: 16
+                                            color: "white"
+                                            text: ""
+                                            wrapMode: Text.Wrap
+                                        }
+                                        
+                                        Text {
+                                            id: streamertext
+    
+                                            width: renderer.width - avatar.width - 75
+                                            font.bold: true
+                                            font.pointSize: 16
+                                            color: "white"
+                                            text: ""
+                                            wrapMode: Text.Wrap
+                                        }
                                     }
                                 }
 
@@ -783,7 +801,7 @@ ApplicationWindow {
                             chat.reload()
                             updateStream.visible = false
 
-                            titletext.text = apiobj.getResult().getTitle()
+                            titletext.text = apiobj.getResult().getGame()
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
                         }
