@@ -216,7 +216,7 @@ QByteArray *SocketReader::changeChat(QString username) {
     QByteArray *buffer = new QByteArray();
 
     if (sock->state() == QAbstractSocket::ConnectedState) {
-        std::string json = " { \"api\":\"local\",\"name\":\"changeChat\",\"params\":{\"query\":\""+username.toStdString()+"\"}}";
+        std::string json = " { \"api\":\"local\",\"name\":\"changeChat\",\"params\":{\"query\":\""+username.toLower().toStdString()+"\"}}";
         sock->write(json.c_str(), json.length());
         sock->waitForBytesWritten();
 
@@ -346,7 +346,7 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             } else {
                 next->setGame(stream["game"].GetString());
             }
-            accnext->setName(channel["name"].GetString());
+            accnext->setName(channel["display_name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
             if (channel["logo"].IsNull()) {
                 accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
@@ -402,7 +402,7 @@ void SubmitUrlObj::requestGameSearch(QString query) {
             } else {
                 next->setGame(stream["game"].GetString());
             }
-            accnext->setName(channel["name"].GetString());
+            accnext->setName(channel["display_name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
             if (channel["logo"].IsNull()) {
                 accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");
@@ -436,6 +436,7 @@ void SubmitUrlObj::requestFollowing() {
     results.clear();
     if (json.IsObject() && json.HasMember("result")) {
         Value& resultArr = json["result"]["streams"];
+
         for (uint i=0; i < resultArr.Size(); i++) {
             Result* next = new Result();
             Account* accnext = new Account();
@@ -457,7 +458,7 @@ void SubmitUrlObj::requestFollowing() {
             } else {
                 next->setGame(stream["game"].GetString());
             }
-            accnext->setName(channel["name"].GetString());
+            accnext->setName(channel["display_name"].GetString());
             accnext->setProfileUrl(channel["url"].GetString());
             if (channel["logo"].IsNull()) {
                 accnext->setAvatarUrl("http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png");

@@ -874,8 +874,8 @@ ApplicationWindow {
                             chat.reload()
                             updateStream.visible = false
 
-                            titletext.text = apiobj.getResult().getGame()
-                            viewertext.text = "with " + apiobj.getResult().getViewerCount() + (apiobj.getResult().getViewerCount() === 1 ?  " viewer" : " viewers")
+                            titletext.text = apiobj.getResult().getStreamer().getName()
+                            viewertext.text =  "playing " + apiobj.getResult().getGame() + " with " + apiobj.getResult().getViewerCount() + (apiobj.getResult().getViewerCount() === 1 ?  " viewer" : " viewers")
                             avatar.source = apiobj.getStreamer().getAvatarUrl()
                             //console.log(apiobj.getStreamer().getAvatarUrl())
                         }
