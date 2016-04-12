@@ -16,9 +16,44 @@ exampleSocket.onmessage = function (event) {
 		if (event.data.search(/((\<span id='text'\>:)\s*(\<\/span\>)$)/) == -1) {
 			// Create the timestamp object
 			var timestamp = "<span id='timestamp'>" + s + "&nbsp;&nbsp;</span>";
+			// Set badges
+			var elm = $(event.data)[0]; var turbo = elm.dataset.turbo; var sub = elm.dataset.sub;
+			if (typeof(elm.dataset.usertype) != 'undefined') { var usr = elm.dataset.usertype; } else { usr = 'null' }
 			// Add a new message to the chat box
 			document.getElementById('chat').innerHTML += '<div id="msg">';
 			document.getElementById('chat').innerHTML += timestamp;
+
+			if (usr.localeCompare("global_mod") == 0) {
+				url = 'http://chat-badges.s3.amazonaws.com/globalmod-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="global_mod" title="global_mod"/> ';
+			}
+
+			if (usr.localeCompare("admin") == 0) {
+				url = 'http://chat-badges.s3.amazonaws.com/admin-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="admin" title="admin"/> ';
+			}
+
+			if (usr.localeCompare("broadcaster") == 0) {
+				url = 'http://chat-badges.s3.amazonaws.com/broadcaster-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="broadcaster" title="broadcaster"/> ';
+			}
+
+			if (usr.localeCompare("mod") == 0) {
+				url = 'http://chat-badges.s3.amazonaws.com/mod-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="mod" title="mod"/> ';
+			}
+
+			if (usr.localeCompare("staff") == 0) {
+				url = 'http://chat-badges.s3.amazonaws.com/staff-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="staff" title="staff"/> ';
+			}
+
+			if (turbo == 1) {
+				//searchBadge(turbo);
+				url = 'http://chat-badges.s3.amazonaws.com/turbo-alpha.png';
+				document.getElementById('chat').innerHTML += '<img src="' + url + '" alt="turbo" title="turbo"/> ';
+			}
+
 			document.getElementById('chat').innerHTML += checkMessage(event.data);
 			document.getElementById('chat').innerHTML += '<br></div>';
 			document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
@@ -59,10 +94,10 @@ function fetchEmotes() {
 	if (!json) {
 		// Get the JSON object from Twitch's API endpoint
 		json = JSON.parse(Get("https://api.twitch.tv/kraken/chat/emoticon_images"))["emoticons"];
-		var bttv = JSON.parse(Get("https://api.betterttv.net/2/emotes"))["emoticons_btt"];
 		var getBadges = JSON.parse(Get("https://api.twitch.tv/kraken/chat/kraken_test_user/badges"))["badges"];
-		json.push(bttv);
+		//var bttv = JSON.parse(Get("https://api.betterttv.net/2/emotes"))["emoticons_btt"];
 		json.push(getBadges);
+		//json.push(bttv);
 
 		// Add the missing emotes (mostly the smilies) manually
 		var smile = new Object();
@@ -286,6 +321,7 @@ function searchEmote(emote) {
 // If it finds one, it replaces it with the appropriate image tag
 function checkMessage(rec) {
 	var msg = rec.split(" ");
+
 	for (i = 0; i <= msg.length ; i ++) {
 		var img = searchEmote(msg[i]);
 		if (img != -1) {
