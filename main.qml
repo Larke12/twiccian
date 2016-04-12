@@ -260,14 +260,20 @@ ApplicationWindow {
                                     }
 
                                     Text {
-                                        text: "Now Playing " + game
+                                        text: streamer.getName()
                                         width: window.width * 0.75 - 180
                                         font.bold: false
                                         wrapMode: Text.Wrap
                                     }
 
                                     Text {
-                                        text: streamer.getName() + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                        text: {
+                                            if (game !== "") {
+                                                "playing " + game + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                            } else {
+                                                "with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                            }
+                                        }
                                         width: window.width * 0.75 - 180
                                         font.bold: false
                                         wrapMode: Text.Wrap
@@ -298,7 +304,7 @@ ApplicationWindow {
                                 if (list.currentIndex != -1 && follows.selected && colsGame.visible == true) {
                                     apiobj.requestGameSearch(apiobj.getResults()[list.currentIndex].getTitle())
                                     frame.currentIndex = 1
-                                    follow.selected = false
+                                    //follow.selected = false
                                 }
                             }
                         }
@@ -435,14 +441,20 @@ ApplicationWindow {
                                     }
 
                                     Text {
-                                        text: "Now Playing " + game
+                                        text: streamer.getName()
                                         width: window.width * 0.75 - 180
                                         font.bold: false
                                         wrapMode: Text.Wrap
                                     }
-
+                                    
                                     Text {
-                                        text: streamer.getName() + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                        text: {
+                                            if (game !== "") {
+                                                "playing " + game + " with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                            } else {
+                                                "with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                            }
+                                        }
                                         width: window.width * 0.75 - 180
                                         font.bold: false
                                         wrapMode: Text.Wrap

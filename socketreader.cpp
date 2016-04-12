@@ -332,7 +332,6 @@ void SubmitUrlObj::requestStreamSearch(QString query) {
             const Value& channel = stream["channel"];
             
             if (!channel["status"].IsNull()) {
-                //printf("%s\n", channel["status"].GetString());
                 next->setTitle(channel["status"].GetString());
             } else {
                 next->setTitle("Untitled Broadcast");
@@ -388,7 +387,6 @@ void SubmitUrlObj::requestGameSearch(QString query) {
             const Value& channel = stream["channel"];
 
             if (!channel["status"].IsNull()) {
-                //printf("%s\n", channel["status"].GetString());
                 next->setTitle(channel["status"].GetString());
             } else {
                 next->setTitle("Untitled Broadcast");
@@ -444,7 +442,6 @@ void SubmitUrlObj::requestFollowing() {
             const Value& channel = stream["channel"];
 
             if (!channel["status"].IsNull()) {
-                //printf("%s\n", channel["status"].GetString());
                 next->setTitle(channel["status"].GetString());
             } else {
                 next->setTitle("Untitled Broadcast");
