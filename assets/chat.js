@@ -56,8 +56,21 @@ exampleSocket.onmessage = function (event) {
 
 			document.getElementById('chat').innerHTML += checkMessage(event.data);
 			document.getElementById('chat').innerHTML += '<br></div>';
-			document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+			$(window).scroll(function() {
+				if(document.getElementById('chat').scrollTop() + document.getElementById('chat').height() == getDocHeight()) {
+					document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+				}
+			});
 		}
+}
+
+function getDocHeight() {
+	var D = document;
+	return Math.max(
+			D.body.scrollHeight, D.documentElement.scrollHeight,
+			D.body.offsetHeight, D.documentElement.offsetHeight,
+			D.body.clientHeight, D.documentElement.clientHeight
+		       );
 }
 
 // Send the message from the text box to the daemon
