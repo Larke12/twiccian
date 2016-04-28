@@ -1,13 +1,13 @@
-# Twiccian (v1.0)
+# Twiccian (v1.1)
 
 ## Project Description
 Twiccian is a native desktop app written for Linux to allow the user to watch [Twitch.tv](http://twitch.tv) streams without the use of Flash or browsers and their extentions. If you have suggestions or want to see what we intend to implement, please checkout our issues. Once logged in using Twitch's OATH you will have access to the following existing features:
-- Following - View anyone live that you currently follow
-- Search - A short list of 10 live channels based on your search term.
+- Following - View any games and channels live that you currently follow
+- Search - A list of live channels or games based on your search term.
 - Stream - View the currently selected live stream and chat with access to player controls, profile link, and more!
-- Settings - Switch between the light and dark chat themes.
+- Settings - Switch between the light and dark chat themes...that's all for now!
 
-![screenshot](http://i.imgur.com/QYOGRsn.png?1)
+![screenshot](assets/no-overlay.png)
 
 ## How it's created
 Twiccian is built using Qt as the library/framework. The user-facing side of it will be written in a combination of C++ and QML, Qt's markup language used to facilitate easy creation of application interfaces. Currently, the packages required by Twiccian are only available on Arch Linux (most notably `mpv-dev` and up-to-date Qt packages),
@@ -17,12 +17,9 @@ Twiccian currently has a [background daemon](https://github.com/octotep/twiccian
 We currently make use of Twitch chat's [IRC bridge](http://help.twitch.tv/customer/portal/articles/1302780-twitch-irc),
 as well as their [REST API](https://github.com/justintv/twitch-api) and [TMI](https://tmi.twitch.tv/group/user/usernamehere/chatters) to recreate the chat in a native fashion.
 
-## Upcoming Features (v1.1)
-By May 2016 the following features are planned for release and development.
-- IRC v3 - Will allow for better chat tagging, grouping, etc.
-- Better Search - longer lists/paging, less crashing.
-- More settings - Whatever time allows for, such as more general app or chat settings.
-- GUI Update - As new features are implemented, the design will hopefully mold to fit it!
+![screenshot](assets/overlay.png)
+
+## Upcoming Features (v1.2)
 
 
 ## Installation
@@ -36,7 +33,7 @@ twiccian
 ## Dependencies
 Twiccian requires the following libraries to run:
 - mpv
-- Qt 5.0 or greater
+- Qt 5.6 or greater
 - youtube-dl
 - rapidjson
 - Go
@@ -54,7 +51,7 @@ $ go get "github.com/gorilla/websocket"
 $ go get "github.com/sorcix/irc"
 ```
 
-At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is your best option. If you want to clone this repo instead, install the dependencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfully building `twicciand` (using go).
+At the moment, we don't have an official way to actually _install_ it, so if you want to use it, the above AUR package is your best option. If you want to clone this repo instead, install the dependencies for Twiccian and twicciand as mentioned and run the following (in the Twiccian directory) after successfully building `twicciand` (using go). The `sorcix/irc` library will need to be switched to the `ircv3.2-tags` branch.
 ```
 $ qmake
 $ make
@@ -72,15 +69,10 @@ $ ./Twiccian
 ```
 
 ## Known Issues
-See our issue tracker for new issues and a list of current known problems.
+See our issue tracker for new issues and a list of currently known problems.
 
 ## Other Documentation
 - [Twitch API](https://github.com/justintv/twitch-api)
 - [mpv](https://github.com/mpv-player/mpv)
 - [youtube-dl](https://github.com/rg3/youtube-dl)
 - [TMI, simple Twitch chat json](https://tmi.twitch.tv/group/user/usernamehere/chatters) 
-
-### Ruby Documentation
-- [Ruby-Qt Tutorial](http://zetcode.com/gui/rubyqt/)
-- [ruby-qml](https://github.com/seanchas116/ruby-qml)
-- [Ruby-Qt Bindings](https://github.com/ryanmelt/qtbindings/)
