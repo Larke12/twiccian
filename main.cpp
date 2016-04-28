@@ -89,8 +89,9 @@ MpvObject::MpvObject(QQuickItem * parent)
     if (!mpv)
         throw std::runtime_error("could not create mpv context");
 
-    mpv_set_option_string(mpv, "terminal", "yes");
-    mpv_set_option_string(mpv, "msg-level", "all=v");
+    // Debug output for MPV
+    mpv_set_option_string(mpv, "terminal", "no");
+    mpv_set_option_string(mpv, "msg-level", "all=no");
 
     if (mpv_initialize(mpv) < 0)
         throw std::runtime_error("could not initialize mpv context");
