@@ -489,14 +489,18 @@ void SubmitUrlObj::requestGames() {
     results.clear();
     if (json.IsObject() && json.HasMember("result")) {
         Value& resultArr = json["result"]["follows"];
+
         for (uint i=0; i < resultArr.Size(); i++) {
             Result* next = new Result();
             Account* accnext = new Account();
             const Value& stream = resultArr[i];
+            const Value& game = stream["game"];
 
-            next->setTitle(stream["name"].GetString());
-            accnext->setName(stream["name"].GetString());
-            next->setThumbnailUrl(stream["box"]["medium"].GetString());
+            next->setTitle(game["name"].GetString());
+            next->setViewerCount(stream["viewers"].GetInt());
+            next->setThumbnailUrl(game["box"]["medium"].GetString());
+            accnext->setName(game["name"].GetString());
+            accnext->setFollows(stream["channels"].GetInt());
             next->setStreamer(accnext);
 
             results.append(next);

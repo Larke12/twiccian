@@ -120,7 +120,7 @@ ApplicationWindow {
                             id: gamerefresh
                             width: refreshbuttons.width
 
-                            text: qsTr(" Followed Games ")
+                            text: qsTr(" Live Games ")
                             opacity: 1.0
 
                             onClicked: {
@@ -186,6 +186,13 @@ ApplicationWindow {
                                         text: title
                                         width: window.width * 0.75 - 180
                                         font.bold: true
+                                        wrapMode: Text.Wrap
+                                    }
+
+                                    Text {
+                                        text: streamer.getFollows() + " channels with " + viewerCount + (viewerCount == 1 ?  " viewer" : " viewers")
+                                        width: window.width * 0.75 - 180
+                                        font.bold: false
                                         wrapMode: Text.Wrap
                                     }
                                 }
